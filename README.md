@@ -27,11 +27,6 @@ Development of a greenhouse monitoring system:
 
 ## References
 
-* [Wifi Manager - Configure Wifi Connection](https://randomnerdtutorials.com/wifimanager-with-esp8266-autoconnect-custom-parameter-and-manage-your-ssid-and-password/)
-* [Async WifiManager - AsyncWebServer](https://randomnerdtutorials.com/esp8266-nodemcu-wi-fi-manager-asyncwebserver/)
-* [Async WifiManager](https://stonez56.blogspot.com/2021/07/asyncwifimanager-elegantota-esp8266.html)
-* [Material Design Lite Pages](https://www.luisllamas.es/material-design-esp8266/)
-* [Scan WIFI](https://www.engineersgarage.com/esp8266-post-data-to-thingspeak-server/)
-* [Rest Server](https://www.mischianti.org/2020/05/24/rest-server-on-esp8266-and-esp32-get-and-json-formatter-part-2/)
-* [AsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer#setup-event-source-in-the-browser)
-* [WIFI Connect](https://github.com/ryanamaral/wifi-connect-esp8266/tree/master/html-preview)
+* [Capacitive soil moisture sensor](https://how2electronics.com/capacitive-soil-moisture-sensor-esp8266-esp32-oled-display/)
+* [Weather station](https://www.engineersgarage.com/nodemcu-weather-station/)
+* [DHT11/22 Sensor](https://randomnerdtutorials.com/esp8266-dht11dht22-temperature-and-humidity-web-server-with-arduino-ide/)

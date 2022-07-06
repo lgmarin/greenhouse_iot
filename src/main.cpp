@@ -6,8 +6,16 @@
 #define DHTTYPE     DHT11
 #define DHTPIN      2 //D4
 uint32_t            dhtDelay;
+int                 dhtTemperature;
+int                 dhtHumidity;
+DHT_Unified         dht(DHTPIN, DHTTYPE);
 
-DHT_Unified dht(DHTPIN, DHTTYPE);
+// SOIL MOISTURE CONFIGURATION
+#define SOIL_A      A0
+int                 moistPercent = 0;
+int                 moistValue = 0;
+int                 airMoist = 790;   //CALIBRATION NEEDED
+int                 waterMoist = 390; //CAILBRATION NEEDED
 
 // Screen CONFIGURATION
 
@@ -20,7 +28,7 @@ void setup() {
   dht.begin();
   sensor_t dhtSensor;
   dhtDelay = dhtSensor.min_delay / 1000;
-
+  // END Initialize DHT
 
 }
 
@@ -32,21 +40,43 @@ void loop() {
 
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
-    Serial.println(F("Error reading temperature!"));
+    Serial.println(F("\n[ERROR]: Error reading temperature!"));
   }
   else {
+    dhtTemperature = round(event.temperature);
     Serial.print(F("Temperature: "));
-    Serial.print(event.temperature);
+    Serial.print(dhtTemperature);
     Serial.println(F("°C"));
   }
   // Get humidity event and print its value.
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
-    Serial.println(F("Error reading humidity!"));
+    Serial.println(F("\n[ERROR]: Error reading humidity!"));
   }
   else {
+    dhtHumidity = event.relative_humidity;
     Serial.print(F("Humidity: "));
-    Serial.print(event.relative_humidity);
+    Serial.print(dhtHumidity);
     Serial.println(F("%"));
   }
+  // END DHT EVENT HANDLING  
+
+  // SOIL MOISTURE HANDLING
+  moistValue = analogRead(SOIL_A);
+  moistPercent = map(moistValue, airMoist, waterMoist, 0, 100);
+
+  if(moistPercent > 100)
+  {
+    Serial.print(F("\nMoisture")); Serial.print("99 %");
+  }
+  else if(moistPercent <0)
+  {
+    Serial.print(F("\nMoisture")); Serial.print("0 %");
+  }
+  else if(moistPercent >=0 && moistPercent < 100)
+  {
+    Serial.print(F("\nMoisture")); Serial.print(moistPercent); Serial.print("%");
+  }  
+  // END SOIL MOISTURE HANDLING
+  
 }

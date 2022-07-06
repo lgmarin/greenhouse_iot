@@ -1,13 +1,15 @@
 #include <Arduino.h>
-#include <Wire.h>
+
 #include <DHT.h>
 #include <DHT_U.h>
+
+#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
 // DHT CONFIGURATION
 #define DHTTYPE     DHT11
-#define DHTPIN      2 //D4
+#define DHTPIN      2 //GPIO2 - D4
 uint32_t            dhtDelay;
 int                 dhtTemperature;
 int                 dhtHumidity;
@@ -96,5 +98,38 @@ void loop() {
     Serial.print(F("\nMoisture")); Serial.print(moistPercent); Serial.print("%");
   }  
   // END SOIL MOISTURE HANDLING
+
+  // DISPLAY HANDLING
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setFont(NULL);
+  display.setCursor(0, 0);
+  display.setTextColor(WHITE);
+  display.print("IP: 192.168.100.254");
+  // Temperature
+  display.setCursor(0, 16);
+  display.setTextSize(1);
+  display.print("Ta ");
+  display.setTextSize(2);
+  display.print(dhtTemperature);
+  display.setTextSize(1);
+  display.print("o");
+  display.setTextSize(2);
+  display.print("C ");
+  // Humidity
+  display.setTextSize(1);
+  display.print("Ua ");
+  display.setTextSize(2);
+  display.print(dhtHumidity);
+  display.print("%");
+  // Soil Humidity
+  display.setCursor(0, 36);
+  display.setTextSize(1);
+  display.print("Us ");
+  display.setTextSize(2);
+  display.print(moistPercent);
+  display.print("%");
+  display.display();
+  
 
 }

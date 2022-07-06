@@ -19,11 +19,29 @@ Development of a greenhouse monitoring system:
   * Air temperature and humidity - DHT11
   * Soil moisture sensor
 
+## Schematics and List of Materials
+
+<p align="center">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/schematics.png" alt="Schematics">
+</p>
+
+| Label | Part Type | Properties |
+|-----|-----|---|
+|C1|Capacitor Polarized|Electrolytic 10uf 25v|
+|J1|Piezo Speaker|-|
+|R1-R4|10kΩ Resistor|Tolerance ±5%, Resistance 10kΩ|
+|U1|ESP8266 WiFi Module|ESP12F|
+|U2|DHT11|Temperature and humidity sensor|
+|U3|SSD1306|0.96 in OLED Display 128x64|
+|U4|HW-103|Soil Moisture Sensor|
+
 ## Libraries
 
 * [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP) - Base library for ESPAsyncWebServer.
 * [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) - An Async Web Server implementation for the ESP8266.
-* [ArduinoJson]() - Json serializer and deserializer for Arduino.
+* DHT Sensor
+* Adafruit SSD1306 Display
+
 
 ## References
 

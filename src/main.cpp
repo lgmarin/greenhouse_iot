@@ -1,6 +1,9 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include <DHT.h>
 #include <DHT_U.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
 // DHT CONFIGURATION
 #define DHTTYPE     DHT11
@@ -17,8 +20,13 @@ int                 moistValue = 0;
 int                 airMoist = 790;   //CALIBRATION NEEDED
 int                 waterMoist = 390; //CAILBRATION NEEDED
 
-// Screen CONFIGURATION
-
+// DISPLAY CONFIGURATION
+#define SCREEN_W    128
+#define SCREEN_H    64
+// PINOUT I2C
+// SDA    GPIO4 - D2
+// SCK    GPIO5 - D1
+Adafruit_SSD1306 display(SCREEN_W, SCREEN_H, &Wire, -1);
 
 void setup() {
   Serial.begin(9600);
@@ -29,6 +37,16 @@ void setup() {
   sensor_t dhtSensor;
   dhtDelay = dhtSensor.min_delay / 1000;
   // END Initialize DHT
+
+  // Initialize DISPLAY
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.print(F("\n[ERROR]: SSD1306 allocation failed"));
+    for(;;);
+  }
+  delay(2000);
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+  // END Initialize DISPLAY  
 
 }
 
@@ -78,5 +96,5 @@ void loop() {
     Serial.print(F("\nMoisture")); Serial.print(moistPercent); Serial.print("%");
   }  
   // END SOIL MOISTURE HANDLING
-  
+
 }

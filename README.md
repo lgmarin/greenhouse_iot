@@ -27,6 +27,7 @@ Development of a greenhouse monitoring system:
 
 ## References
 
-* [Capacitive soil moisture sensor](https://how2electronics.com/capacitive-soil-moisture-sensor-esp8266-esp32-oled-display/)
+* [Capacitive soil moisture](https://how2electronics.com/capacitive-soil-moisture-sensor-esp8266-esp32-oled-display/)
 * [Weather station](https://www.engineersgarage.com/nodemcu-weather-station/)
 * [DHT11/22 Sensor](https://randomnerdtutorials.com/esp8266-dht11dht22-temperature-and-humidity-web-server-with-arduino-ide/)
+* [SSD1306 OLED Display](https://randomnerdtutorials.com/esp8266-0-96-inch-oled-display-with-arduino-ide/)

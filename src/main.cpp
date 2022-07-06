@@ -10,7 +10,7 @@
 // DHT CONFIGURATION
 #define DHTTYPE     DHT11
 #define DHTPIN      2 //GPIO2 - D4
-uint32_t            dhtDelay;
+uint32_t            dhtDelay = 0;
 int                 dhtTemperature;
 int                 dhtHumidity;
 DHT_Unified         dht(DHTPIN, DHTTYPE);
@@ -49,7 +49,6 @@ void setup() {
   display.clearDisplay();
   display.setTextColor(WHITE);
   // END Initialize DISPLAY  
-
 }
 
 void loop() {
@@ -130,6 +129,4 @@ void loop() {
   display.print(moistPercent);
   display.print("%");
   display.display();
-  
-
 }

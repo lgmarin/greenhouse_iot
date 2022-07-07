@@ -7,28 +7,21 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+#include <definitions.h>
 #include <soilSensor.h>
 
 // DHT CONFIGURATION
-#define DHTTYPE     DHT11
-#define DHTPIN      2 //GPIO2 - D4
-uint32_t            dhtDelay = 0;
+uint32_t            dhtDelay;
 int                 dhtTemperature;
 int                 dhtHumidity;
 DHT_Unified         dht(DHTPIN, DHTTYPE);
 
 // SOIL MOISTURE CONFIGURATION
-#define SOIL_A      A0
 int                 airMoist   = 790;   //CALIBRATION NEEDED
 int                 waterMoist = 390; //CAILBRATION NEEDED
 SoilMoistureSensor soil(SOIL_A, airMoist, waterMoist);
 
 // DISPLAY CONFIGURATION
-#define SCREEN_W    128
-#define SCREEN_H    64
-// PINOUT I2C
-// SDA    GPIO4 - D2
-// SCK    GPIO5 - D1
 Adafruit_SSD1306 display(SCREEN_W, SCREEN_H, &Wire, -1);
 
 void setup() {
@@ -42,8 +35,8 @@ void setup() {
   // END Initialize DHT
 
   // Initialize DISPLAY
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.print(F("\n[ERROR]: SSD1306 allocation failed"));
+  if(!display.begin(SSD1306_SWITCHCAPVCC, D_I2C_ADDR)) {
+    Serial.print(F("\n[ERROR]: SSD1306 allocation failed!"));
     for(;;);
   }
   delay(2000);

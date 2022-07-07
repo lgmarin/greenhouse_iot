@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 
+/**
+ * Read Soil Moisture Sensor values from Analog input.
+ */
 class SoilMoistureSensor
 {
 private:

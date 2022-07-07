@@ -13,10 +13,9 @@ private:
 public:
     SoilMoistureSensor(int pin);
     SoilMoistureSensor(int pin, int airM, int watM);
-    int readPercent();
+    int readPercent(bool twoDigits = true);
     int readValue();
-    void calibrate();
+    void calibrateSerial();
 };
-
 
 #endif

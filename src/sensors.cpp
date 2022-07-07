@@ -1,5 +1,15 @@
 #include <sesnsors.h>
 
+/*!
+ *  @brief  Read temperature
+ *  @param  S
+ *          Scale. Boolean value:
+ *					- true = Fahrenheit
+ *					- false = Celcius
+ *  @param  force
+ *          true if in force mode
+ *	@return Temperature value in selected scale
+ */
 SoilMoistureSensor::SoilMoistureSensor(int pin)
 {
     analogPin = pin;
@@ -16,22 +26,58 @@ SoilMoistureSensor::SoilMoistureSensor(int pin, int airM, int watM)
     calibrated = true;  
 }
 
+/*!
+ *  @brief  Read soil moisture value
+
+ *	@return Soil Moisture value
+ */
 int SoilMoistureSensor::readValue()
 {
     return analogRead(analogPin);
 }
 
-int SoilMoistureSensor::readPercent()
-{
+/*!
+ *  @brief  Read soil moisture percent
+ *  @param  twoDigits
+ *          Display only 2 digits value 0-99%:
+ *					- true = Two Digits
+ *					- false = All Digits
+
+ *	@return Soil Moisture value in percent
+ */
+int SoilMoistureSensor::readPercent(bool twoDigits = true)
+{  
     if (calibrated)
     {
-        int val = analogRead(analogPin);
-        return map(val, airMoist, waterMoist, 0, 100);
+        int val = map(analogRead(analogPin), airMoist, waterMoist, 0, 100);
+
+        if (twoDigits)
+        {
+            if(val > 100)
+            {
+                return 99;
+            }
+            else if(val < 0)
+            {
+                return 0;
+            }
+            else if(val >=0 && val < 100)
+            {
+                return val;
+            }  
+        }
+
+        return val;
     }
+
     return 00;
 }
 
-void SoilMoistureSensor::calibrate()
+/*!
+ *  @brief  Calibrate from Serial Monitor.
+*           Put in the loop function and read the values.   
+ */
+void SoilMoistureSensor::calibrateSerial()
 {
     Serial.print(F("\n<<< SOIL MOISTURE CALIBRATION >>>"));
     Serial.print(F("\n1. Leave the probe in the air (probe dry)."));

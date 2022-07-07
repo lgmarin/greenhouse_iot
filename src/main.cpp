@@ -7,6 +7,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+#include <sesnsors.h>
+
 // DHT CONFIGURATION
 #define DHTTYPE     DHT11
 #define DHTPIN      2 //GPIO2 - D4
@@ -17,10 +19,10 @@ DHT_Unified         dht(DHTPIN, DHTTYPE);
 
 // SOIL MOISTURE CONFIGURATION
 #define SOIL_A      A0
-int                 moistPercent = 0;
-int                 moistValue = 0;
 int                 airMoist = 790;   //CALIBRATION NEEDED
 int                 waterMoist = 390; //CAILBRATION NEEDED
+SoilMoistureSensor soil(SOIL_A, airMoist, waterMoist);
+
 
 // DISPLAY CONFIGURATION
 #define SCREEN_W    128
@@ -81,21 +83,7 @@ void loop() {
   // END DHT EVENT HANDLING  
 
   // SOIL MOISTURE HANDLING
-  moistValue = analogRead(SOIL_A);
-  moistPercent = map(moistValue, airMoist, waterMoist, 0, 100);
-
-  if(moistPercent > 100)
-  {
-    Serial.print(F("\nMoisture")); Serial.print("99 %");
-  }
-  else if(moistPercent <0)
-  {
-    Serial.print(F("\nMoisture")); Serial.print("0 %");
-  }
-  else if(moistPercent >=0 && moistPercent < 100)
-  {
-    Serial.print(F("\nMoisture")); Serial.print(moistPercent); Serial.print("%");
-  }  
+  Serial.print(F("\nMoisture")); Serial.print(soil.readPercent()); Serial.print("%");
   // END SOIL MOISTURE HANDLING
 
   // DISPLAY HANDLING
@@ -126,7 +114,7 @@ void loop() {
   display.setTextSize(1);
   display.print("Us ");
   display.setTextSize(2);
-  display.print(moistPercent);
+  display.print(soil.readPercent());
   display.print("%");
   display.display();
 }

@@ -3,6 +3,10 @@
 
 #include <Arduino.h>
 
+/*
+*            SENSORS DEFINITIONS
+*/
+
 // DHT CONFIGURATION
 #define DHTTYPE             DHT11
 #define DHTPIN              2 //GPIO2 - D4
@@ -20,6 +24,11 @@ extern int                  dhtHumidity;
 #define SCREEN_W            128
 #define SCREEN_H            64
 #define D_I2C_ADDR          0x3C
+
+
+/*
+*            WEB DEFINITIONS
+*/
 
 
 

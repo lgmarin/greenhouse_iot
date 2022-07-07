@@ -1,4 +1,4 @@
-#include <sesnsors.h>
+#include <soilSensor.h>
 
 /*!
  *  @brief  Read temperature
@@ -45,7 +45,7 @@ int SoilMoistureSensor::readValue()
 
  *	@return Soil Moisture value in percent
  */
-int SoilMoistureSensor::readPercent(bool twoDigits = true)
+int SoilMoistureSensor::readPercent(bool twoDigits)
 {  
     if (calibrated)
     {
@@ -69,7 +69,7 @@ int SoilMoistureSensor::readPercent(bool twoDigits = true)
 
         return val;
     }
-
+    Serial.print(F("\n[WARNING]: Soil sensor needs calibration!"));
     return 00;
 }
 

@@ -1,5 +1,5 @@
-#ifndef sensors_h
-#define sensors_h
+#ifndef soilSensor_h
+#define soilSensor_h
 
 #include <Arduino.h>
 

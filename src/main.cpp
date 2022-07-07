@@ -7,7 +7,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#include <sesnsors.h>
+#include <soilSensor.h>
 
 // DHT CONFIGURATION
 #define DHTTYPE     DHT11
@@ -19,10 +19,9 @@ DHT_Unified         dht(DHTPIN, DHTTYPE);
 
 // SOIL MOISTURE CONFIGURATION
 #define SOIL_A      A0
-int                 airMoist = 790;   //CALIBRATION NEEDED
+int                 airMoist   = 790;   //CALIBRATION NEEDED
 int                 waterMoist = 390; //CAILBRATION NEEDED
 SoilMoistureSensor soil(SOIL_A, airMoist, waterMoist);
-
 
 // DISPLAY CONFIGURATION
 #define SCREEN_W    128

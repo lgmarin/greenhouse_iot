@@ -11,12 +11,17 @@
 // DHT CONFIGURATION
 #define DHTTYPE             DHT11
 #define DHTPIN              2 //GPIO2 - D4
+
 // DHT Read Values
 extern int                  dhtTemperature;
 extern int                  dhtHumidity;
 
 // SOIL MOISTURE CONFIGURATION
 #define SOIL_A              A0
+
+// SOIL READ VALUES
+extern int                  soilValue;
+extern int                  soilPercent;
 
 // DISPLAY CONFIGURATION
 // PINOUT I2C               

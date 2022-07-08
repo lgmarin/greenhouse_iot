@@ -17,8 +17,6 @@ Display::~Display()
 {
 }
 
-
-
 void Display::UpdateScreen()
 {
     // DISPLAY HANDLING
@@ -49,7 +47,7 @@ void Display::UpdateScreen()
     display.setTextSize(1);
     display.print("Us ");
     display.setTextSize(2);
-    display.print(soil.readPercent());
+    display.print(soilPercent);
     display.print("%");
     display.display();
 }

@@ -1,15 +1,5 @@
 #include <soilSensor.h>
 
-/*!
- *  @brief  Read temperature
- *  @param  S
- *          Scale. Boolean value:
- *					- true = Fahrenheit
- *					- false = Celcius
- *  @param  force
- *          true if in force mode
- *	@return Temperature value in selected scale
- */
 SoilMoistureSensor::SoilMoistureSensor(int pin)
 {
     analogPin = pin;

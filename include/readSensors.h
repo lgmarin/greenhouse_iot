@@ -11,10 +11,17 @@ class Dht
 {
 private:
     DHT_Unified         dht;
+    sensors_event_t     dhtEvent;
+    sensor_t            dhtSensor;
+    int32_t            dhtDelay;
+
 public:
     Dht();
     ~Dht();
     void dhtInit();
+    int32_t getDhtDelay();
+    int readTemperature();
+    int readHumidity();
 };
 
 

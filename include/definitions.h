@@ -15,7 +15,6 @@
 // DHT Read Values
 extern int                  dhtTemperature;
 extern int                  dhtHumidity;
-extern uint32_t             dhtDelay;
 
 
 //      SOIL MOISTURE CONFIGURATION

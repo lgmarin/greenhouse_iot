@@ -18,6 +18,8 @@ extern int                  dhtHumidity;
 
 // SOIL MOISTURE CONFIGURATION
 #define SOIL_A              A0
+#define DEF_CAL_AIR         120
+#define DEF_CAL_WAT         1000
 
 // SOIL READ VALUES
 extern int                  soilValue;

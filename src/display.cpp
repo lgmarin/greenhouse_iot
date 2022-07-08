@@ -1,8 +1,16 @@
 #include <display.h>
 
-Adafruit_SSD1306 display(SCREEN_W, SCREEN_H, &Wire, -1);
+int                  soilPercent;
 
-Display::Display()
+Display::Display(): display(SCREEN_W, SCREEN_H, &Wire, -1)
+{
+}
+
+Display::~Display()
+{
+}
+
+void Display::Init()
 {
     if(!display.begin(SSD1306_SWITCHCAPVCC, D_I2C_ADDR)) {
         Serial.print(F("\n[ERROR]: SSD1306 allocation failed!"));
@@ -11,10 +19,6 @@ Display::Display()
     delay(2000);
     display.clearDisplay();
     display.setTextColor(WHITE);
-}
-
-Display::~Display()
-{
 }
 
 void Display::UpdateScreen()

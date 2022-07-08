@@ -7,10 +7,12 @@
 
 class Display{
 private:
+    Adafruit_SSD1306 display;
     
 public:
     Display();
     ~Display();
+    void Init();
     void UpdateScreen();
 };
 

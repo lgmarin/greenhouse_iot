@@ -3,6 +3,7 @@
 
 #include <definitions.h>
 #include <soilSensor.h>
+#include <display.h>
 
 // DHT CONFIGURATION
 uint32_t            dhtDelay;
@@ -13,7 +14,11 @@ DHT_Unified         dht(DHTPIN, DHTTYPE);
 // SOIL MOISTURE CONFIGURATION
 int                 airMoist   = 790;   //CALIBRATION NEEDED
 int                 waterMoist = 390;   //CAILBRATION NEEDED
+
+
+// Create Instances
 SoilMoistureSensor  soil(SOIL_A, airMoist, waterMoist);
+Display             display;
 
 void setup() {
   Serial.begin(9600);
@@ -26,7 +31,7 @@ void setup() {
   // END Initialize DHT
 
   // Initialize DISPLAY
-
+  display.Init();
   // END Initialize DISPLAY  
 }
 
@@ -62,5 +67,7 @@ void loop() {
   // SOIL MOISTURE HANDLING
   Serial.print(F("\nMoisture")); Serial.print(soil.readPercent()); Serial.print("%");
   // END SOIL MOISTURE HANDLING
+
+  display.UpdateScreen();
 
 }

@@ -22,7 +22,7 @@ Development of a greenhouse monitoring system:
 ## Schematics and List of Materials
 
 <p align="center">
-  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/schematics.png" alt="Schematics">
+  <img width="300" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/schematics.png" alt="Schematics">
 </p>
 
 | Label | Part Type | Properties |
@@ -32,7 +32,7 @@ Development of a greenhouse monitoring system:
 |R1-R4|10kΩ Resistor|Tolerance ±5%, Resistance 10kΩ|
 |U1|ESP8266 WiFi Module|ESP12F|
 |U2|DHT11|Temperature and humidity sensor|
-|U3|SSD1306|0.96 in OLED Display 128x64|
+|U3|SSD1306|0.96 in OLED I2C Display 128x64|
 |U4|HW-103|Soil Moisture Sensor|
 
 ## Libraries

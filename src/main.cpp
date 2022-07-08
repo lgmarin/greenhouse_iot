@@ -1,6 +1,3 @@
-#include <DHT.h>
-#include <DHT_U.h>
-
 #include <definitions.h>
 #include <soilSensor.h>
 #include <display.h>
@@ -9,15 +6,9 @@
 uint32_t            dhtDelay;
 int                 dhtTemperature;
 int                 dhtHumidity;
-DHT_Unified         dht(DHTPIN, DHTTYPE);
-
-// SOIL MOISTURE CONFIGURATION
-int                 airMoist   = 790;   //CALIBRATION NEEDED
-int                 waterMoist = 390;   //CAILBRATION NEEDED
 
 
 // Create Instances
-SoilMoistureSensor  soil(SOIL_A, airMoist, waterMoist);
 Display             display;
 
 void setup() {

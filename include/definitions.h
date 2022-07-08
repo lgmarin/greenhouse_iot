@@ -7,25 +7,30 @@
 /*
 *            SENSORS DEFINITIONS
 */
+#define DEFAULT_DELAY       2000 //2secs delay loop
 
-// DHT CONFIGURATION
+//             DHT CONFIGURATION
 #define DHTTYPE             DHT11
 #define DHTPIN              2 //GPIO2 - D4
-
 // DHT Read Values
 extern int                  dhtTemperature;
 extern int                  dhtHumidity;
+extern uint32_t             dhtDelay;
 
-// SOIL MOISTURE CONFIGURATION
+
+//      SOIL MOISTURE CONFIGURATION
 #define SOIL_A              A0
-#define DEF_CAL_AIR         120
-#define DEF_CAL_WAT         1000
-
+#define DEF_CAL_AIR         790
+#define DEF_CAL_WAT         390
 // SOIL READ VALUES
 extern int                  soilValue;
 extern int                  soilPercent;
+// SOIL CALIBRATION CONFIGURATION
+extern int                  airMoist;
+extern int                  waterMoist;
 
-// DISPLAY CONFIGURATION
+
+//          DISPLAY CONFIGURATION
 // PINOUT I2C               
 // SDA                      GPIO4 - D2
 // SCK                      GPIO5 - D1

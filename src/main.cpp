@@ -3,12 +3,10 @@
 #include <display.h>
 
 // DHT CONFIGURATION
-uint32_t            dhtDelay;
-int                 dhtTemperature;
-int                 dhtHumidity;
-
 
 // Create Instances
+uint32_t            dhtDelay;            
+
 Display             display;
 
 void setup() {
@@ -25,13 +23,11 @@ void setup() {
 }
 
 void loop() {
-  delay(2500);
-
   // DHT EVENT HANDLING
   // END DHT EVENT HANDLING  
 
   // SOIL MOISTURE HANDLING
   // END SOIL MOISTURE HANDLING
 
-  display.UpdateScreen();
+  //display.UpdateScreen(dhtDelay);
 }

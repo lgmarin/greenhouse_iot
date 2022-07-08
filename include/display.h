@@ -13,7 +13,7 @@ public:
     Display();
     ~Display();
     void Init();
-    void UpdateScreen();
+    void UpdateScreen(uint32_t delay, int temp, int hum, int soilP);
 };
 
 #endif

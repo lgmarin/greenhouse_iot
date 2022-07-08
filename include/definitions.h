@@ -13,9 +13,9 @@
 #define DHTTYPE             DHT11
 #define DHTPIN              2 //GPIO2 - D4
 // DHT Read Values
+extern uint32_t             dhtDelay;            
 extern int                  dhtTemperature;
 extern int                  dhtHumidity;
-
 
 //      SOIL MOISTURE CONFIGURATION
 #define SOIL_A              A0

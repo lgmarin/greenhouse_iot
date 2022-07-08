@@ -1,9 +1,12 @@
 #include <readSensors.h>
 
-uint32_t            dhtDelay;
-int                 dhtTemperature;
-int                 dhtHumidity;
-int                 soilPercent;
+// uint32_t            dhtDelay;
+// int                 dhtTemperature;
+// int                 dhtHumidity;
+// int                 soilPercent;
+
+int                  airMoist;
+int                  waterMoist;
 
 SoilMoistureSensor  soil(SOIL_A, airMoist, waterMoist);
 
@@ -12,7 +15,7 @@ SoilMoistureSensor  soil(SOIL_A, airMoist, waterMoist);
 
  *	@return Soil Moisture value
  */
-Dht::Dht() : dht(DHTPIN, DHTTYPE)
+Dht::Dht() : _dht(DHTPIN, DHTTYPE)
 {
 }
 
@@ -20,43 +23,44 @@ Dht::~Dht()
 {
 }
 
-void Dht::dhtInit()
+uint32_t Dht::dhtInit()
 {
-    dht.begin();
-    dhtDelay = dhtSensor.min_delay;
+    _dht.begin();
+    dhtDelay = _dhtSensor.min_delay;
+   
+    if (dhtDelay <= 1000)
+        dhtDelay = DEFAULT_DELAY;
+
+    return dhtDelay;
 }
 
-int32_t Dht::getDhtDelay()
+uint32_t Dht::getDhtDelay()
 {
-    if (dhtDelay <= 1000)
-    {
-        return 2000;
-    }
     return dhtDelay;
 }
 
 int Dht::readTemperature()
 {
-    dht.temperature().getEvent(&dhtEvent);
+    _dht.temperature().getEvent(&_dhtEvent);
 
-    if (isnan(dhtEvent.temperature)) {
+    if (isnan(_dhtEvent.temperature)) {
         Serial.println(F("\n[ERROR]: Error reading temperature!"));
         return 00;
     }
     else {
-        return round(dhtEvent.temperature);
+        return round(_dhtEvent.temperature);
     }
 }
 
-int Dht::readTemperature()
+int Dht::readHumidity()
 {
-    dht.humidity().getEvent(&dhtEvent);
+    _dht.humidity().getEvent(&_dhtEvent);
     
-    if (isnan(dhtEvent.relative_humidity)) {
+    if (isnan(_dhtEvent.relative_humidity)) {
         Serial.println(F("\n[ERROR]: Error reading humidity!"));
         return 00;
     }
     else {
-        return round(dhtEvent.relative_humidity);
+        return round(_dhtEvent.relative_humidity);
     }
 }

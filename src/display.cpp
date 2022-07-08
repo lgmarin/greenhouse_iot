@@ -1,7 +1,5 @@
 #include <display.h>
 
-int                  soilPercent;
-
 Display::Display(): display(SCREEN_W, SCREEN_H, &Wire, -1)
 {
 }
@@ -21,7 +19,7 @@ void Display::Init()
     display.setTextColor(WHITE);
 }
 
-void Display::UpdateScreen()
+void Display::UpdateScreen(uint32_t delay, int temp, int hum, int soilP)
 {
     // DISPLAY HANDLING
     display.clearDisplay();
@@ -35,7 +33,7 @@ void Display::UpdateScreen()
     display.setTextSize(1);
     display.print("Ta ");
     display.setTextSize(2);
-    display.print(dhtTemperature);
+    display.print(temp);
     display.setTextSize(1);
     display.print("o");
     display.setTextSize(2);
@@ -44,14 +42,14 @@ void Display::UpdateScreen()
     display.setTextSize(1);
     display.print("Ua ");
     display.setTextSize(2);
-    display.print(dhtHumidity);
+    display.print(hum);
     display.print("%");
     // Soil Humidity
     display.setCursor(0, 36);
     display.setTextSize(1);
     display.print("Us ");
     display.setTextSize(2);
-    display.print(soilPercent);
+    display.print(soilP);
     display.print("%");
     display.display();
 }

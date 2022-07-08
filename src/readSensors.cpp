@@ -1,14 +1,14 @@
 #include <readSensors.h>
 
-// uint32_t            dhtDelay;
 // int                 dhtTemperature;
 // int                 dhtHumidity;
 // int                 soilPercent;
 
-int                  airMoist;
-int                  waterMoist;
+// GLOBAL VARIABLES
+extern int                     airMoist;
+extern int                     waterMoist;
 
-SoilMoistureSensor  soil(SOIL_A, airMoist, waterMoist);
+SoilMoistureSensor    soil(SOIL_A, airMoist, waterMoist);
 
 /*!
  *  @brief  Read soil moisture value
@@ -31,6 +31,7 @@ uint32_t Dht::dhtInit()
     if (dhtDelay <= 1000)
         dhtDelay = DEFAULT_DELAY;
 
+    Serial.print(F("\n[INFO]: DHT Initialized with delay: ")); Serial.print(dhtDelay);
     return dhtDelay;
 }
 
@@ -44,7 +45,7 @@ int Dht::readTemperature()
     _dht.temperature().getEvent(&_dhtEvent);
 
     if (isnan(_dhtEvent.temperature)) {
-        Serial.println(F("\n[ERROR]: Error reading temperature!"));
+        Serial.print(F("\n[ERROR]: Error reading temperature!"));
         return 00;
     }
     else {
@@ -57,10 +58,15 @@ int Dht::readHumidity()
     _dht.humidity().getEvent(&_dhtEvent);
     
     if (isnan(_dhtEvent.relative_humidity)) {
-        Serial.println(F("\n[ERROR]: Error reading humidity!"));
+        Serial.print(F("\n[ERROR]: Error reading humidity!"));
         return 00;
     }
     else {
         return round(_dhtEvent.relative_humidity);
     }
+}
+
+int readSoilP()
+{
+    return soil.readPercent();
 }

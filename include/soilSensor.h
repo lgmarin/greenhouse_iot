@@ -9,16 +9,19 @@
 class SoilMoistureSensor
 {
 private:
-    int analogPin;
-    int airMoist;
-    int waterMoist;
-    bool calibrated;
+    int     _analogPin;
+    int     _airMoist;
+    int     _waterMoist;
+    bool    _calibrated;
 public:
     SoilMoistureSensor(int pin);
     SoilMoistureSensor(int pin, int airM, int watM);
     int readPercent(bool twoDigits = true);
     int readValue();
     void calibrateSerial();
+    bool enterCalibration(int airM, int watM);
 };
+
+int readSoilP();
 
 #endif

@@ -2,18 +2,18 @@
 
 SoilMoistureSensor::SoilMoistureSensor(int pin)
 {
-    analogPin = pin;
-    airMoist = 0;
-    waterMoist = 0;
-    calibrated = false;
+    _analogPin = pin;
+    _airMoist = 0;
+    _waterMoist = 0;
+    _calibrated = false;
 }
 
 SoilMoistureSensor::SoilMoistureSensor(int pin, int airM, int watM)
 {
-    analogPin = pin;
-    airMoist = airM;
-    waterMoist = watM;
-    calibrated = true;  
+    _analogPin = pin;
+    _airMoist = airM;
+    _waterMoist = watM;
+    _calibrated = true;  
 }
 
 /*!
@@ -23,7 +23,7 @@ SoilMoistureSensor::SoilMoistureSensor(int pin, int airM, int watM)
  */
 int SoilMoistureSensor::readValue()
 {
-    return analogRead(analogPin);
+    return analogRead(_analogPin);
 }
 
 /*!
@@ -37,9 +37,9 @@ int SoilMoistureSensor::readValue()
  */
 int SoilMoistureSensor::readPercent(bool twoDigits)
 {  
-    if (calibrated)
+    if (_calibrated)
     {
-        int val = map(analogRead(analogPin), airMoist, waterMoist, 0, 100);
+        int val = map(analogRead(_analogPin), _airMoist, _waterMoist, 0, 100);
 
         if (twoDigits)
         {
@@ -77,4 +77,22 @@ void SoilMoistureSensor::calibrateSerial()
     Serial.print(F("\nREAD THE INSTRUCTIONS AND PRESS ENTER!"));
     Serial.read();
     Serial.print(F("\nCURRENT READING: ")); Serial.print(readValue());
+}
+
+/*!
+ *  @brief  Enter calibration values after creating class.
+*   @param airM Moisture value in Air
+*   @param watM Moisture value in Water
+*   @return Returns true if entered values are valid.
+ */
+bool SoilMoistureSensor::enterCalibration(int airM, int watM)
+{
+    if (!isnan(airM) && !isnan(watM))
+    {
+        _airMoist = airM;
+        _waterMoist = watM;
+        _calibrated = true; 
+        return true;
+    }
+    return false;
 }

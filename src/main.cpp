@@ -1,20 +1,20 @@
 #include <definitions.h>
-#include <soilSensor.h>
+#include <readSensors.h>
 #include <display.h>
 
-// DHT CONFIGURATION
+// GLOBAL VARIABLES
+extern uint32_t            dhtDelay;
 
-// Create Instances
-uint32_t            dhtDelay;            
-
-Display             display;
+// CREATE INSTANCES
+Display                    display;
+Dht                        dhtSensor;
 
 void setup() {
   Serial.begin(9600);
   delay(500);
 
   // Initialize DHT
-
+  dhtDelay = dhtSensor.dhtInit();
   // END Initialize DHT
 
   // Initialize DISPLAY

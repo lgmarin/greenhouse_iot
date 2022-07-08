@@ -1,14 +1,6 @@
 #include <readSensors.h>
 
-// int                 dhtTemperature;
-// int                 dhtHumidity;
-// int                 soilPercent;
-
-// GLOBAL VARIABLES
-extern int                     airMoist;
-extern int                     waterMoist;
-
-SoilMoistureSensor    soil(SOIL_A, airMoist, waterMoist);
+SoilMoistureSensor    soil(SOIL_A);
 
 /*!
  *  @brief  Read soil moisture value
@@ -70,3 +62,6 @@ int readSoilP()
 {
     return soil.readPercent();
 }
+
+
+

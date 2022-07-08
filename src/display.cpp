@@ -19,7 +19,7 @@ void Display::Init()
     display.setTextColor(WHITE);
 }
 
-void Display::UpdateScreen(uint32_t delay, int temp, int hum, int soilP)
+void Display::UpdateScreen(int temp, int hum, int soilP)
 {
     // DISPLAY HANDLING
     display.clearDisplay();

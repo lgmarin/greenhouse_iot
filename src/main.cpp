@@ -2,8 +2,14 @@
 #include <readSensors.h>
 #include <display.h>
 
+unsigned long previousMillis = 0;
+unsigned long interval;
+
 // GLOBAL VARIABLES
-extern uint32_t            dhtDelay;
+// uint32_t            dhtDelay;
+// int                 dhtTemperature;
+// int                 dhtHumidity;
+// int                 soilPercent;
 
 // CREATE INSTANCES
 Display                    display;
@@ -23,11 +29,21 @@ void setup() {
 }
 
 void loop() {
-  // DHT EVENT HANDLING
-  // END DHT EVENT HANDLING  
 
-  // SOIL MOISTURE HANDLING
-  // END SOIL MOISTURE HANDLING
+  //PREPARE LOOP - BASED on DHT min delay or DEFAULT_DELAY
+  unsigned long currentMillis = millis();
+  interval = dhtDelay || DEFAULT_DELAY;
+  
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
 
-  //display.UpdateScreen(dhtDelay);
+  //READ SENSORS
+  soilPercent = readSoilP();
+  dhtTemperature = dhtSensor.readTemperature();
+  dhtHumidity = dhtSensor.readHumidity();
+
+  //Update Screen
+  display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
+  }
+
 }

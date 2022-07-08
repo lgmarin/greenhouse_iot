@@ -1,11 +1,5 @@
-#include <Arduino.h>
-
 #include <DHT.h>
 #include <DHT_U.h>
-
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
 #include <definitions.h>
 #include <soilSensor.h>
@@ -18,11 +12,8 @@ DHT_Unified         dht(DHTPIN, DHTTYPE);
 
 // SOIL MOISTURE CONFIGURATION
 int                 airMoist   = 790;   //CALIBRATION NEEDED
-int                 waterMoist = 390; //CAILBRATION NEEDED
-SoilMoistureSensor soil(SOIL_A, airMoist, waterMoist);
-
-// DISPLAY CONFIGURATION
-Adafruit_SSD1306 display(SCREEN_W, SCREEN_H, &Wire, -1);
+int                 waterMoist = 390;   //CAILBRATION NEEDED
+SoilMoistureSensor  soil(SOIL_A, airMoist, waterMoist);
 
 void setup() {
   Serial.begin(9600);
@@ -35,13 +26,7 @@ void setup() {
   // END Initialize DHT
 
   // Initialize DISPLAY
-  if(!display.begin(SSD1306_SWITCHCAPVCC, D_I2C_ADDR)) {
-    Serial.print(F("\n[ERROR]: SSD1306 allocation failed!"));
-    for(;;);
-  }
-  delay(2000);
-  display.clearDisplay();
-  display.setTextColor(WHITE);
+
   // END Initialize DISPLAY  
 }
 
@@ -78,35 +63,4 @@ void loop() {
   Serial.print(F("\nMoisture")); Serial.print(soil.readPercent()); Serial.print("%");
   // END SOIL MOISTURE HANDLING
 
-  // DISPLAY HANDLING
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setFont(NULL);
-  display.setCursor(0, 0);
-  display.setTextColor(WHITE);
-  display.print("IP: 192.168.100.254");
-  // Temperature
-  display.setCursor(0, 16);
-  display.setTextSize(1);
-  display.print("Ta ");
-  display.setTextSize(2);
-  display.print(dhtTemperature);
-  display.setTextSize(1);
-  display.print("o");
-  display.setTextSize(2);
-  display.print("C ");
-  // Humidity
-  display.setTextSize(1);
-  display.print("Ua ");
-  display.setTextSize(2);
-  display.print(dhtHumidity);
-  display.print("%");
-  // Soil Humidity
-  display.setCursor(0, 36);
-  display.setTextSize(1);
-  display.print("Us ");
-  display.setTextSize(2);
-  display.print(soil.readPercent());
-  display.print("%");
-  display.display();
 }

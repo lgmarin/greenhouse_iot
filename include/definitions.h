@@ -2,6 +2,7 @@
 #define definitions_h
 
 #include <Arduino.h>
+#include <Wire.h>
 
 /*
 *            SENSORS DEFINITIONS

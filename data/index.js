@@ -9,3 +9,7 @@ setInterval(function ( ) {
         xhttp.send();
     }, 3000 
 );
+
+function goConfig() {
+    location.replace("http://%DEVICE_IP%/config");
+}      

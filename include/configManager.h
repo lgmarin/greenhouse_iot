@@ -3,6 +3,7 @@
 
 #include <definitions.h>
 #include <LittleFS.h>
+#include <ESP8266WiFi.h>
 
 typedef struct
 {
@@ -32,8 +33,10 @@ typedef struct
   uint16_t checksum;
 } Device_Config;
 
+extern Wifi_Config        Wifi_config;
+extern Device_Config      Device_config;
 
 bool loadWifiConfig();
-bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip = "", IpAddress gw = "", IpAddress mask = "")
+bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IPAddress gw, IPAddress mask);
 
 #endif

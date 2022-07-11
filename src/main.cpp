@@ -6,10 +6,10 @@ unsigned long previousMillis = 0;
 unsigned long interval;
 
 // GLOBAL VARIABLES
-// uint32_t            dhtDelay;
-// int                 dhtTemperature;
-// int                 dhtHumidity;
-// int                 soilPercent;
+uint32_t            dhtDelay;
+int                 dhtTemperature;
+int                 dhtHumidity;
+int                 soilPercent;
 
 // CREATE INSTANCES
 Display                 display;

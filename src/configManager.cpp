@@ -109,7 +109,7 @@ bool loadWifiConfig()
  *  @brief  Store WifiConfiguration into LitteFS.
  *  @return Returns true if configuration saved successfully.
  */
-bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IpAddress gw, IpAddress mask)
+bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IPAddress gw, IPAddress mask)
 {
   memset(&Wifi_config, 0, sizeof(Wifi_config));
 
@@ -139,7 +139,7 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, Ip
 
   //Calculate checksum and save credentials
   Wifi_config.checksum = calcChecksum((uint8_t*) &Wifi_config, sizeof(Wifi_config) - sizeof(Wifi_config.checksum));
-  if (saveConfigData(&Wifi_config, sizeof(Wifi_config), (char*) wifi_config_file))
+  if (saveConfigData(&Wifi_config, sizeof(Wifi_config), (char*) WIFI_CFG_FILE))
   {
     Serial.print(F("\n[INFO]: Wifi Credentials file saved!"));
     return true;
@@ -155,7 +155,7 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, Ip
  */
 bool removeWifiConfig()
 {
-  if(removeConfigData((char*) wifi_config_file))
+  if(removeConfigData((char*) WIFI_CFG_FILE))
     return true;
 
   return false;

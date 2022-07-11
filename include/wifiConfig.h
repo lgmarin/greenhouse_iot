@@ -4,7 +4,6 @@
 #include <definitions.h>
 #include <configManager.h>
 #include <DNSServer.h>
-#include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 
 bool openCaptivePortal();

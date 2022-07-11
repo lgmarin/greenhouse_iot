@@ -14,6 +14,7 @@ public:
     ~Display();
     void Init();
     void UpdateScreen(int temp, int hum, int soilP);
+    void ConnectingWifi(String ssid);
 };
 
 #endif

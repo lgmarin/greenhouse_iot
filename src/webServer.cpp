@@ -9,7 +9,6 @@ void notFound(AsyncWebServerRequest *request) {
 
 void setupRoutes()
 {
-    // Setup LittleFS Routes
     server.serveStatic("/", LittleFS, "/");
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){

@@ -53,3 +53,16 @@ void Display::UpdateScreen(int temp, int hum, int soilP)
     display.print("%");
     display.display();
 }
+
+void Display::ConnectingWifi(String ssid)
+{
+    display.clearDisplay();
+    display.setTextColor(WHITE);
+    display.setTextSize(1);
+    display.setFont(NULL);
+    display.setCursor(0, 10);
+    display.println("Connecting wifi:");
+    display.setCursor(0, 20);
+    display.println(ssid);
+    display.display();
+}

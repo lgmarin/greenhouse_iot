@@ -11,6 +11,7 @@ long               currentMillis;
 
 Wifi_Config        Wifi_config;
 
+
 bool openCaptivePortal()
 {
     Serial.print(F("\n[INFO]: Starting soft-AP..."));
@@ -22,6 +23,7 @@ bool openCaptivePortal()
     }
     return false;
 }
+
 
 String scanNetworks()
 {

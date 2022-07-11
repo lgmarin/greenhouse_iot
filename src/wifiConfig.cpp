@@ -3,11 +3,13 @@
 DNSServer dnsServer;
 
 String             host_name;
-
 long               lastScanMillis;
 long               currentMillis;
 bool               ap_mode = true;
 
+IPAddress          static_ip;
+IPAddress          static_gw;
+IPAddress          static_mask;
 
 bool configuremDNS()
 {
@@ -85,8 +87,34 @@ String scanNetworks()
     return json;
 }
 
+bool setStaticIp(String ip_addr, String gw_addr, String mask)
+{
+    IPAddress          st_ip, st_gw, st_mask;
 
-bool connectToWifi(String ssid, String pwd, bool static_ip) 
+    if (st_ip.fromString(ip_addr) && st_gw.fromString(gw_addr) && st_mask.fromString(mask))
+    {
+        if(!WiFi.config(st_ip, st_gw, st_mask)){
+            Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
+            return false;
+        }
+        Serial.print(F("\n[INFO]: Using static IP..."));
+        return true;      
+    }
+    Serial.print(F("\n[ERROR]: Invalid IP address. Using Dynamic IP."));
+    return false;         
+}
+
+bool setStaticIp()
+{
+    if(!WiFi.config(Wifi_config.IP_config.ip_addr, Wifi_config.IP_config.gw_addr, Wifi_config.IP_config.mask)){
+        Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
+        return false;
+    }
+    Serial.print(F("\n[INFO]: Using static IP..."));
+    return true;
+}
+
+bool connectToWifi(String ssid, String pwd) 
 {
     if (ssid == "" || pwd == "")
     {
@@ -95,14 +123,6 @@ bool connectToWifi(String ssid, String pwd, bool static_ip)
     }
 
     Serial.print(F("\n[INFO]: Connecting to station: ")); Serial.print(ssid);
-
-    if (static_ip)
-    {
-        if(!WiFi.config(Wifi_config.IP_config.ip_addr, Wifi_config.IP_config.gw_addr, Wifi_config.IP_config.mask)){
-            Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
-        }
-        Serial.print(F("\n[INFO]: Using static IP..."));
-    }
 
     WiFi.disconnect();
     delay(500);
@@ -144,7 +164,7 @@ void initWifi()
                 if(!connectToWifi(Wifi_config.WiFi_cred.wifi_ssid, Wifi_config.WiFi_cred.wifi_pw))
                     ap_mode = false;
             } else {
-                if(!connectToWifi(Wifi_config.WiFi_cred.wifi_ssid, Wifi_config.WiFi_cred.wifi_pw, true))
+                if(!connectToWifi(Wifi_config.WiFi_cred.wifi_ssid, Wifi_config.WiFi_cred.wifi_pw))
                     ap_mode = false;
             }
         }

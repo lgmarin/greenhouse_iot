@@ -9,8 +9,6 @@ const char*        password;
 long               lastScanMillis;
 long               currentMillis;
 
-Wifi_Config        Wifi_config;
-
 
 bool openCaptivePortal()
 {

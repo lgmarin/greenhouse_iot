@@ -6,5 +6,6 @@
 #include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
+void setupRoutes();
 
 #endif

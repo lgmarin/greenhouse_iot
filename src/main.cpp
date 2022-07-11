@@ -2,6 +2,7 @@
 #include <readSensors.h>
 #include <display.h>
 #include <wifiConfig.h>
+#include <webServer.h>
 
 unsigned long previousMillis = 0;
 unsigned long interval;
@@ -28,6 +29,9 @@ void setup() {
 
   // Initialize WIFI
   initWifi();
+
+  // Initialize WebServer
+  setupRoutes();
 }
 
 void loop() {

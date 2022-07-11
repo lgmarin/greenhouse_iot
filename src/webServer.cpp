@@ -9,12 +9,18 @@ void notFound(AsyncWebServerRequest *request) {
 
 void setupRoutes()
 {
-    //Serve configuration page
+    // Setup LittleFS Routes
+    server.serveStatic("/", LittleFS, "/");
+
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+      request->send(LittleFS, "/index.html", "text/html", false);
+    });
+
+    server.on("/connect-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send(LittleFS, "/wifi.html", "text/html", false);
     }).setFilter(ON_AP_FILTER);
 
-    server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
+    server.on("/scan-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send(200, "application/json", scanNetworks());
     });
 

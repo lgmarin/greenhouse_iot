@@ -1,0 +1,7 @@
+{
+    "wifi-scan" : [
+        {"SSID":"Teste 1", "Encryption":"AES", "Quality":"20"},
+        {"SSID":"Teste 2", "Encryption":"AES", "Quality":"50"},
+        {"SSID":"Teste 3", "Encryption":"AES", "Quality":"100"}
+    ]
+}

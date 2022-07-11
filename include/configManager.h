@@ -26,6 +26,8 @@ typedef struct
   uint16_t checksum;
 } Wifi_Config;
 
+extern Wifi_Config        Wifi_config;
+
 typedef struct
 {
   char host_name[32];
@@ -33,7 +35,6 @@ typedef struct
   uint16_t checksum;
 } Device_Config;
 
-extern Wifi_Config        Wifi_config;
 extern Device_Config      Device_config;
 
 bool loadWifiConfig();

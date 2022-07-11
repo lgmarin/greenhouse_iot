@@ -74,6 +74,9 @@ bool removeConfigData(char* filename)
   return false;
 }
 
+///
+///     WIFI CONFIGURATION FILE
+///
 
 /*!
  *  @brief  Load WifiConfiguration saved in LitteFS.
@@ -136,7 +139,6 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
     Wifi_config.IP_config.mask = mask;
   }
   
-
   //Calculate checksum and save credentials
   Wifi_config.checksum = calcChecksum((uint8_t*) &Wifi_config, sizeof(Wifi_config) - sizeof(Wifi_config.checksum));
   if (saveConfigData(&Wifi_config, sizeof(Wifi_config), (char*) WIFI_CFG_FILE))
@@ -156,6 +158,83 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
 bool removeWifiConfig()
 {
   if(removeConfigData((char*) WIFI_CFG_FILE))
+    return true;
+
+  return false;
+}
+
+///
+///     DEVICE CONFIGURATION FILE
+///
+
+/*!
+ *  @brief  Load Device Configuration saved in LitteFS.
+ *  @return Returns true if configuration loaded successfully.
+ */
+bool loadDeviceConfig()
+{
+  if(loadConfigData(&Device_config, sizeof(Device_config), (char*) DEVICE_CFG_FILE))
+  {
+    if ( Device_config.checksum != calcChecksum( (uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum) ) )
+    {
+      Serial.print(F("\n[ERROR]: Device config checksum wrong!"));
+      return false;
+    }
+
+    // Don't permit NULL SSID and password len < MIN_AP_PASSWORD_SIZE (8)
+    if ( (String(Device_config.host_name) == "") )
+    {
+      Serial.print(F("\n[ERROR]: Hostname is empty, using default!"));
+      Device_config.host_name = DEFAULT_HOSTNAME;
+    }
+    Serial.print(F("\n[INFO]: Device Config File Read. Checksum ok."));
+    return true; 
+  }
+  else
+  {
+    Serial.print(F("\n[ERROR]: Could not read device Config File."));
+    return false;
+  }
+}
+
+
+/*!
+ *  @brief  Store Device Configuration into LitteFS.
+ *  @return Returns true if configuration saved successfully.
+ */
+bool storeDeviceConfig(String host_name, bool apmode)
+{
+  memset(&Device_config, 0, sizeof(Device_config));
+
+  //SAVE HOSTNAME
+  if (strlen(host_name.c_str()) < sizeof(Device_config.host_name) - 1)
+    strcpy(Device_config.host_name, host_name.c_str());
+  else
+    strncpy(Device_config.host_name, host_name.c_str(), sizeof(Device_config.host_named) - 1);
+
+  if ((String(Device_config.host_name) = ""))
+    Serial.println(F("[WARNING]: Null hostname!"));
+
+
+  //Calculate checksum and save credentials
+  Device_config.checksum = calcChecksum((uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum));
+  if (saveConfigData(&Device_config, sizeof(Device_config), (char*) DEVICE_CFG_FILE))
+  {
+    Serial.print(F("\n[INFO]: Device config file saved!"));
+    return true;
+  }
+
+  Serial.print(F("\n[ERROR]: Could not store Devices Config File"));
+  return false;
+}
+
+/*!
+ *  @brief  Remove Device Configuration from LitteFS.
+ *  @return Returns true if configuration removed successfully.
+ */
+bool removeDeviceConfig()
+{
+  if(removeConfigData((char*) DEVICE_CFG_FILE))
     return true;
 
   return false;

@@ -99,7 +99,7 @@ bool connectToWifi(String ssid, String pwd, String ip, String gw, String mask)
         if (wifi_ip.fromString(ip) && wifi_gw.fromString(gw) && wifi_mask.fromString(mask))
         {
             if(!WiFi.config(wifi_ip, wifi_gw, wifi_mask)){
-            Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
+                Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
             }
             Serial.print(F("\n[INFO]: Using static IP..."));
         }

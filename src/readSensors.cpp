@@ -4,7 +4,6 @@ SoilMoistureSensor    soil(SOIL_A);
 
 /*!
  *  @brief  Read soil moisture value
-
  *	@return Soil Moisture value
  */
 Dht::Dht() : _dht(DHTPIN, DHTTYPE)

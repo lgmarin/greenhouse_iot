@@ -9,7 +9,9 @@
 bool openCaptivePortal();
 String scanNetworks();
 bool configuremDNS();
-bool connectToWifi(String ssid, String pwd, String ip = "", String gw = "", String mask = "");
+bool connectToWifi(String ssid, String pwd, bool static_ip = false);
 void dnsProcessNext();
+
+void initWifi();
 
 #endif

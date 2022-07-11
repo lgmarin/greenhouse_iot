@@ -37,7 +37,15 @@ typedef struct
 
 extern Device_Config      Device_config;
 
+bool initFS();
+
 bool loadWifiConfig();
 bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IPAddress gw, IPAddress mask);
+bool removeWifiConfig();
+
+bool loadDeviceConfig();
+bool storeDeviceConfig(String host_name, bool apmode);
+bool removeDeviceConfig();
+
 
 #endif

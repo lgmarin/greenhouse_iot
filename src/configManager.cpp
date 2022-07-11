@@ -4,13 +4,18 @@
 Wifi_Config        Wifi_config;
 Device_Config      Device_config;
 
-// Initialize LittleFS
-void initFS() {
+/*!
+ *  @brief  Initialize LitteFS.
+ *  @return Returns true if initialized successfully.
+ */
+bool initFS() {
   if (!LittleFS.begin()) {
     Serial.print(F("\n[ERROR]: An error has occurred while mounting LittleFS"));
+    return false;
   }
   else{
     Serial.print(F("\n[INFO]: LittleFS mounted successfully"));
+    return true;
   }
 }
 
@@ -184,8 +189,7 @@ bool loadDeviceConfig()
     // Don't permit NULL SSID and password len < MIN_AP_PASSWORD_SIZE (8)
     if ( (String(Device_config.host_name) == "") )
     {
-      Serial.print(F("\n[ERROR]: Hostname is empty, using default!"));
-      Device_config.host_name = DEFAULT_HOSTNAME;
+      Serial.print(F("\n[ERROR]: Hostname is empty, using default!"));   
     }
     Serial.print(F("\n[INFO]: Device Config File Read. Checksum ok."));
     return true; 
@@ -196,7 +200,6 @@ bool loadDeviceConfig()
     return false;
   }
 }
-
 
 /*!
  *  @brief  Store Device Configuration into LitteFS.
@@ -210,7 +213,7 @@ bool storeDeviceConfig(String host_name, bool apmode)
   if (strlen(host_name.c_str()) < sizeof(Device_config.host_name) - 1)
     strcpy(Device_config.host_name, host_name.c_str());
   else
-    strncpy(Device_config.host_name, host_name.c_str(), sizeof(Device_config.host_named) - 1);
+    strncpy(Device_config.host_name, host_name.c_str(), sizeof(Device_config.host_name) - 1);
 
   if ((String(Device_config.host_name) = ""))
     Serial.println(F("[WARNING]: Null hostname!"));

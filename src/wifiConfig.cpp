@@ -2,13 +2,11 @@
 
 DNSServer dnsServer;
 
-//const char*        host_name;
 String             host_name;
-const char*        ssid;
-const char*        password;
 
 long               lastScanMillis;
 long               currentMillis;
+bool               ap_mode = true;
 
 
 bool configuremDNS()
@@ -112,7 +110,7 @@ bool connectToWifi(String ssid, String pwd, bool static_ip)
     WiFi.mode(WIFI_STA);
 
     Serial.print(F("\n[INFO]: Connecting to WiFi..."));
-    WiFi.begin(ssid, password);
+    WiFi.begin(ssid, pwd);
 
     if(WiFi.waitForConnectResult(WIFI_RETRY_TIMEOUT) != WL_CONNECTED) {
         Serial.print(F("\n[ERROR]: Failed to connect."));
@@ -125,8 +123,6 @@ bool connectToWifi(String ssid, String pwd, bool static_ip)
 
 void initWifi()
 {
-    bool ap_mode = true;
-
     if (initFS())
     {
         if (loadDeviceConfig())

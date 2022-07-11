@@ -1,6 +1,7 @@
 #include <definitions.h>
 #include <readSensors.h>
 #include <display.h>
+#include <wifiConfig.h>
 
 unsigned long previousMillis = 0;
 unsigned long interval;
@@ -21,11 +22,12 @@ void setup() {
 
   // Initialize DHT
   dhtDelay = dhtSensor.dhtInit();
-  // END Initialize DHT
 
   // Initialize DISPLAY
   display.Init();
-  // END Initialize DISPLAY
+
+  // Initialize WIFI
+  initWifi();
 }
 
 void loop() {
@@ -47,4 +49,5 @@ void loop() {
     display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
   }
 
+  dnsProcessNext();
 }

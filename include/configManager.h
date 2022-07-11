@@ -5,6 +5,8 @@
 #include <LittleFS.h>
 #include <ESP8266WiFi.h>
 
+// CONFIGURATIONS STRUCTS
+
 typedef struct
 {
   char wifi_ssid[32];
@@ -37,6 +39,8 @@ typedef struct
 
 extern Device_Config      Device_config;
 
+
+// EXTERNAL FUNCTIONS
 bool initFS();
 
 bool loadWifiConfig();

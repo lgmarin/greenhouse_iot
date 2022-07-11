@@ -2,6 +2,7 @@
 #define configManager_h
 
 #include <definitions.h>
+#include <LittleFS.h>
 
 typedef struct
 {
@@ -25,5 +26,9 @@ typedef struct
   bool ap_mode = false;
   uint16_t checksum;
 } Wifi_Config;
+
+void initFS();
+bool loadConfigData();
+void saveConfigData();
 
 #endif

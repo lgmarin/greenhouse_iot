@@ -19,16 +19,21 @@ typedef struct
 
 typedef struct
 {
-  WiFi_Credential  WiFi_Cred;
-  IP_Config IP_config;
-  char host_name[32];
+  WiFi_Credential  WiFi_cred;
+  IP_Config        IP_config;
   bool dyn_ip = false;
-  bool ap_mode = false;
   uint16_t checksum;
 } Wifi_Config;
 
-void initFS();
-bool loadConfigData();
-void saveConfigData();
+typedef struct
+{
+  char host_name[32];
+  bool ap_mode = false;
+  uint16_t checksum;
+} Device_Config;
+
+
+bool loadWifiConfig();
+bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip = "", IpAddress gw = "", IpAddress mask = "")
 
 #endif

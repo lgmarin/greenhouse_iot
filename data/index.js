@@ -12,4 +12,4 @@ setInterval(function ( ) {
 
 function goConfig() {
     location.replace("http://%DEVICE_IP%/config");
-}      
+}

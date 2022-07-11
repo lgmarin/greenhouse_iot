@@ -50,16 +50,13 @@
               <div class="mdl-card__supporting-text">
                 <ul class="demo-list-item mdl-list">
                   <li class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content"><strong>Wifi</strong></span>
-                  </li>
-                  <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">Status:</span><span id="wifi_mode">%MODE%</span>
                   </li>
                   <li class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content">Hostname:</span><span id="wifi_hname">%HOSTNAME%.local</span>
+                    <span class="mdl-list__item-primary-content">Host:</span><span id="wifi_hname">%HOSTNAME%.local</span>
                   </li>                  
                   <li class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content">SSID:</span><span id="wifi_ssid">%SSID%</span>
+                    <span class="mdl-list__item-primary-content">Rede WiFi:</span><span id="wifi_ssid">%SSID%</span>
                   </li>
                   <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">IP:</span><span id="wifi_ip">%DEVICE_IP%</span>
@@ -71,13 +68,19 @@
                     <span class="mdl-list__item-primary-content"><strong>Configurações</strong></span>
                   </li>
                   <li class="mdl-list__item">
+                    <label for="switch1" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                      <span class="mdl-switch__label">Iniciar em modo AP</span>
+                      <input type="checkbox" id="switch1" class="mdl-switch__input">
+                    </label>
+                  </li>
+                  <li class="mdl-list__item">
                       <span class="mdl-list__item-primary-content">Limpar configuração Wifi:</span>
                       <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="del-wifi_btn">
                         <i><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></i>
                       </button>
                   </li>                               
                   <li class="mdl-list__item">
-                      <span class="mdl-list__item-primary-content">Limpar configuração app:</span>
+                      <span class="mdl-list__item-primary-content">Limpar configuração geral:</span>
                       <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="del-cfg_btn">
                         <i><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></i>
                       </button>
@@ -90,7 +93,7 @@
           <h4 class="mdl-dialog__title">Excluir dados Wifi?</h4>
           <div class="mdl-dialog__content">
             <p>
-              Esta ação apagará a rede Wifi salva e seu dispositivo será reiniciado. Na próxima inicialização, uma nova rede poderá ser configurada.
+              Esta ação apagará a rede Wifi salva. Na próxima inicialização, uma nova rede poderá ser configurada.
             </p>
           </div>
           <div class="mdl-dialog__actions">

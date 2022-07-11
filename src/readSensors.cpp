@@ -62,6 +62,3 @@ int readSoilP()
 {
     return soil.readPercent();
 }
-
-
-

@@ -12,8 +12,8 @@ unsigned long interval;
 // int                 soilPercent;
 
 // CREATE INSTANCES
-Display                    display;
-Dht                        dhtSensor;
+Display                 display;
+Dht                     dhtSensor;
 
 void setup() {
   Serial.begin(9600);
@@ -25,7 +25,7 @@ void setup() {
 
   // Initialize DISPLAY
   display.Init();
-  // END Initialize DISPLAY  
+  // END Initialize DISPLAY
 }
 
 void loop() {
@@ -34,16 +34,17 @@ void loop() {
   unsigned long currentMillis = millis();
   interval = dhtDelay || DEFAULT_DELAY;
   
-  if (currentMillis - previousMillis >= interval) {
+  if (currentMillis - previousMillis >= interval) 
+  {
     previousMillis = currentMillis;
 
-  //READ SENSORS
-  soilPercent = readSoilP();
-  dhtTemperature = dhtSensor.readTemperature();
-  dhtHumidity = dhtSensor.readHumidity();
+    //READ SENSORS
+    soilPercent = readSoilP();
+    dhtTemperature = dhtSensor.readTemperature();
+    dhtHumidity = dhtSensor.readHumidity();
 
-  //Update Screen
-  display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
+    //Update Screen
+    display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
   }
 
 }

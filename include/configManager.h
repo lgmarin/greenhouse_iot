@@ -22,19 +22,21 @@ typedef struct
 
 typedef struct
 {
-  WiFi_Credential  WiFi_cred;
-  IP_Config        IP_config;
-  bool dyn_ip = false;
-  uint16_t checksum;
+  WiFi_Credential   WiFi_cred;
+  IP_Config         IP_config;
+  bool              dyn_ip = false;
+  uint16_t          checksum;
 } Wifi_Config;
 
 extern Wifi_Config        Wifi_config;
 
 typedef struct
 {
-  char host_name[32];
-  bool ap_mode = false;
-  uint16_t checksum;
+  char      host_name[32];
+  bool      ap_mode = false;
+  int       air_value;
+  int       wat_value;
+  uint16_t  checksum;
 } Device_Config;
 
 extern Device_Config      Device_config;

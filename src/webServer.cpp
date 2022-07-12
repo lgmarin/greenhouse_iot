@@ -36,11 +36,8 @@ String config_processor(const String& var){
       return "Conectado : Cliente";
       break;
     case WIFI_AP:
-      return "Conectado : AP";
-      break;
-    case WIFI_AP_STA:
-      return "Conectado : AP + Cliente";
-      break;          
+      return "Ponto de Acesso";
+      break;       
     default:
       return "";
       break;
@@ -59,6 +56,14 @@ String config_processor(const String& var){
   {
     return WiFi.macAddress();
   }
+  else if (var == "AIR_VAL")
+  {
+    return air_val;
+  }
+  else if (var == "WAT_VAL")
+  {
+    return wat_val;
+  }  
   return String();
 }
 
@@ -91,10 +96,11 @@ void setupRoutes()
       request->send_P(400, "text/plain", "error");
     });
 
-    server.on("/update", HTTP_GET, [] (AsyncWebServerRequest *request) {
-      if (request->hasParam("threshold_max") && request->hasParam("threshold_min")) {
-        temp_high = request->getParam("threshold_max")->value();
-        temp_low = request->getParam("threshold_min")->value();
+file:///C:/update-devcfg?hostname=%25HOSTNAME%25&ap_mode=on&air_v=55&wat_v=55
+    server.on("/update-config", HTTP_GET, [] (AsyncWebServerRequest *request) {
+      if (request->hasParam("hostname") && request->hasParam("air_v") && request->hasParam("wat_v")) {
+        Device_config.host_name = request->getParam("threshold_max")->value();
+        Device_config.air_value = request->getParam("air_v")->value();
       }
 
       Serial.print("\n[INFO]: Set threshold_max:");

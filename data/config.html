@@ -72,7 +72,7 @@
               <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                 <div>
                   <iframe name="dummyframe" id="dummyframe" style="display: none"></iframe>
-                  <form action="/update-devcfg" target="dummyframe">
+                  <form action="/update-config" target="dummyframe">
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="text" id="hostname" name="hostname" value="%HOSTNAME%" required>
                         <label class="mdl-textfield__label" for="hostname">Nome do Dispositivo (Sem espaços)</label>
@@ -167,7 +167,7 @@
               cfg_dialog.close();
           });
           cfg_dialog.querySelector('#cfg-confirm').addEventListener('click', function() {
-            location.replace("https://%DEVICE_IP%/delete_config");
+            location.replace("https://%DEVICE_IP%/delete-config");
               cfg_dialog.close();
           });    
       function goHome() {

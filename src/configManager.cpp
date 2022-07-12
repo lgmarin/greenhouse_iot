@@ -208,7 +208,7 @@ bool loadDeviceConfig()
  *  @brief  Store Device Configuration into LitteFS.
  *  @return Returns true if configuration saved successfully.
  */
-bool storeDeviceConfig(String host_name, bool apmode)
+bool storeDeviceConfig(String host_name, bool apmode, String air_v, String wat_v)
 {
   memset(&Device_config, 0, sizeof(Device_config));
 
@@ -220,7 +220,6 @@ bool storeDeviceConfig(String host_name, bool apmode)
 
   if ((String(Device_config.host_name) = ""))
     Serial.println(F("[WARNING]: Null hostname!"));
-
 
   //Calculate checksum and save credentials
   Device_config.checksum = calcChecksum((uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum));

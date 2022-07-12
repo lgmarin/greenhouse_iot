@@ -11,7 +11,7 @@
 
 //             DHT CONFIGURATION
 #define DHTTYPE             DHT11
-#define DHTPIN              2 //GPIO2 - D4
+#define DHTPIN              12 //GPIO12 - D4
 // DHT Read Values
 extern uint32_t             dhtDelay;            
 extern int                  dhtTemperature;
@@ -35,7 +35,7 @@ extern int                  waterMoist;
 // SCK                      GPIO5 - D1
 #define SCREEN_W            128
 #define SCREEN_H            64
-#define D_I2C_ADDR          0x3C
+#define D_I2C_ADDR          0x7A //0x78
 
 
 /*

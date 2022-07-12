@@ -28,10 +28,10 @@ void setup() {
   display.Init();
 
   // Initialize WIFI
-  initWifi();
+  //initWifi();
 
   // Initialize WebServer
-  setupRoutes();
+  //setupRoutes();
 }
 
 void loop() {

@@ -16,7 +16,11 @@ void Display::Init()
     }
     delay(2000);
     display.clearDisplay();
+    display.setTextSize(1);
+    display.setFont(NULL);
+    display.setCursor(0, 0);
     display.setTextColor(WHITE);
+    display.print("Initializing...");
 }
 
 void Display::UpdateScreen(int temp, int hum, int soilP)

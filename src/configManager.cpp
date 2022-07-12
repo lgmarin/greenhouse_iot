@@ -208,7 +208,7 @@ bool loadDeviceConfig()
  *  @brief  Store Device Configuration into LitteFS.
  *  @return Returns true if configuration saved successfully.
  */
-bool storeDeviceConfig(String host_name, bool apmode, String air_v, String wat_v)
+bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode)
 {
   memset(&Device_config, 0, sizeof(Device_config));
 

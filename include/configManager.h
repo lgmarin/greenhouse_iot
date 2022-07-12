@@ -50,7 +50,7 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
 bool removeWifiConfig();
 
 bool loadDeviceConfig();
-bool storeDeviceConfig(String host_name, bool apmode);
+bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode);
 bool removeDeviceConfig();
 
 

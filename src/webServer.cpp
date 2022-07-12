@@ -85,33 +85,36 @@ void setupRoutes()
     });
 
     server.on("/delete-config", HTTP_GET, [](AsyncWebServerRequest *request){
-      if(removeThresholdConfig())
+      if(removeDeviceConfig())
         request->send_P(200, "text/plain", "success");
       request->send_P(400, "text/plain", "error");
     });
 
     server.on("/delete-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
-      if(removeWifiCred())
+      if(removeWifiConfig())
         request->send_P(200, "text/plain", "success");
       request->send_P(400, "text/plain", "error");
     });
 
-file:///C:/update-devcfg?hostname=%25HOSTNAME%25&ap_mode=on&air_v=55&wat_v=55
     server.on("/update-config", HTTP_GET, [] (AsyncWebServerRequest *request) {
-      if (request->hasParam("hostname") && request->hasParam("air_v") && request->hasParam("wat_v")) {
-        Device_config.host_name = request->getParam("threshold_max")->value();
-        Device_config.air_value = request->getParam("air_v")->value();
+      bool ap_mode = false;
+
+      if (request->hasParam("hostname") && request->hasParam("air_v") && request->hasParam("wat_v")) 
+      {
+        if (request->hasParam("ap_mode"))
+        {
+          ap_mode = true;
+        }
+
+        if (storeDeviceConfig(request->getParam("hostname")->value(), request->getParam("air_v")->value(), \
+                              request->getParam("wat_v")->value(), ap_mode))
+        {
+          request->send_P(200, "text/plain", "success");
+        }
+        request->send_P(400, "text/plain", "error");
       }
-
-      Serial.print("\n[INFO]: Set threshold_max:");
-      Serial.print(temp_high);
-      Serial.print("\n[INFO]: Set threshold_min:");
-      Serial.print(temp_low);
-
-      storeThresholdConfig(temp_high, temp_low);
-
-      request->send(200, "text/html", "HTTP GET request sent to your ESP.<br><a href=\"/\">Return to Home Page</a>");
-    });    
+      request->send_P(400, "text/plain", "error");
+    });
 
     //  *******    WIFI PAGE HANDLERS
 

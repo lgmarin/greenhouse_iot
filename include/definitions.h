@@ -13,17 +13,17 @@
 #define DHTTYPE             DHT11
 #define DHTPIN              12 //GPIO12 - D4
 // DHT Read Values
-extern uint32_t             dhtDelay;            
-extern int                  dhtTemperature;
-extern int                  dhtHumidity;
+// extern uint32_t             dhtDelay;
+// extern int                  dhtTemperature;
+// extern int                  dhtHumidity;
 
 //      SOIL MOISTURE CONFIGURATION
 #define SOIL_A              A0
 #define DEF_CAL_AIR         790
 #define DEF_CAL_WAT         390
 // SOIL READ VALUES
-extern int                  soilValue;
-extern int                  soilPercent;
+// extern int                  soilValue;
+// extern int                  soilPercent;
 // SOIL CALIBRATION CONFIGURATION
 extern int                  airMoist;
 extern int                  waterMoist;

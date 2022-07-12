@@ -17,13 +17,13 @@ String index_processor(const String& var){
     return WiFi.localIP().toString();
   }
   else if(var == "DHT_T"){
-    return dht_temp;
+    return String(airTemp());
   }
   else if(var == "DHT_H"){
-    return dht_hum;
+    return String(airHumidity());
   }
   else if(var == "SOIL_H"){
-    return soil_hum;
+    return String(soilHumidity());
   }
   return String();
 }
@@ -59,11 +59,11 @@ String config_processor(const String& var){
   }
   else if (var == "AIR_VAL")
   {
-    return air_val;
+    return String(Device_config.air_value);
   }
   else if (var == "WAT_VAL")
   {
-    return wat_val;
+    return String(Device_config.wat_value);
   }  
   return String();
 }

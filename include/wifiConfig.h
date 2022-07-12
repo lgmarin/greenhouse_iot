@@ -13,8 +13,8 @@
 
 // bool openCaptivePortal();
 // bool configuremDNS();
-// bool connectToWifi(String ssid, String pwd);
-// bool setStaticIp(String ip_addr, String gw_addr, String mask);
+bool connectToWifi(String ssid, String pwd);
+bool setStaticIp(String ip_addr, String gw_addr, String mask);
 // bool setStaticIp();
 
 //EXTERNAL FUNCTIONS

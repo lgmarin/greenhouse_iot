@@ -3,6 +3,7 @@
 
 #include <definitions.h>
 #include <wifiConfig.h>
+#include <readSensors.h>
 #include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 

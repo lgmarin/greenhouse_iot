@@ -3,27 +3,13 @@
 
 #include <definitions.h>
 #include <soilSensor.h>
-#include <DHT.h>
-#include <DHT_U.h>
+#include <dhtSensor.h>
 
-class Dht
-{
-private:
-    DHT_Unified         _dht;
-    sensors_event_t     _dhtEvent;
-    sensor_t            _dhtSensor;
-    uint32_t            _dhtDelay;
-
-public:
-    Dht();
-    ~Dht();
-    uint32_t dhtInit();
-    uint32_t getDhtDelay();
-    int readTemperature();
-    int readHumidity();
-};
-
-
-
+void initSensors();
+void sensorsLoop();
+unsigned long dhtDelay();
+int airTemp();
+int airHumidity();
+int soilHumidity();
 
 #endif

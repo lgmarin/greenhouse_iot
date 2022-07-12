@@ -36,7 +36,7 @@ int Dht::readTemperature()
     _dht.temperature().getEvent(&_dhtEvent);
 
     if (isnan(_dhtEvent.temperature)) {
-        Serial.print(F("\n[ERROR]: Error reading temperature!"));
+        //Serial.print(F("\n[ERROR]: Error reading temperature!"));
         return 00;
     }
     else {
@@ -49,7 +49,7 @@ int Dht::readHumidity()
     _dht.humidity().getEvent(&_dhtEvent);
     
     if (isnan(_dhtEvent.relative_humidity)) {
-        Serial.print(F("\n[ERROR]: Error reading humidity!"));
+        //Serial.print(F("\n[ERROR]: Error reading humidity!"));
         return 00;
     }
     else {

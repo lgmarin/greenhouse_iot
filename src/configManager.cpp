@@ -4,6 +4,9 @@
 Wifi_Config        Wifi_config;
 Device_Config      Device_config;
 
+const char* wifi_config_file = "/wifi_cfg.dat";
+const char* device_config_file = "/config.dat";
+
 /*!
  *  @brief  Initialize LitteFS.
  *  @return Returns true if initialized successfully.
@@ -89,7 +92,7 @@ bool removeConfigData(char* filename)
  */
 bool loadWifiConfig()
 {
-  if(loadConfigData(&Wifi_config, sizeof(Wifi_config), (char*) WIFI_CFG_FILE))
+  if(loadConfigData(&Wifi_config, sizeof(Wifi_config), (char*) wifi_config_file))
   {
     if ( Wifi_config.checksum != calcChecksum( (uint8_t*) &Wifi_config, sizeof(Wifi_config) - sizeof(Wifi_config.checksum) ) )
     {
@@ -146,7 +149,7 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
   
   //Calculate checksum and save credentials
   Wifi_config.checksum = calcChecksum((uint8_t*) &Wifi_config, sizeof(Wifi_config) - sizeof(Wifi_config.checksum));
-  if (saveConfigData(&Wifi_config, sizeof(Wifi_config), (char*) WIFI_CFG_FILE))
+  if (saveConfigData(&Wifi_config, sizeof(Wifi_config), (char*) wifi_config_file))
   {
     Serial.print(F("\n[INFO]: Wifi Credentials file saved!"));
     return true;
@@ -162,7 +165,7 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
  */
 bool removeWifiConfig()
 {
-  if(removeConfigData((char*) WIFI_CFG_FILE))
+  if(removeConfigData((char*) wifi_config_file))
     return true;
 
   return false;
@@ -178,7 +181,7 @@ bool removeWifiConfig()
  */
 bool loadDeviceConfig()
 {
-  if(loadConfigData(&Device_config, sizeof(Device_config), (char*) DEVICE_CFG_FILE))
+  if(loadConfigData(&Device_config, sizeof(Device_config), (char*) device_config_file))
   {
     if ( Device_config.checksum != calcChecksum( (uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum) ) )
     {
@@ -221,7 +224,7 @@ bool storeDeviceConfig(String host_name, bool apmode)
 
   //Calculate checksum and save credentials
   Device_config.checksum = calcChecksum((uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum));
-  if (saveConfigData(&Device_config, sizeof(Device_config), (char*) DEVICE_CFG_FILE))
+  if (saveConfigData(&Device_config, sizeof(Device_config), (char*) device_config_file))
   {
     Serial.print(F("\n[INFO]: Device config file saved!"));
     return true;
@@ -237,7 +240,7 @@ bool storeDeviceConfig(String host_name, bool apmode)
  */
 bool removeDeviceConfig()
 {
-  if(removeConfigData((char*) DEVICE_CFG_FILE))
+  if(removeConfigData((char*) device_config_file))
     return true;
 
   return false;

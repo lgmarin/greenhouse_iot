@@ -171,10 +171,17 @@ void initWifi()
             if (String(Device_config.host_name) == "")
             {
                 host_name = String(DEFAULT_HOSTNAME);
-            } else {
+            } 
+            else 
+            {
                 host_name = String(Device_config.host_name);
             }
         }
+        else
+        {
+            ap_mode = true;
+        }
+        
         
         if (loadWifiConfig())
         {           

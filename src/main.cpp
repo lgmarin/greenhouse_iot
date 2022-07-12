@@ -50,7 +50,7 @@ void loop() {
     dhtHumidity = dhtSensor.readHumidity();
 
     //Update Screen
-    display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
+    //display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
   }
 
   dnsProcessNext();

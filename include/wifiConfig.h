@@ -11,15 +11,16 @@
 // extern long               currentMillis;
 // extern bool               ap_mode = true;
 
-bool openCaptivePortal();
-String scanNetworks();
-bool configuremDNS();
-bool connectToWifi(String ssid, String pwd);
+// bool openCaptivePortal();
+// bool configuremDNS();
+// bool connectToWifi(String ssid, String pwd);
+// bool setStaticIp(String ip_addr, String gw_addr, String mask);
+// bool setStaticIp();
+
+//EXTERNAL FUNCTIONS
 void dnsProcessNext();
-
-bool setStaticIp(String ip_addr, String gw_addr, String mask);
-bool setStaticIp();
-
+String scanNetworks();
+String getHostName();
 void initWifi();
 
 #endif

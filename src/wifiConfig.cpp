@@ -34,12 +34,6 @@ bool startDNSServer(IPAddress soft_ip)
 }
 
 
-void dnsProcessNext()
-{
-    dnsServer.processNextRequest();
-}
-
-
 bool openCaptivePortal()
 {
     WiFi.mode(WIFI_AP);
@@ -55,51 +49,6 @@ bool openCaptivePortal()
         return true;
     }
     return false;
-}
-
-
-String scanNetworks()
-{
-    String json;
-    bool canScan;
-    int n = WiFi.scanComplete();
-
-    currentMillis = millis();
-
-    if (currentMillis - lastScanMillis > SCAN_PERIOD)
-    {
-        canScan = true;
-        Serial.print(F("\n[INFO]: Scanning networks... "));
-        lastScanMillis = currentMillis;
-    }
-        //json +=  "[";
-        json += "{\"networks\": [";
-        if(n == -2 && canScan){
-        // Scan not triggered, and not in the waiting timer
-        WiFi.scanNetworks(true);
-    }
-    else if(n)
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            if(i) json += ",";
-            json += "{";
-            json += "\"ssid\":"+WiFi.SSID(i);
-            json += ",\"quality\":\""+String(WiFi.RSSI(i))+"\"";     
-            json += "}";
-        }
-
-        WiFi.scanDelete();
-
-        if(WiFi.scanComplete() == -2)
-        {
-            WiFi.scanNetworks(true);
-        }
-    }
-    //json += "]";
-    json += "] }";
-
-    return json;
 }
 
 
@@ -159,6 +108,55 @@ bool connectToWifi(String ssid, String pwd)
     return true;
 }
 
+void dnsProcessNext()
+{
+    dnsServer.processNextRequest();
+}
+
+
+String scanNetworks()
+{
+    String json;
+    bool canScan;
+    int n = WiFi.scanComplete();
+
+    currentMillis = millis();
+
+    if (currentMillis - lastScanMillis > SCAN_PERIOD)
+    {
+        canScan = true;
+        Serial.print(F("\n[INFO]: Scanning networks... "));
+        lastScanMillis = currentMillis;
+    }
+        //json +=  "[";
+        json += "{\"networks\": [";
+        if(n == -2 && canScan){
+        // Scan not triggered, and not in the waiting timer
+        WiFi.scanNetworks(true);
+    }
+    else if(n)
+    {
+        for (int i = 0; i < n; ++i)
+        {
+            if(i) json += ",";
+            json += "{";
+            json += "\"ssid\":"+WiFi.SSID(i);
+            json += ",\"quality\":\""+String(WiFi.RSSI(i))+"\"";     
+            json += "}";
+        }
+
+        WiFi.scanDelete();
+
+        if(WiFi.scanComplete() == -2)
+        {
+            WiFi.scanNetworks(true);
+        }
+    }
+    //json += "]";
+    json += "] }";
+
+    return json;
+}
 
 void initWifi()
 {
@@ -207,3 +205,9 @@ void initWifi()
         openCaptivePortal();
     }
 }
+
+String getHostName()
+{
+    return host_name;
+}
+

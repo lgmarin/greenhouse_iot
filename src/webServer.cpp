@@ -2,6 +2,7 @@
 
 AsyncWebServer server(HTTP_PORT);
 
+
 // Request Handlers
 void notFound(AsyncWebServerRequest *request) {
     request->send(404, "text/plain", "Not found");
@@ -10,7 +11,7 @@ void notFound(AsyncWebServerRequest *request) {
 
 String index_processor(const String& var){
   if(var == "HOST_NAME"){
-    return host_name;
+    return getHostName();
   }
   else if(var == "DEVICE_IP"){
     return WiFi.localIP().toString();
@@ -47,7 +48,7 @@ String config_processor(const String& var){
     return WiFi.SSID();
   }
     else if(var == "HOSTNAME"){
-    return host_name;
+    return getHostName();
   }
   else if(var == "DEVICE_IP"){
     return WiFi.localIP().toString();

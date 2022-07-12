@@ -25,10 +25,10 @@ void setup() {
   dhtDelay = dhtSensor.dhtInit();
 
   // Initialize DISPLAY
-  display.Init();
+  //display.Init();
 
   // Initialize WIFI
-  //initWifi();
+  initWifi();
 
   // Initialize WebServer
   //setupRoutes();
@@ -50,7 +50,7 @@ void loop() {
     dhtHumidity = dhtSensor.readHumidity();
 
     //Update Screen
-    display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
+    //display.UpdateScreen(dhtTemperature, dhtHumidity, soilPercent);
   }
 
   dnsProcessNext();

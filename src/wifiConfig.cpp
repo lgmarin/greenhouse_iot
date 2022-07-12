@@ -160,7 +160,6 @@ void initWifi()
         }
         else
         {
-            Serial.print(F("\n[WARNING]: No file loaded..."));
             ap_mode = true;
         }
         

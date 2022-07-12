@@ -25,13 +25,13 @@ void setup() {
   dhtDelay = dhtSensor.dhtInit();
 
   // Initialize DISPLAY
-  //display.Init();
+  display.Init();
 
   // Initialize WIFI
   initWifi();
 
   // Initialize WebServer
-  //setupRoutes();
+  setupRoutes();
 }
 
 void loop() {

@@ -23,6 +23,16 @@ bool configuremDNS()
     return true;
 }
 
+bool startDNSServer(IPAddress soft_ip)
+{
+    if (!dnsServer.start(53, "*", soft_ip))
+    {
+        Serial.print(F("\n[INFO]: Failed to start DNS service."));
+        return false;
+    }
+    return true;
+}
+
 
 void dnsProcessNext()
 {
@@ -32,11 +42,16 @@ void dnsProcessNext()
 
 bool openCaptivePortal()
 {
+    WiFi.mode(WIFI_AP);
+    delay(500);
+
     Serial.print(F("\n[INFO]: Starting soft-AP..."));
-    if(WiFi.softAP(host_name)){
+    bool result = WiFi.softAP(host_name);
+
+    if(result)
+    {
         Serial.print(F("\n[SUCCESS]: Captive Portal Started at IP: ")); Serial.print(WiFi.softAPIP());
-        if (!dnsServer.start(53, "*", WiFi.softAPIP()))
-            Serial.print(F("\n[INFO]: Failed to start DNS service."));
+        startDNSServer(WiFi.softAPIP());
         return true;
     }
     return false;
@@ -87,6 +102,7 @@ String scanNetworks()
     return json;
 }
 
+
 bool setStaticIp(String ip_addr, String gw_addr, String mask)
 {
     IPAddress          st_ip, st_gw, st_mask;
@@ -104,6 +120,7 @@ bool setStaticIp(String ip_addr, String gw_addr, String mask)
     return false;         
 }
 
+
 bool setStaticIp()
 {
     if(!WiFi.config(Wifi_config.IP_config.ip_addr, Wifi_config.IP_config.gw_addr, Wifi_config.IP_config.mask)){
@@ -113,6 +130,7 @@ bool setStaticIp()
     Serial.print(F("\n[INFO]: Using static IP..."));
     return true;
 }
+
 
 bool connectToWifi(String ssid, String pwd) 
 {
@@ -141,6 +159,7 @@ bool connectToWifi(String ssid, String pwd)
     return true;
 }
 
+
 void initWifi()
 {
     if (initFS())
@@ -161,11 +180,12 @@ void initWifi()
         {           
             if (Wifi_config.dyn_ip)
             {
-                if(!connectToWifi(Wifi_config.WiFi_cred.wifi_ssid, Wifi_config.WiFi_cred.wifi_pw))
-                    ap_mode = false;
+                setStaticIp();   
+                if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
+                    ap_mode = true;
             } else {
-                if(!connectToWifi(Wifi_config.WiFi_cred.wifi_ssid, Wifi_config.WiFi_cred.wifi_pw))
-                    ap_mode = false;
+                if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
+                    ap_mode = true;
             }
         }
     }
@@ -175,8 +195,7 @@ void initWifi()
         ap_mode = true;
     }
     
-
-    if (ap_mode)
+    if (ap_mode) //IF Everything fails or preferred mode is AP
     {
         openCaptivePortal();
     }

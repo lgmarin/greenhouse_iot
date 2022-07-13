@@ -21,6 +21,6 @@ bool setStaticIp(String ip_addr, String gw_addr, String mask);
 void dnsProcessNext();
 String scanNetworks();
 String getHostName();
-void initWifi();
+void initWifi(bool ap_mode);
 
 #endif

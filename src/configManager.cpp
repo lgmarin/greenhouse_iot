@@ -82,6 +82,25 @@ bool removeConfigData(char* filename)
   return false;
 }
 
+
+void storeString(String string, char* char_loc)
+{
+  if (strlen(string.c_str()) < sizeof(char_loc) - 1)
+    strcpy(char_loc, string.c_str());
+  else
+    strncpy(char_loc, string.c_str(), sizeof(char_loc) - 1);
+}
+
+
+void defaultDeviceConfig()
+{
+  Serial.print(F("\n[WARNING]: USING DEFAULT VALUES!"));
+  storeString(String(DEFAULT_HOSTNAME), Device_config.host_name);
+  Device_config.air_value = DEF_CAL_AIR;
+  Device_config.wat_value = DEF_CAL_WAT;
+  Device_config.ap_mode = DEFAULT_TO_AP;  
+}
+
 ///
 ///     WIFI CONFIGURATION FILE
 ///
@@ -124,6 +143,8 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
 {
   memset(&Wifi_config, 0, sizeof(Wifi_config));
 
+  //storeString(SSID, Wifi_config.WiFi_cred.wifi_ssid);
+  
   //SAVE SSID
   if (strlen(SSID.c_str()) < sizeof(Wifi_config.WiFi_cred.wifi_ssid) - 1)
     strcpy(Wifi_config.WiFi_cred.wifi_ssid, SSID.c_str());
@@ -192,7 +213,8 @@ bool loadDeviceConfig()
     // Don't permit NULL SSID and password len < MIN_AP_PASSWORD_SIZE (8)
     if ( (String(Device_config.host_name) == "") )
     {
-      Serial.print(F("\n[ERROR]: Hostname is empty, using default!"));   
+      Serial.print(F("\n[ERROR]: Hostname is empty, using default!"));
+      storeString(String(DEFAULT_HOSTNAME), Wifi_config.WiFi_cred.wifi_ssid); 
     }
     Serial.print(F("\n[INFO]: Device Config File Read. Checksum ok."));
     return true; 
@@ -243,4 +265,21 @@ bool removeDeviceConfig()
     return true;
 
   return false;
+}
+
+bool initDeviceConfiguration()
+{
+  if (!initFS())
+  {
+    defaultDeviceConfig();
+    return false;
+  }
+  
+  if (!loadDeviceConfig())
+  {
+    defaultDeviceConfig();
+    return false;
+  }
+
+  return true;
 }

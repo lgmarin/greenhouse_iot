@@ -53,5 +53,7 @@ bool loadDeviceConfig();
 bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode);
 bool removeDeviceConfig();
 
+bool initDeviceConfiguration();
+
 
 #endif

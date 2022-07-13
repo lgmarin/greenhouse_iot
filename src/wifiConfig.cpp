@@ -5,11 +5,10 @@ DNSServer dnsServer;
 String             host_name;
 long               lastScanMillis;
 long               currentMillis;
-bool               ap_mode = true;
 
-IPAddress          static_ip;
-IPAddress          static_gw;
-IPAddress          static_mask;
+// IPAddress          static_ip;
+// IPAddress          static_gw;
+// IPAddress          static_mask;
 
 bool configuremDNS()
 {
@@ -158,7 +157,7 @@ String scanNetworks()
     return json;
 }
 
-void initWifi()
+void initWifi(bool ap_mode)
 {
     if (initFS())
     {

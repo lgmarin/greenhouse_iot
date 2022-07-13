@@ -45,6 +45,7 @@
 #define SCAN_PERIOD             3500
 #define DEFAULT_HOSTNAME        F("ESP_MANAGER")
 #define HTTP_PORT               80
+#define DEFAULT_TO_AP           true
 
 
 #endif

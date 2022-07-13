@@ -1,17 +1,13 @@
 #include <definitions.h>
+#include <configManager.h>
 #include <readSensors.h>
 #include <display.h>
 #include <wifiConfig.h>
 #include <webServer.h>
 
+// Prepare loop variables
 unsigned long previousMillis = 0;
 unsigned long interval;
-
-// GLOBAL VARIABLES
-// uint32_t            dhtDelay;
-// int                 dhtTemperature;
-// int                 dhtHumidity;
-// int                 soilPercent;
 
 // CREATE INSTANCES
 Display                 display;
@@ -20,6 +16,12 @@ void setup() {
   Serial.begin(9600);
   delay(500);
 
+  // Initialize FS (Configuration Manager)
+  if (initDeviceConfiguration())
+  {
+    initWifi(true);
+  }
+  
   // Initialize Sensors
   initSensors();
 

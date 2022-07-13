@@ -2,7 +2,6 @@
 #define definitions_h
 
 #include <Arduino.h>
-#include <Wire.h>
 
 /*
 *            SENSORS DEFINITIONS
@@ -25,8 +24,8 @@
 // extern int                  soilValue;
 // extern int                  soilPercent;
 // SOIL CALIBRATION CONFIGURATION
-extern int                  airMoist;
-extern int                  waterMoist;
+// extern int                  airMoist;
+// extern int                  waterMoist;
 
 
 //          DISPLAY CONFIGURATION

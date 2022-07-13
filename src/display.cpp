@@ -23,15 +23,16 @@ void Display::Init()
     display.print("Initializing...");
 }
 
-void Display::UpdateScreen(int temp, int hum, int soilP)
+void Display::UpdateScreen(int temp, int hum, int soilP, String info)
 {
     // DISPLAY HANDLING
     display.clearDisplay();
     display.setTextSize(1);
     display.setFont(NULL);
-    display.setCursor(0, 0);
     display.setTextColor(WHITE);
-    display.print("IP: 192.168.100.254");
+    // Information
+    display.setCursor(0, 0);
+    display.print(info);
     // Temperature
     display.setCursor(0, 16);
     display.setTextSize(1);
@@ -55,18 +56,5 @@ void Display::UpdateScreen(int temp, int hum, int soilP)
     display.setTextSize(2);
     display.print(soilP);
     display.print("%");
-    display.display();
-}
-
-void Display::ConnectingWifi(String ssid)
-{
-    display.clearDisplay();
-    display.setTextColor(WHITE);
-    display.setTextSize(1);
-    display.setFont(NULL);
-    display.setCursor(0, 10);
-    display.println("Connecting wifi:");
-    display.setCursor(0, 20);
-    display.println(ssid);
     display.display();
 }

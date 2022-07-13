@@ -14,8 +14,7 @@ public:
     Display();
     ~Display();
     void Init();
-    void UpdateScreen(int temp, int hum, int soilP);
-    void ConnectingWifi(String ssid);
+    void Display::UpdateScreen(int temp, int hum, int soilP, String info);
 };
 
 #endif

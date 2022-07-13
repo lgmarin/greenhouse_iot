@@ -16,12 +16,9 @@ void setup() {
   Serial.begin(9600);
   delay(500);
 
-  // Initialize FS (Configuration Manager)
-  if (initDeviceConfiguration())
-  {
-    initWifi(true);
-  }
-  
+  // Initialize FS (Device Configuration Manager)
+  initDeviceConfiguration();
+
   // Initialize Sensors
   initSensors();
 
@@ -29,7 +26,7 @@ void setup() {
   display.Init();
 
   // Initialize WIFI
-  initWifi();
+  initWifi(Device_config.ap_mode);
 
   // Initialize WebServer
   setupRoutes();
@@ -49,7 +46,7 @@ void loop() {
     sensorsLoop();
     
     //Update Screen
-    display.UpdateScreen(airTemp(), airHumidity(), soilHumidity());
+    display.UpdateScreen(airTemp(), airHumidity(), soilHumidity(), "TESTE");
   }
 
   dnsProcessNext();

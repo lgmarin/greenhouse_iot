@@ -7,6 +7,11 @@ Device_Config      Device_config;
 const char* wifi_config_file = "/wifi_cfg.dat";
 const char* device_config_file = "/config.dat";
 
+///
+///     LITTLEFS Management functions
+///
+
+
 /*!
  *  @brief  Initialize LitteFS.
  *  @return Returns true if initialized successfully.
@@ -82,7 +87,11 @@ bool removeConfigData(char* filename)
   return false;
 }
 
-
+/*!
+ *  @brief  Copy the content of a string to a allocated char array.
+ *  @param  string Input string.
+ *  @param  char_loc Destination char pointer.
+ */
 void storeString(String string, char* char_loc)
 {
   if (strlen(string.c_str()) < sizeof(char_loc) - 1)
@@ -91,15 +100,6 @@ void storeString(String string, char* char_loc)
     strncpy(char_loc, string.c_str(), sizeof(char_loc) - 1);
 }
 
-
-void defaultDeviceConfig()
-{
-  Serial.print(F("\n[WARNING]: USING DEFAULT VALUES!"));
-  storeString(String(DEFAULT_HOSTNAME), Device_config.host_name);
-  Device_config.air_value = DEF_CAL_AIR;
-  Device_config.wat_value = DEF_CAL_WAT;
-  Device_config.ap_mode = DEFAULT_TO_AP;  
-}
 
 ///
 ///     WIFI CONFIGURATION FILE
@@ -267,6 +267,19 @@ bool removeDeviceConfig()
   return false;
 }
 
+void defaultDeviceConfig()
+{
+  Serial.print(F("\n[WARNING]: USING DEFAULT VALUES!"));
+  storeString(String(DEFAULT_HOSTNAME), Device_config.host_name);
+  Device_config.air_value = DEF_CAL_AIR;
+  Device_config.wat_value = DEF_CAL_WAT;
+  Device_config.ap_mode = DEFAULT_TO_AP;  
+}
+
+/*!
+ *  @brief  Initialize LittleFS and try to read Device Configuration.
+ *  @return Returns true if configuration configuration successfully loaded.
+ */
 bool initDeviceConfiguration()
 {
   if (!initFS())

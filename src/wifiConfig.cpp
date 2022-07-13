@@ -159,44 +159,17 @@ String scanNetworks()
 
 void initWifi(bool ap_mode)
 {
-    if (initFS())
-    {
-        if (loadDeviceConfig())
+    if (loadWifiConfig() && ap_mode == false)
+    {           
+        if (Wifi_config.dyn_ip)
         {
-            ap_mode = Device_config.ap_mode;
-
-            if (String(Device_config.host_name) == "")
-            {
-                host_name = String(DEFAULT_HOSTNAME);
-            } 
-            else 
-            {
-                host_name = String(Device_config.host_name);
-            }
+            setStaticIp();   
+            if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
+                ap_mode = true;
+        } else {
+            if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
+                ap_mode = true;
         }
-        else
-        {
-            ap_mode = true;
-        }
-        
-        
-        if (loadWifiConfig())
-        {           
-            if (Wifi_config.dyn_ip)
-            {
-                setStaticIp();   
-                if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
-                    ap_mode = true;
-            } else {
-                if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
-                    ap_mode = true;
-            }
-        }
-    }
-    else
-    {
-        host_name = String(DEFAULT_HOSTNAME);
-        ap_mode = true;
     }
     
     if (ap_mode) //IF Everything fails or preferred mode is AP

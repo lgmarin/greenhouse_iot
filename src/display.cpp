@@ -8,6 +8,9 @@ Display::~Display()
 {
 }
 
+/*!
+ *  @brief  Initialize SSD1306 Display.
+ */
 void Display::Init()
 {
     if(!display.begin(SSD1306_SWITCHCAPVCC, D_I2C_ADDR)) {
@@ -23,6 +26,13 @@ void Display::Init()
     display.print("Initializing...");
 }
 
+/*!
+ *  @brief  Update the display screen.
+ *  @param  temp Air temperature.
+ *  @param  humidity Air humidity.
+ *  @param  soilP Soil humidity in percent.
+ *  @param  info Info string to display at the top. 
+ */
 void Display::UpdateScreen(int temp, int hum, int soilP, String info)
 {
     // DISPLAY HANDLING

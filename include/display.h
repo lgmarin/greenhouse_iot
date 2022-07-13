@@ -14,7 +14,7 @@ public:
     Display();
     ~Display();
     void Init();
-    void Display::UpdateScreen(int temp, int hum, int soilP, String info);
+    void UpdateScreen(int temp, int hum, int soilP, String info);
 };
 
 #endif

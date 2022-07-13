@@ -159,6 +159,8 @@ String scanNetworks()
 
 void initWifi(bool ap_mode)
 {
+    host_name = String(Device_config.host_name);
+
     if (loadWifiConfig() && ap_mode == false)
     {           
         if (Wifi_config.dyn_ip)

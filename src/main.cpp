@@ -50,5 +50,11 @@ void loop() {
     display.UpdateScreen(airTemp(), airHumidity(), soilHumidity(), "TESTE");
   }
 
+  if (digitalRead(WAKE_BTN_PIN))
+    display.Wake(current_millis);
+
+  
+  display.Sleep(current_millis);
+
   dnsProcessNext();
 }

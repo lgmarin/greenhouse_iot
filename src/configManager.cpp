@@ -4,8 +4,8 @@
 Wifi_Config        Wifi_config;
 Device_Config      Device_config;
 
-const char* wifi_config_file = "/wifi_cfg.dat";
-const char* device_config_file = "/config.dat";
+const char* wifi_config_file = "/wifi.cfg";
+const char* device_config_file = "/device.cfg";
 
 ///
 ///     LITTLEFS Management functions

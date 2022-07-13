@@ -69,7 +69,7 @@ void Display::UpdateScreen(int temp, int hum, int soilP, String info)
     display.display();
 }
 
-void Display::displaySleep(unsigned long current_millis)
+void Display::Sleep(unsigned long current_millis)
 {
     if (current_millis - _previous_millis >= SLEEP_INTERVAL) 
     {
@@ -79,7 +79,7 @@ void Display::displaySleep(unsigned long current_millis)
     }    
 }
 
-bool Display::displayWake(unsigned long current_millis)
+bool Display::Wake(unsigned long current_millis)
 {
     _previous_millis = current_millis;
     if (_sleeping) 

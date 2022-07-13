@@ -17,8 +17,8 @@ public:
     ~Display();
     void Init();
     void UpdateScreen(int temp, int hum, int soilP, String info);
-    void displaySleep(unsigned long current_millis);
-    bool displayWake(unsigned long current_millis);
+    void Sleep(unsigned long current_millis);
+    bool Wake(unsigned long current_millis);
 };
 
 #endif

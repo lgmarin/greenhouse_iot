@@ -6,8 +6,9 @@
 #include <webServer.h>
 
 // Prepare loop variables
-unsigned long previousMillis = 0;
-unsigned long interval;
+unsigned long previous_millis = 0;
+unsigned long sensors_interval;
+unsigned long sleep_interval;
 
 // CREATE INSTANCES
 Display                 display;
@@ -35,12 +36,12 @@ void setup() {
 void loop() {
 
   //PREPARE LOOP - BASED on DHT min delay or DEFAULT_DELAY
-  unsigned long currentMillis = millis();
-  interval = dhtDelay() || DEFAULT_DELAY;
+  unsigned long current_millis = millis();
+  sensors_interval = dhtDelay() || DEFAULT_DELAY;
   
-  if (currentMillis - previousMillis >= interval) 
+  if (current_millis - previous_millis >= sensors_interval) 
   {
-    previousMillis = currentMillis;
+    previous_millis = current_millis;
 
     // RUN SENSORS UPDATE LOOP
     sensorsLoop();

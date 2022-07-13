@@ -6,35 +6,30 @@
 /*
 *            SENSORS DEFINITIONS
 */
-#define DEFAULT_DELAY       2000 //2secs delay loop
+#define DEFAULT_DELAY           2000    //2secs delay loop
+
 
 //             DHT CONFIGURATION
-#define DHTTYPE             DHT11
-#define DHTPIN              12 //GPIO12 - D4
-// DHT Read Values
-// extern uint32_t             dhtDelay;
-// extern int                  dhtTemperature;
-// extern int                  dhtHumidity;
+#define DHTTYPE                 DHT11
+#define DHTPIN                  12      //GPIO12 - D4
+
 
 //      SOIL MOISTURE CONFIGURATION
-#define SOIL_A              A0
-#define DEF_CAL_AIR         790
-#define DEF_CAL_WAT         390
-// SOIL READ VALUES
-// extern int                  soilValue;
-// extern int                  soilPercent;
+#define SOIL_A                  A0
 // SOIL CALIBRATION CONFIGURATION
-// extern int                  airMoist;
-// extern int                  waterMoist;
+#define DEF_CAL_AIR             790
+#define DEF_CAL_WAT             390
 
 
 //          DISPLAY CONFIGURATION
 // PINOUT I2C               
-// SDA                      GPIO4 - D2
-// SCK                      GPIO5 - D1
-#define SCREEN_W            128
-#define SCREEN_H            64
-#define D_I2C_ADDR          0x3C //0x7A //0x78
+// SDA                          GPIO4 - D2
+// SCK                          GPIO5 - D1
+#define SCREEN_W                128
+#define SCREEN_H                64
+#define D_I2C_ADDR              0x3C    //0x7A //0x78
+#define SLEEP_INTERVAL          60000   // 1 minute to sleep
+#define WAKE_BTN_PIN            14      //GPIO14 - D
 
 
 /*
@@ -46,6 +41,5 @@
 #define DEFAULT_HOSTNAME        F("ESP_MANAGER")
 #define HTTP_PORT               80
 #define DEFAULT_TO_AP           true
-
 
 #endif

@@ -12,4 +12,6 @@ int airTemp();
 int airHumidity();
 int soilHumidity();
 
+String readSensorsJSON();
+
 #endif

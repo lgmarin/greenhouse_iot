@@ -69,7 +69,19 @@ String config_processor(const String& var){
 }
 
 
-void setupRoutes()
+void setupEvents(){
+  events.onConnect([](AsyncEventSourceClient *client){
+    if(client->lastId()){
+      Serial.print(F("\n[INFO]: Event Listener client reconnected."));
+    }
+    client->send("ESP_EVENT", NULL, millis(), 10000);
+  });
+
+  server.addHandler(&events);
+}
+
+
+void setupWebServer()
 {
     server.serveStatic("/", LittleFS, "/");
 
@@ -154,16 +166,6 @@ void setupRoutes()
   server.begin();
 }
 
-void setupEvents(){
-  events.onConnect([](AsyncEventSourceClient *client){
-    if(client->lastId()){
-      Serial.print(F("\n[INFO]: Event Listener client reconnected."));
-    }
-    client->send("ESP_EVENT", NULL, millis(), 10000);
-  });
-
-  server.addHandler(&events);
-}
 
 void eventsLoop()
 {

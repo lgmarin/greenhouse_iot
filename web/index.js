@@ -1,15 +1,3 @@
-// setInterval(function ( ) {
-//         var xhttp = new XMLHttpRequest();
-//         xhttp.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             document.getElementById("temperature").innerHTML = this.responseText;
-//         }
-//         };
-//         xhttp.open("GET", "/temperature", true);
-//         xhttp.send();
-//     }, 3000 
-// );
-
 if (!!window.EventSource) {
     var source = new EventSource('/events');
   
@@ -31,13 +19,22 @@ if (!!window.EventSource) {
       console.log("sensor_readings", e.data);
       var myObj = JSON.parse(e.data);
       console.log(myObj);
-      plotTemperature(myObj);
+      updateValues(myObj);
     }, false);
 }
+
+
+function updateValues(jsonObj) {
+    document.getElementById("dht_t").innerHTML = jsonObj.sensors.dht_t;
+    document.getElementById("dht_h").innerHTML = jsonObj.sensors.dht_h;
+    document.getElementById("soil_h").innerHTML = jsonObj.sensors.soil_p;
+}
+
 
 function goConfig() {
     location.replace("https://%DEVICE_IP%/config");
 }
+
 
 function goWifi() {
     location.replace("https://%DEVICE_IP%/wifi");

@@ -1,7 +1,7 @@
 #include <webServer.h>
 
-AsyncWebServer server(HTTP_PORT);
-
+AsyncWebServer    server(HTTP_PORT);
+AsyncEventSource  events("/events");
 
 // Request Handlers
 void notFound(AsyncWebServerRequest *request) {
@@ -97,7 +97,7 @@ void setupRoutes()
       request->send_P(400, "text/plain", "error");
     });
 
-    server.on("/update-config", HTTP_GET, [] (AsyncWebServerRequest *request) {
+    server.on("/update-config", HTTP_POST, [] (AsyncWebServerRequest *request) {
       bool ap_mode = false;
 
       if (request->hasParam("hostname") && request->hasParam("air_v") && request->hasParam("wat_v")) 
@@ -131,7 +131,7 @@ void setupRoutes()
       request->send(200, "application/json", "{\"status\": \"" + String(WiFi.status()) + "\", \"network\": \""+ WiFi.SSID() + "\"}");
     });
 
-    server.on("/connect", HTTP_GET, [] (AsyncWebServerRequest *request) {
+    server.on("/connect", HTTP_POST, [] (AsyncWebServerRequest *request) {
       bool result = false;
 
       if (request->hasParam("auto-ip") && request->hasParam("ssid") && request->hasParam("password")) {
@@ -149,3 +149,16 @@ void setupRoutes()
       request->send(200, "application/json", "{\"status\": \"error\" }");
     });
 }
+
+void setupEvents(){
+  events.onConnect([](AsyncEventSourceClient *client){
+    if(client->lastId()){
+      Serial.print(F("\n[INFO]: Event Listener client reconnected."));
+    }
+    // send event with message "hello!", id current millis
+    // and set reconnect delay to 1 second
+    client->send("ESP_EVENT", NULL, millis(), 10000);
+  });
+  server.addHandler(&events);
+}
+

@@ -6,25 +6,26 @@
     <meta name="description" content="Defuma IoT - Defumadeira Controle Remoto">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>%HOST_NAME%@%DEVICE_IP%</title>
+
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="vendor/google-fonts.css">
 	  <link rel="stylesheet" href="vendor/material.css">
     <style>
-      #view-source {
-        position: fixed;
-        display: block;
-        right: 0;
-        bottom: 0;
-        margin-right: 40px;
-        margin-bottom: 40px;
-        z-index: 900;
-      }
-      html, body {
-        font-family: 'Roboto', 'Helvetica', sans-serif;
-      }
-      .demo-content {
-        max-width: 1080px;
-      }
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    html, body {
+      font-family: 'Roboto', 'Helvetica', sans-serif;
+    }
+    .demo-content {
+      max-width: 1080px;
+    }
     </style>
   </head>
   <body>
@@ -139,36 +140,36 @@
     </div>
     <script>
       var wifi_dialog = document.querySelector('#delete-wifi');
-        var del_wbtn = document.querySelector('#del-wifi_btn');
-        if (!wifi_dialog.showModal) {
-          dialogPolyfill.registerDialog(wifi_dialog);
-        }
-        del_wbtn.addEventListener('click', function() {
-            wifi_dialog.showModal();
-        });
-        wifi_dialog.querySelector('.close').addEventListener('click', function() {
-            wifi_dialog.close();
-        });
-        wifi_dialog.querySelector('#wifi-confirm').addEventListener('click', function() {
-            var xhr = new XMLHttpRequest();
-            location.replace("https://%DEVICE_IP%/delete-wifi");
-            wifi_dialog.close();
-        });
+          var del_wbtn = document.querySelector('#del-wifi_btn');
+          if (!wifi_dialog.showModal) {
+            dialogPolyfill.registerDialog(wifi_dialog);
+          }
+          del_wbtn.addEventListener('click', function() {
+              wifi_dialog.showModal();
+          });
+          wifi_dialog.querySelector('.close').addEventListener('click', function() {
+              wifi_dialog.close();
+          });
+          wifi_dialog.querySelector('#wifi-confirm').addEventListener('click', function() {
+              var xhr = new XMLHttpRequest();
+              location.replace("https://%DEVICE_IP%/delete-wifi");
+              wifi_dialog.close();
+          });
       var cfg_dialog = document.querySelector('#delete-cfg');
-        var del_wbtn = document.querySelector('#del-cfg_btn');
-        if (!cfg_dialog.showModal) {
-          dialogPolyfill.registerDialog(cfg_dialog);
-        }
-        del_wbtn.addEventListener('click', function() {
-            cfg_dialog.showModal();
-        });
-        cfg_dialog.querySelector('.close').addEventListener('click', function() {
-            cfg_dialog.close();
-        });
-        cfg_dialog.querySelector('#cfg-confirm').addEventListener('click', function() {
-          location.replace("https://%DEVICE_IP%/delete-config");
-            cfg_dialog.close();
-        });    
+          var del_wbtn = document.querySelector('#del-cfg_btn');
+          if (!cfg_dialog.showModal) {
+            dialogPolyfill.registerDialog(cfg_dialog);
+          }
+          del_wbtn.addEventListener('click', function() {
+              cfg_dialog.showModal();
+          });
+          cfg_dialog.querySelector('.close').addEventListener('click', function() {
+              cfg_dialog.close();
+          });
+          cfg_dialog.querySelector('#cfg-confirm').addEventListener('click', function() {
+            location.replace("https://%DEVICE_IP%/delete-config");
+              cfg_dialog.close();
+          });    
       function goHome() {
         location.replace("https://%DEVICE_IP%/");
       }

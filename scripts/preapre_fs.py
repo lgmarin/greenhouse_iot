@@ -9,62 +9,44 @@ import gzip
 import shutil
 import glob
 
-# Funcion complementaria para utilizar gzip
-def gzip_file( src_path, dst_path ):
-    with open( src_path, 'rb' ) as src, gzip.open( dst_path, 'wb' ) as dst:
+# HANDLE GZIP FILE
+def gzip_file( src_path, dest_path ):
+    with open( src_path, 'rb' ) as src, gzip.open( dest_path, 'wb' ) as destination:
         for chunk in iter( lambda: src.read(4096), b"" ):
-            dst.write( chunk )
+            destination.write( chunk )
 
-# Comprime los archivos definidos de 'data_src/' en 'data/'
-def gzip_webfiles( source, target, env ):
-    # Tipos de archivos que necesitan ser comprimidos
-    filetypes_to_gzip = [ 'css', 'html', 'js' ]
-    print( '\nGZIP: Iniciando el proceso de gzipeado para la imágen SPIFFS...\n' )
-
-    data_src_dir_path = os.path.join(env.get('PROJECT_DIR'), 'data_src')
-    data_dir_path = env.get( 'PROJECTDATA_DIR' )
-
+def gzip_webfiles(source, target, env):
     
+    filetypes_to_gzip = [ 'css', 'html', 'js' ]
 
-    # Verifica si existen data y datasrc. Si existe el primero y no el segundo lo renombra
+    print(f'\n[PRE-BUILDING]: Compressing Web files in {source}...')
 
+    data_src_dir_path = os.path.join(env.get('PROJECT_DIR'), source)
+    data_dir_path = env.get('PROJECTDATA_DIR')
+
+    # Check if dir exists
     if(os.path.exists(data_dir_path) and not os.path.exists(data_src_dir_path) ):
-
+        print('\n[PRE-BUILDING]: Compressing Web files in {source}...')
         print('GZIP: El directorio "'+data_dir_path+'" existe, "'+data_src_dir_path+'" no se encuentra.')
-
         print('GZIP: Renombrando "' + data_dir_path + '" a "' + data_src_dir_path + '"')
-
         os.rename(data_dir_path, data_src_dir_path)
 
-    # Elimina el directiorio 'data'
-
+    # Clear data dir before compressing
     if(os.path.exists(data_dir_path)):
-
-        print('GZIP: Eliminando el directorio "data" ' + data_dir_path)
-
+        print('\n[PRE-BUILDING]: Clearing {data_dir_path}...')
         shutil.rmtree(data_dir_path)
 
-    # Recrea el directorio 'data' vacío
-
-    print('GZIP: Re-creando un directorio de datos vacío ' + data_dir_path)
-
+    print('\n[PRE-BUILDING]: Creating {data_dir_path}...')
     os.mkdir(data_dir_path)
 
-    # Determino los archivos a comprimir
-
+    # Prepare a list of all files to compress
     files_to_gzip = []
-
     for extension in filetypes_to_gzip:        
-
-        files_to_gzip.extend( glob.glob( os.path.join( data_src_dir_path, '*.' + extension ) ) )
-
-    
+        files_to_gzip.extend(glob.glob(os.path.join(data_src_dir_path, '*.' + extension)))
 
     all_files = glob.glob(os.path.join(data_src_dir_path, '*.*'))
-
     files_to_copy = list(set(all_files) - set(files_to_gzip))
 
-    #print('MEWGZIP: archivos a copiar: ' + str(files_to_gzip))
 
     for file in files_to_copy:
 
@@ -108,4 +90,4 @@ def gzip_webfiles( source, target, env ):
         print( 'GZIP: Comprimido correctamente.\n' )
 
 # IMPORTANT, this needs to be added to call the routine
-env.AddPreAction( '$BUILD_DIR/littlefs.bin', gzip_webfiles )            
+env.AddPreAction('$BUILD_DIR/littlefs.bin', gzip_webfiles)            

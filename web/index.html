@@ -6,28 +6,29 @@
     <meta name="description" content="Defuma IoT - Defumadeira Controle Remoto">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>%HOST_NAME%@%DEVICE_IP%</title>
+
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="vendor/google-fonts.css">
 	  <link rel="stylesheet" href="vendor/material.css">
     <style>
-      #view-source {
-        position: fixed;
-        display: block;
-        right: 0;
-        bottom: 0;
-        margin-right: 40px;
-        margin-bottom: 40px;
-        z-index: 900;
-      }
-      html, body {
-        font-family: 'Roboto', 'Helvetica', sans-serif;
-      }
-      .demo-content {
-        max-width: 800px;
-      }
-      .temperature_read {
-        text-align: center;
-      }
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    html, body {
+      font-family: 'Roboto', 'Helvetica', sans-serif;
+    }
+    .demo-content {
+      max-width: 800px;
+    }
+    .temperature_read {
+      text-align: center;
+    }
     </style>
   </head>
   <body>
@@ -83,23 +84,7 @@
         </div>
       </main>
     </div>
-    <script>
-      setInterval(function ( ) {
-              var xhttp = new XMLHttpRequest();
-              xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  document.getElementById("temperature").innerHTML = this.responseText;
-              }
-              };
-              xhttp.open("GET", "/temperature", true);
-              xhttp.send();
-          }, 3000 
-      );
-
-      function goConfig() {
-          location.replace("https://%DEVICE_IP%/config");
-      }      
-    </script>
+    <script src="vendor/material.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

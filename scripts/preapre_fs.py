@@ -16,8 +16,8 @@ def gzip_file( src_path, dest_path ):
             destination.write( chunk )
 
 def gzip_webfiles(source, target, env):
-    
-    filetypes_to_gzip = [ 'css', 'html', 'js' ]
+    filetypes_to_gzip = ['html', 'css', 'js']
+    exclude_files = ['svg']
 
     print(f'\n[PRE-BUILDING]: Compressing Web files in {source}...')
 
@@ -45,18 +45,11 @@ def gzip_webfiles(source, target, env):
         files_to_gzip.extend(glob.glob(os.path.join(data_src_dir_path, '*.' + extension)))
 
     all_files = glob.glob(os.path.join(data_src_dir_path, '*.*'))
-    files_to_copy = list(set(all_files) - set(files_to_gzip))
-
+    files_to_copy = list(set(all_files - exclude_files) - set(files_to_gzip))
 
     for file in files_to_copy:
-
-        print('GZIP: Copiando archivo: ' + file + ' al directorio de datos')
-
+        print('\n[PRE-BUILDING]: Copying compiled files to {data_dir_path}...')
         shutil.copy(file, data_dir_path)
-
-    # Comprime y mueve los archivos
-
-    #print('MEWGZIP: archivos a comprimir: ' + str(files_to_gzip))
 
     was_error = False
 

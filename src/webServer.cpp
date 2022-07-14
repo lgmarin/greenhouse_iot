@@ -148,6 +148,10 @@ void setupRoutes()
 
       request->send(200, "application/json", "{\"status\": \"error\" }");
     });
+
+  setupEvents();
+
+  server.begin();
 }
 
 void setupEvents(){
@@ -155,10 +159,13 @@ void setupEvents(){
     if(client->lastId()){
       Serial.print(F("\n[INFO]: Event Listener client reconnected."));
     }
-    // send event with message "hello!", id current millis
-    // and set reconnect delay to 1 second
     client->send("ESP_EVENT", NULL, millis(), 10000);
   });
+
   server.addHandler(&events);
 }
 
+void eventsLoop()
+{
+  events.send(readSensorsJSON().c_str(),"sensor_readings",millis());
+}

@@ -30,7 +30,7 @@ void setup() {
   initWifi(Device_config.ap_mode);
 
   // Initialize WebServer
-  setupRoutes();
+  setupWebServer();
 }
 
 void loop() {
@@ -45,9 +45,13 @@ void loop() {
 
     // RUN SENSORS UPDATE LOOP
     sensorsLoop();
-    
+
+    // EventListenner Loop
+    eventsLoop();
+
     //Update Screen
     display.UpdateScreen(airTemp(), airHumidity(), soilHumidity(), "TESTE");
+
   }
 
   if (digitalRead(WAKE_BTN_PIN))

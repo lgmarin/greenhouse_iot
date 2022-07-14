@@ -119,7 +119,7 @@ void setupRoutes()
 
     //  *******    WIFI PAGE HANDLERS
 
-    server.on("/connect-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
+    server.on("/wifi", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send(LittleFS, "/wifi.html", "text/html", false);
     }).setFilter(ON_AP_FILTER);
 

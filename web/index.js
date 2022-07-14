@@ -13,3 +13,7 @@ setInterval(function ( ) {
 function goConfig() {
     location.replace("https://%DEVICE_IP%/config");
 }
+
+function goWifi() {
+    location.replace("https://%DEVICE_IP%/wifi");
+}

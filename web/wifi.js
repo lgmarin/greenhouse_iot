@@ -1,5 +1,11 @@
-//first add an event listener for page load
-//document.addEventListener( "DOMContentLoaded", get_json_data, false ); // get_json_data is the function name that will fire on page load
+var res_test = {"networks": 
+                [{"SSID":"Wifi 1", "Quality":"20"},
+                {"SSID":"Wifi 2", "Quality":"50"},
+                {"SSID":"Wifi 3", "Quality":"100"},
+                {"SSID":"Wifi 4", "Quality":"20"}
+                // {"SSID":"Wifi 5", "Quality":"50"},
+                // {"SSID":"Wifi 6", "Quality":"100"}
+                ]};
 
 var auto_ip = document.querySelector("#set-auto-ip");
 
@@ -7,8 +13,8 @@ window.onload = function() {
     document.querySelector("#ip").closest('.mdl-textfield').style.display = "none";
     document.querySelector("#gateway").closest('.mdl-textfield').style.display = "none";
     document.querySelector("#mask").closest('.mdl-textfield').style.display = "none";
-    append_json(res_test);
-    addRowHandlers();
+    //updateWifiList();
+    appendJsonTable(res_test); //DEBUGING PURPOSES
 };
 
 auto_ip.onchange = function() {
@@ -47,41 +53,22 @@ function addRowHandlers() {
     }
 }
 
-var res_test = {"networks": 
-                [{"SSID":"Wifi 1", "Quality":"20"},
-                {"SSID":"Wifi 2", "Quality":"50"},
-                {"SSID":"Wifi 3", "Quality":"100"},
-                {"SSID":"Wifi 4", "Quality":"20"}
-                // {"SSID":"Wifi 5", "Quality":"50"},
-                // {"SSID":"Wifi 6", "Quality":"100"}
-                ]};
-
-
-//this function is in the event listener and will execute on page load
-function get_json_data(){
-    // Relative URL of external json file
-    var json_url = 'example.json';
-
+function updateWifiList(){
     //Build the XMLHttpRequest (aka AJAX Request)
     xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() { 
         if (this.readyState == 4 && this.status == 200) {//when a good response is given do this
 
-            var data = JSON.parse(this.responseText); // convert the response to a json object
-            append_json(data); //pass the json object to the append_json function
-            addRowHandlers(); //Refresh rows handlers
+            var data = JSON.parse(this.responseText);
+            appendJsonTable(data);
         }
     }
-    //set the request destination and type
-    xmlhttp.open("POST", json_url, true);
-    //set required headers for the request
+    xmlhttp.open("GET", "/scan-wifi", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    // send the request
-    xmlhttp.send(); // when the request completes it will execute the code in onreadystatechange section
+    xmlhttp.send();
 }
 
-//this function appends the json data to the table 'gable'
-function append_json(data){
+function appendJsonTable(data){
     var table = document.getElementById('wifi-table-body');
     data.networks.forEach(function(object) {
         var tr = document.createElement('tr');
@@ -91,4 +78,9 @@ function append_json(data){
         '<td>' + object.Quality + '</td>';
         table.appendChild(tr);
     });
+    addRowHandlers();
 }
+
+function goHome() {
+    location.replace("https://%DEVICE_IP%/");
+  }

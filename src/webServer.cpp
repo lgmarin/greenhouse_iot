@@ -91,6 +91,16 @@ void setupWebServer()
     request->send(LittleFS, "/index.html", "text/html", false);
   });
 
+  server.on("/generate_204", HTTP_GET, [](AsyncWebServerRequest * request) {
+    request->redirect("/index.html");
+    delay(100);
+  }).setFilter(ON_AP_FILTER);
+
+  server.on("/fwlink", HTTP_GET, [](AsyncWebServerRequest * request) {
+    request->redirect("/index.html");
+    delay(100);
+  }).setFilter(ON_AP_FILTER);
+
   //  *******    CONFIG PAGE HANDLERS
 
   server.on("/config", HTTP_GET, [](AsyncWebServerRequest *request){

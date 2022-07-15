@@ -20,6 +20,8 @@ bool configuremDNS()
 
 bool startDNSServer(IPAddress soft_ip)
 {
+    dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
+
     if (!dnsServer.start(53, "*", soft_ip))
     {
         Serial.print(F("\n[ERROR]: Failed to start DNS service."));
@@ -31,8 +33,11 @@ bool startDNSServer(IPAddress soft_ip)
 
 bool openCaptivePortal()
 {
+    WiFi.persistent(false);
     WiFi.disconnect();
+    WiFi.hostname(host_name);
     WiFi.mode(WIFI_AP);
+    WiFi.persistent(true);
     delay(500);
 
     Serial.print(F("\n[INFO]: Starting soft-AP..."));
@@ -41,7 +46,8 @@ bool openCaptivePortal()
     if(result)
     {
         Serial.print(F("\n[SUCCESS]: Captive Portal Started at IP: ")); Serial.print(WiFi.softAPIP());
-        //startDNSServer(WiFi.softAPIP());
+        startDNSServer(WiFi.softAPIP());
+        configuremDNS();
         return true;
     }
     return false;
@@ -99,8 +105,10 @@ bool connectToWifi(String ssid, String pwd)
         Serial.print(F("\n[ERROR]: Failed to connect."));
         return false;
     }
+
     Serial.print(F("\n[SUCCESS]: CONNECTED: Mode: STA, SSID: ")); Serial.print(WiFi.SSID());
     Serial.print(F(" IP: ")); Serial.print(WiFi.localIP());
+    configuremDNS();
     return true;
 }
 

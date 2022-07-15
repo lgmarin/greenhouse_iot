@@ -142,7 +142,15 @@ void addServerHandlers()
 {
   //  *******    INDEX PAGE HANDLERS
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(LittleFS, "/index.html", "text/html", false);
+    //request->send(LittleFS, "/index.html", "text/html", false);
+    AsyncWebServerResponse *response = request->beginResponse(200, "text/html");
+    response->addHeader("Content-Encoding", "text/html");
+    request->send(LittleFS, "/index.html.gz", "text/html", false);    
+  });
+
+  server.on("/teste", HTTP_GET, [](AsyncWebServerRequest *request){
+    String message = "WORKING!@";
+    request->send(200, "text/plain", message);
   });
 
   server.on("/generate_204", HTTP_GET, [](AsyncWebServerRequest * request) {
@@ -185,14 +193,14 @@ void addServerHandlers()
 
 void setupWebServer()
 {
-  server.serveStatic("/", LittleFS, "/");
-
   addServerHandlers();
   events.onConnect(serverEventHandler);
   server.addHandler(&events);  
 
   Serial.print(F("\n[INFO]: Initializing WebServer..."));
   server.begin();
+
+  server.serveStatic("/", LittleFS, "/");
 }
 
 

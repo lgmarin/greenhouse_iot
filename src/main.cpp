@@ -28,7 +28,6 @@ void setup() {
 
   // Initialize WIFI
   initWifi(Device_config.ap_mode);
-  delay(500);
 
   // Initialize WebServer
   setupWebServer();

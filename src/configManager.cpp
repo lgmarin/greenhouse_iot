@@ -270,10 +270,15 @@ bool removeDeviceConfig()
 void defaultDeviceConfig()
 {
   Serial.print(F("\n[WARNING]: USING DEFAULT VALUES!"));
-  storeString(String(DEFAULT_HOSTNAME), Device_config.host_name);
+  //storeString(String(DEFAULT_HOSTNAME), Device_config.host_name);
+  if (strlen(String(DEFAULT_HOSTNAME).c_str()) < sizeof(Device_config.host_name) - 1)
+    strcpy(Device_config.host_name, String(DEFAULT_HOSTNAME).c_str());
+  else
+    strncpy(Device_config.host_name, String(DEFAULT_HOSTNAME).c_str(), sizeof(Device_config.host_name) - 1);
+
   Device_config.air_value = DEF_CAL_AIR;
   Device_config.wat_value = DEF_CAL_WAT;
-  Device_config.ap_mode = DEFAULT_TO_AP;  
+  Device_config.ap_mode   = DEFAULT_TO_AP;  
 }
 
 /*!

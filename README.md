@@ -18,6 +18,9 @@ Development of a greenhouse monitoring system:
 * Sensors
   * Air temperature and humidity - DHT11
   * Soil moisture sensor
+    * Allow to calibrate sensor through the web interface
+* Develop clean and modular code (OOP)
+  * Will be merged later for the [esp_manager][esp_manager] boiler plate project
 
 ## Schematics and List of Materials
 
@@ -49,4 +52,7 @@ Development of a greenhouse monitoring system:
 * [Weather station](https://www.engineersgarage.com/nodemcu-weather-station/)
 * [DHT11/22 Sensor](https://randomnerdtutorials.com/esp8266-dht11dht22-temperature-and-humidity-web-server-with-arduino-ide/)
 * [SSD1306 OLED Display](https://randomnerdtutorials.com/esp8266-0-96-inch-oled-display-with-arduino-ide/)
+* [Display Generator](https://rickkas7.github.io/DisplayGenerator/index.html)
 * [Class Inheritance](https://forum.arduino.cc/t/access-adafruit-ssd1306-object-inside-my-class/969569)
+
+[esp_manager]: https://github.com/lgmarin/esp_manager

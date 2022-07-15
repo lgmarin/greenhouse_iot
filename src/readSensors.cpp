@@ -1,63 +1,64 @@
 #include <readSensors.h>
 
-SoilMoistureSensor    soil(SOIL_A);
+// GLOBAL VARIABLES
+uint32_t                _dhtDelay;
+int                     _dhtTemperature;
+int                     _dhtHumidity;
+int                     _soilPercent;
+int                     _soilValue;
 
-/*!
- *  @brief  Read soil moisture value
- *	@return Soil Moisture value
- */
-Dht::Dht() : _dht(DHTPIN, DHTTYPE)
+SoilMoistureSensor      soil(SOIL_A);
+Dht                     dhtSensor;
+
+void initSensors()
 {
+    _dhtDelay = dhtSensor.dhtInit();
+
+    delay(_dhtDelay);
+
+    _dhtTemperature = dhtSensor.readTemperature();
+    _dhtHumidity = dhtSensor.readHumidity();
+    _soilPercent = soil.readPercent();  
 }
 
-Dht::~Dht()
+void sensorsLoop()
 {
+    _dhtTemperature = dhtSensor.readTemperature();
+    _dhtHumidity = dhtSensor.readHumidity();
+    _soilPercent = soil.readPercent();
+    _soilValue = soil.readValue();
 }
 
-uint32_t Dht::dhtInit()
+unsigned long dhtDelay()
 {
-    _dht.begin();
-    dhtDelay = _dhtSensor.min_delay;
-   
-    if (dhtDelay <= 1000)
-        dhtDelay = DEFAULT_DELAY;
-
-    Serial.print(F("\n[INFO]: DHT Initialized with delay: ")); Serial.print(dhtDelay);
-    return dhtDelay;
+    return _dhtDelay;
 }
 
-uint32_t Dht::getDhtDelay()
+int airTemp()
 {
-    return dhtDelay;
+    return _dhtTemperature;
 }
 
-int Dht::readTemperature()
+int airHumidity()
 {
-    _dht.temperature().getEvent(&_dhtEvent);
-
-    if (isnan(_dhtEvent.temperature)) {
-        Serial.print(F("\n[ERROR]: Error reading temperature!"));
-        return 00;
-    }
-    else {
-        return round(_dhtEvent.temperature);
-    }
+    return _dhtHumidity;
 }
 
-int Dht::readHumidity()
+int soilHumidity()
 {
-    _dht.humidity().getEvent(&_dhtEvent);
-    
-    if (isnan(_dhtEvent.relative_humidity)) {
-        Serial.print(F("\n[ERROR]: Error reading humidity!"));
-        return 00;
-    }
-    else {
-        return round(_dhtEvent.relative_humidity);
-    }
+    return _soilPercent;
 }
 
-int readSoilP()
+String readSensorsJSON()
 {
-    return soil.readPercent();
+    String json;
+
+    json += "{";
+    json +=  "{\"dht_t\":" + _dhtTemperature;
+    json +=  "}, {\"dht_h\":" + _dhtHumidity;
+    json +=  "}, {\"soil_p\":" + _soilPercent;
+    json +=  "}, {\"soil_v\":" + _soilValue;
+    json += "}}";
+
+    return json;
 }

@@ -3,11 +3,8 @@
 DNSServer dnsServer;
 
 String             host_name;
-
 long               lastScanMillis;
 long               currentMillis;
-bool               ap_mode = true;
-
 
 bool configuremDNS()
 {
@@ -21,23 +18,103 @@ bool configuremDNS()
     return true;
 }
 
-
-void dnsProcessNext()
+bool startDNSServer(IPAddress soft_ip)
 {
-    dnsServer.processNextRequest();
+    dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
+
+    if (!dnsServer.start(53, "*", soft_ip))
+    {
+        Serial.print(F("\n[ERROR]: Failed to start DNS service."));
+        return false;
+    }
+    return true;
 }
 
 
 bool openCaptivePortal()
 {
+    WiFi.persistent(false);
+    WiFi.disconnect();
+    WiFi.hostname(host_name);
+    WiFi.mode(WIFI_AP);
+    WiFi.persistent(true);
+    delay(500);
+
     Serial.print(F("\n[INFO]: Starting soft-AP..."));
-    if(WiFi.softAP(host_name)){
+    bool result = WiFi.softAP(host_name);
+
+    if(result)
+    {
         Serial.print(F("\n[SUCCESS]: Captive Portal Started at IP: ")); Serial.print(WiFi.softAPIP());
-        if (!dnsServer.start(53, "*", WiFi.softAPIP()))
-            Serial.print(F("\n[INFO]: Failed to start DNS service."));
+        startDNSServer(WiFi.softAPIP());
+        configuremDNS();
         return true;
     }
     return false;
+}
+
+
+bool setStaticIp(String ip_addr, String gw_addr, String mask)
+{
+    IPAddress          st_ip, st_gw, st_mask;
+
+    if (st_ip.fromString(ip_addr) && st_gw.fromString(gw_addr) && st_mask.fromString(mask))
+    {
+        if(!WiFi.config(st_ip, st_gw, st_mask)){
+            Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
+            return false;
+        }
+        Serial.print(F("\n[INFO]: Using static IP..."));
+        return true;      
+    }
+    Serial.print(F("\n[ERROR]: Invalid IP address. Using Dynamic IP."));
+    return false;         
+}
+
+
+bool setStaticIp()
+{
+    if(!WiFi.config(Wifi_config.IP_config.ip_addr, Wifi_config.IP_config.gw_addr, Wifi_config.IP_config.mask)){
+        Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
+        return false;
+    }
+    Serial.print(F("\n[INFO]: Using static IP..."));
+    return true;
+}
+
+
+bool connectToWifi(String ssid, String pwd) 
+{
+    if (ssid == "" || pwd == "")
+    {
+        Serial.print(F("\n[ERROR]: Empty SSID or Password."));
+        return false;
+    }
+
+    Serial.print(F("\n[INFO]: Connecting to station: ")); Serial.print(ssid);
+
+    WiFi.disconnect();
+    delay(500);
+
+    WiFi.mode(WIFI_STA);
+
+    Serial.print(F("\n[INFO]: Connecting to WiFi..."));
+    WiFi.begin(ssid, pwd);
+
+    if(WiFi.waitForConnectResult(WIFI_RETRY_TIMEOUT) != WL_CONNECTED) {
+        Serial.print(F("\n[ERROR]: Failed to connect."));
+        return false;
+    }
+
+    Serial.print(F("\n[SUCCESS]: CONNECTED: Mode: STA, SSID: ")); Serial.print(WiFi.SSID());
+    Serial.print(F(" IP: ")); Serial.print(WiFi.localIP());
+    configuremDNS();
+    return true;
+}
+
+void dnsProcessNext()
+{
+    dnsServer.processNextRequest();
 }
 
 
@@ -85,79 +162,31 @@ String scanNetworks()
     return json;
 }
 
-
-bool connectToWifi(String ssid, String pwd, bool static_ip) 
+void initWifi(bool ap_mode)
 {
-    if (ssid == "" || pwd == "")
-    {
-        Serial.print(F("\n[ERROR]: Empty SSID or Password."));
-        return false;
-    }
+    host_name = String(Device_config.host_name);
 
-    Serial.print(F("\n[INFO]: Connecting to station: ")); Serial.print(ssid);
-
-    if (static_ip)
-    {
-        if(!WiFi.config(Wifi_config.IP_config.ip_addr, Wifi_config.IP_config.gw_addr, Wifi_config.IP_config.mask)){
-            Serial.print(F("\n[ERROR]: Unable to configure wifi. Using Dynamic IP."));
-        }
-        Serial.print(F("\n[INFO]: Using static IP..."));
-    }
-
-    WiFi.disconnect();
-    delay(500);
-
-    WiFi.mode(WIFI_STA);
-
-    Serial.print(F("\n[INFO]: Connecting to WiFi..."));
-    WiFi.begin(ssid, pwd);
-
-    if(WiFi.waitForConnectResult(WIFI_RETRY_TIMEOUT) != WL_CONNECTED) {
-        Serial.print(F("\n[ERROR]: Failed to connect."));
-        return false;
-    }
-    Serial.print(F("\n[SUCCESS]: CONNECTED: Mode: STA, SSID: ")); Serial.print(WiFi.SSID());
-    Serial.print(F(" IP: ")); Serial.print(WiFi.localIP());
-    return true;
-}
-
-void initWifi()
-{
-    if (initFS())
-    {
-        if (loadDeviceConfig())
+    if (loadWifiConfig() && ap_mode == false)
+    {           
+        if (Wifi_config.dyn_ip)
         {
-            ap_mode = Device_config.ap_mode;
-
-            if (String(Device_config.host_name) == "")
-            {
-                host_name = String(DEFAULT_HOSTNAME);
-            } else {
-                host_name = String(Device_config.host_name);
-            }
+            setStaticIp();   
+            if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
+                ap_mode = true;
+        } else {
+            if(!connectToWifi(String(Wifi_config.WiFi_cred.wifi_ssid), String(Wifi_config.WiFi_cred.wifi_pw)))
+                ap_mode = true;
         }
-        
-        if (loadWifiConfig())
-        {           
-            if (Wifi_config.dyn_ip)
-            {
-                if(!connectToWifi(Wifi_config.WiFi_cred.wifi_ssid, Wifi_config.WiFi_cred.wifi_pw))
-                    ap_mode = false;
-            } else {
-                if(!connectToWifi(Wifi_config.WiFi_cred.wifi_ssid, Wifi_config.WiFi_cred.wifi_pw, true))
-                    ap_mode = false;
-            }
-        }
-    }
-    else
-    {
-        host_name = String(DEFAULT_HOSTNAME);
-        ap_mode = true;
     }
     
-
-    if (ap_mode)
+    if (ap_mode) //IF Everything fails or preferred mode is AP
     {
         openCaptivePortal();
     }
 }
+
+String getHostName()
+{
+    return host_name;
+}
+

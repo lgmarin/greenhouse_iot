@@ -6,12 +6,21 @@
 #include <DNSServer.h>
 #include <ESP8266mDNS.h>
 
-bool openCaptivePortal();
-String scanNetworks();
-bool configuremDNS();
-bool connectToWifi(String ssid, String pwd, bool static_ip = false);
-void dnsProcessNext();
+// extern String             host_name;
+// extern long               lastScanMillis;
+// extern long               currentMillis;
+// extern bool               ap_mode = true;
 
-void initWifi();
+// bool openCaptivePortal();
+// bool configuremDNS();
+bool connectToWifi(String ssid, String pwd);
+bool setStaticIp(String ip_addr, String gw_addr, String mask);
+// bool setStaticIp();
+
+//EXTERNAL FUNCTIONS
+void dnsProcessNext();
+String scanNetworks();
+String getHostName();
+void initWifi(bool ap_mode);
 
 #endif

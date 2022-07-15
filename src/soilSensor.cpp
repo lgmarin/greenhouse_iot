@@ -18,7 +18,6 @@ SoilMoistureSensor::SoilMoistureSensor(int pin, int airM, int watM)
 
 /*!
  *  @brief  Read soil moisture value
-
  *	@return Soil Moisture value
  */
 int SoilMoistureSensor::readValue()
@@ -32,7 +31,6 @@ int SoilMoistureSensor::readValue()
  *          Display only 2 digits value 0-99%:
  *					- true = Two Digits
  *					- false = All Digits
-
  *	@return Soil Moisture value in percent
  */
 int SoilMoistureSensor::readPercent(bool twoDigits)
@@ -59,7 +57,7 @@ int SoilMoistureSensor::readPercent(bool twoDigits)
 
         return val;
     }
-    Serial.print(F("\n[WARNING]: Soil sensor needs calibration!"));
+    //Serial.print(F("\n[WARNING]: Soil sensor needs calibration!"));
     return 00;
 }
 

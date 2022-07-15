@@ -8,6 +8,9 @@ Display::~Display()
 {
 }
 
+/*!
+ *  @brief  Initialize SSD1306 Display.
+ */
 void Display::Init()
 {
     if(!display.begin(SSD1306_SWITCHCAPVCC, D_I2C_ADDR)) {
@@ -16,18 +19,30 @@ void Display::Init()
     }
     delay(2000);
     display.clearDisplay();
+    display.setTextSize(1);
+    display.setFont(NULL);
+    display.setCursor(0, 0);
     display.setTextColor(WHITE);
+    display.print("Initializing...");
 }
 
-void Display::UpdateScreen(int temp, int hum, int soilP)
+/*!
+ *  @brief  Update the display screen.
+ *  @param  temp Air temperature.
+ *  @param  humidity Air humidity.
+ *  @param  soilP Soil humidity in percent.
+ *  @param  info Info string to display at the top. 
+ */
+void Display::UpdateScreen(int temp, int hum, int soilP, String info)
 {
     // DISPLAY HANDLING
     display.clearDisplay();
     display.setTextSize(1);
     display.setFont(NULL);
-    display.setCursor(0, 0);
     display.setTextColor(WHITE);
-    display.print("IP: 192.168.100.254");
+    // Information
+    display.setCursor(0, 0);
+    display.print(info);
     // Temperature
     display.setCursor(0, 16);
     display.setTextSize(1);
@@ -52,4 +67,27 @@ void Display::UpdateScreen(int temp, int hum, int soilP)
     display.print(soilP);
     display.print("%");
     display.display();
+}
+
+void Display::Sleep(unsigned long current_millis)
+{
+    if (current_millis - _previous_millis >= SLEEP_INTERVAL) 
+    {
+        _previous_millis = current_millis;
+        display.ssd1306_command(SSD1306_DISPLAYOFF);
+        _sleeping = true;
+    }    
+}
+
+bool Display::Wake(unsigned long current_millis)
+{
+    _previous_millis = current_millis;
+    if (_sleeping) 
+    {
+        display.ssd1306_command(SSD1306_DISPLAYON);
+        _sleeping = false;
+        return false;
+    }
+
+    return true;
 }

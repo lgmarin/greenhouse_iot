@@ -83,87 +83,90 @@ void setupEvents(){
 
 void setupWebServer()
 {
-    server.serveStatic("/", LittleFS, "/");
+  server.serveStatic("/", LittleFS, "/");
 
-    //  *******    INDEX PAGE HANDLERS
+  //  *******    INDEX PAGE HANDLERS
 
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(LittleFS, "/index.html", "text/html", false);
-    });
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(LittleFS, "/index.html", "text/html", false);
+  });
 
-    //  *******    CONFIG PAGE HANDLERS
+  //  *******    CONFIG PAGE HANDLERS
 
-    server.on("/config", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(LittleFS, "/config.html", "text/html", false, config_processor);
-    });
+  server.on("/config", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(LittleFS, "/config.html", "text/html", false, config_processor);
+  });
 
-    server.on("/delete-config", HTTP_GET, [](AsyncWebServerRequest *request){
-      if(removeDeviceConfig())
-        request->send_P(200, "text/plain", "success");
-      request->send_P(400, "text/plain", "error");
-    });
+  server.on("/delete-config", HTTP_GET, [](AsyncWebServerRequest *request){
+    if(removeDeviceConfig())
+      request->send_P(200, "text/plain", "success");
+    request->send_P(400, "text/plain", "error");
+  });
 
-    server.on("/delete-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
-      if(removeWifiConfig())
-        request->send_P(200, "text/plain", "success");
-      request->send_P(400, "text/plain", "error");
-    });
+  server.on("/delete-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
+    if(removeWifiConfig())
+      request->send_P(200, "text/plain", "success");
+    request->send_P(400, "text/plain", "error");
+  });
 
-    server.on("/update-config", HTTP_POST, [] (AsyncWebServerRequest *request) {
-      bool ap_mode = false;
+  server.on("/update-config", HTTP_POST, [] (AsyncWebServerRequest *request) {
+    bool ap_mode = false;
 
-      if (request->hasParam("hostname") && request->hasParam("air_v") && request->hasParam("wat_v")) 
+    if (request->hasParam("hostname") && request->hasParam("air_v") && request->hasParam("wat_v")) 
+    {
+      if (request->hasParam("ap_mode"))
       {
-        if (request->hasParam("ap_mode"))
-        {
-          ap_mode = true;
-        }
-
-        if (storeDeviceConfig(request->getParam("hostname")->value(), request->getParam("air_v")->value(), \
-                              request->getParam("wat_v")->value(), ap_mode))
-        {
-          request->send_P(200, "text/plain", "success");
-        }
-        request->send_P(400, "text/plain", "error");
-      }
-      request->send_P(400, "text/plain", "error");
-    });
-
-    //  *******    WIFI PAGE HANDLERS
-
-    server.on("/wifi", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(LittleFS, "/wifi.html", "text/html", false);
-    }).setFilter(ON_AP_FILTER);
-
-    server.on("/scan-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(200, "application/json", scanNetworks());
-    });
-
-    server.on("/status", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(200, "application/json", "{\"status\": \"" + String(WiFi.status()) + "\", \"network\": \""+ WiFi.SSID() + "\"}");
-    });
-
-    server.on("/connect", HTTP_POST, [] (AsyncWebServerRequest *request) {
-      bool result = false;
-
-      if (request->hasParam("auto-ip") && request->hasParam("ssid") && request->hasParam("password")) {
-        result = connectToWifi(request->getParam("ssid")->value(), request->getParam("password")->value());
-      } 
-      else if (request->hasParam("ip") && request->hasParam("gateway") && request->hasParam("mask") && request->hasParam("ssid") && request->hasParam("password"))
-      {
-        setStaticIp(request->getParam("ip")->value(), request->getParam("gateway")->value(), request->getParam("mask")->value());
-        result = connectToWifi(request->getParam("ssid")->value(), request->getParam("password")->value());
+        ap_mode = true;
       }
 
-      if (result)
-        request->send(200, "application/json", "{\"status\": \"connected\" }");
+      if (storeDeviceConfig(request->getParam("hostname")->value(), request->getParam("air_v")->value(), \
+                            request->getParam("wat_v")->value(), ap_mode))
+      {
+        request->send_P(200, "text/plain", "success");
+      }
+      request->send_P(400, "text/plain", "error");
+    }
+    request->send_P(400, "text/plain", "error");
+  });
 
-      request->send(200, "application/json", "{\"status\": \"error\" }");
-    });
+  //  *******    WIFI PAGE HANDLERS
+
+  server.on("/wifi", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(LittleFS, "/wifi.html", "text/html", false);
+  }).setFilter(ON_AP_FILTER);
+
+  server.on("/scan-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(200, "application/json", scanNetworks());
+  });
+
+  server.on("/status", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(200, "application/json", "{\"status\": \"" + String(WiFi.status()) + "\", \"network\": \""+ WiFi.SSID() + "\"}");
+  });
+
+  server.on("/connect", HTTP_POST, [] (AsyncWebServerRequest *request) {
+    bool result = false;
+
+    if (request->hasParam("auto-ip") && request->hasParam("ssid") && request->hasParam("password")) {
+      result = connectToWifi(request->getParam("ssid")->value(), request->getParam("password")->value());
+    } 
+    else if (request->hasParam("ip") && request->hasParam("gateway") && request->hasParam("mask") && request->hasParam("ssid") && request->hasParam("password"))
+    {
+      setStaticIp(request->getParam("ip")->value(), request->getParam("gateway")->value(), request->getParam("mask")->value());
+      result = connectToWifi(request->getParam("ssid")->value(), request->getParam("password")->value());
+    }
+
+    if (result)
+      request->send(200, "application/json", "{\"status\": \"connected\" }");
+
+    request->send(200, "application/json", "{\"status\": \"error\" }");
+  });
+
+  server.onNotFound(notFound);
 
   setupEvents();
 
   server.begin();
+  Serial.print(F("\n[INFO]: Initializing WebServer..."));
 }
 
 

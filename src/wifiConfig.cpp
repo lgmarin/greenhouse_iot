@@ -6,10 +6,6 @@ String             host_name;
 long               lastScanMillis;
 long               currentMillis;
 
-// IPAddress          static_ip;
-// IPAddress          static_gw;
-// IPAddress          static_mask;
-
 bool configuremDNS()
 {
     if (!MDNS.begin(host_name)) {
@@ -26,7 +22,7 @@ bool startDNSServer(IPAddress soft_ip)
 {
     if (!dnsServer.start(53, "*", soft_ip))
     {
-        Serial.print(F("\n[INFO]: Failed to start DNS service."));
+        Serial.print(F("\n[ERROR]: Failed to start DNS service."));
         return false;
     }
     return true;
@@ -35,6 +31,7 @@ bool startDNSServer(IPAddress soft_ip)
 
 bool openCaptivePortal()
 {
+    WiFi.disconnect();
     WiFi.mode(WIFI_AP);
     delay(500);
 
@@ -44,7 +41,7 @@ bool openCaptivePortal()
     if(result)
     {
         Serial.print(F("\n[SUCCESS]: Captive Portal Started at IP: ")); Serial.print(WiFi.softAPIP());
-        startDNSServer(WiFi.softAPIP());
+        //startDNSServer(WiFi.softAPIP());
         return true;
     }
     return false;

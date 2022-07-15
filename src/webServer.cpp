@@ -26,7 +26,7 @@ String index_processor(const String& var){
     return getHostName();
   }
   else if(var == "DEVICE_IP"){
-    return WiFi.localIP().toString();
+    return getIpAddress();
   }
   else if(var == "DHT_T"){
     return String(airTemp());
@@ -43,31 +43,20 @@ String index_processor(const String& var){
 
 String config_processor(const String& var){
   if(var == "MODE"){
-    switch (WiFi.getMode())
-    {
-    case WIFI_STA:
-      return "Conectado : Cliente";
-      break;
-    case WIFI_AP:
-      return "Ponto de Acesso";
-      break;       
-    default:
-      return "";
-      break;
-    }
+    return getMode();
   }
   else if(var == "SSID"){
-    return WiFi.SSID();
+    return getSSID();
   }
     else if(var == "HOSTNAME"){
     return getHostName();
   }
   else if(var == "DEVICE_IP"){
-    return WiFi.localIP().toString();
+    return getIpAddress();
   }
   else if (var == "MAC")
   {
-    return WiFi.macAddress();
+    return getMacAddress();
   }
   else if (var == "AIR_VAL")
   {

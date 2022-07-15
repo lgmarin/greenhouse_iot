@@ -5,6 +5,7 @@ DNSServer dnsServer;
 String             host_name;
 long               lastScanMillis;
 long               currentMillis;
+bool               dns_started = false;
 
 bool configuremDNS()
 {
@@ -25,8 +26,10 @@ bool startDNSServer(IPAddress soft_ip)
     if (!dnsServer.start(53, "*", soft_ip))
     {
         Serial.print(F("\n[ERROR]: Failed to start DNS service."));
+        dns_started = false;
         return false;
     }
+    dns_started = true;
     return true;
 }
 
@@ -40,7 +43,7 @@ bool openCaptivePortal()
     WiFi.persistent(true);
     delay(500);
 
-    Serial.print(F("\n[INFO]: Starting soft-AP..."));
+    Serial.print(F("\n[INFO]: Starting Captive Portal..."));
     bool result = WiFi.softAP(host_name);
 
     if(result)
@@ -51,6 +54,20 @@ bool openCaptivePortal()
         return true;
     }
     return false;
+}
+
+bool connectToAp()
+{
+    Serial.print(F("\n[INFO]: Starting soft-AP..."));
+    bool result = WiFi.softAP(host_name);
+
+    if(result)
+    {
+        Serial.print(F("\n[SUCCESS]: AP started at IP: ")); Serial.print(WiFi.softAPIP());
+        configuremDNS();
+        return true;
+    }
+    return false;    
 }
 
 
@@ -114,7 +131,10 @@ bool connectToWifi(String ssid, String pwd)
 
 void dnsProcessNext()
 {
-    dnsServer.processNextRequest();
+    if (dns_started)
+    {
+        dnsServer.processNextRequest();
+    }    
 }
 
 
@@ -181,8 +201,35 @@ void initWifi(bool ap_mode)
     
     if (ap_mode) //IF Everything fails or preferred mode is AP
     {
-        openCaptivePortal();
+        connectToAp();
     }
+}
+
+String getIpAddress()
+{
+    if (WiFi.getMode() == 2)
+    {
+        return String(WiFi.softAPIP().toString());
+    } 
+    return String(WiFi.localIP().toString());   
+}
+
+String getMacAddress()
+{
+    if (WiFi.getMode() == 2)
+    {
+        return WiFi.softAPmacAddress();
+    } 
+    return WiFi.macAddress();
+}
+
+String getSSID()
+{
+    if (WiFi.getMode() == 2)
+    {
+        return host_name;
+    } 
+    return WiFi.SSID(); 
 }
 
 String getHostName()
@@ -190,3 +237,21 @@ String getHostName()
     return host_name;
 }
 
+String getMode()
+{
+    switch (WiFi.getMode())
+    {
+    case WIFI_STA:
+      return "Conectado";
+      break;
+    case WIFI_AP:
+      return "Ponto de Acesso";
+      break;
+    case WIFI_OFF:
+      return "Desligado";
+      break;              
+    default:
+      return "Desconhecido";
+      break;
+    }
+}

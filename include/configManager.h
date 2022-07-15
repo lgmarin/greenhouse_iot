@@ -32,7 +32,7 @@ extern Wifi_Config        Wifi_config;
 
 typedef struct
 {
-  char      host_name[32];
+  char      host_name[24];
   bool      ap_mode = false;
   int       air_value;
   int       wat_value;

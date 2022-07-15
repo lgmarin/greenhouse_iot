@@ -3,6 +3,55 @@
 AsyncWebServer    server(HTTP_PORT);
 AsyncEventSource  events("/events");
 
+/*
+*     HTML PRE-PROCESSORS
+*/
+String index_processor(const String& var){
+  if(var == "HOST_NAME"){
+    return getHostName();
+  }
+  else if(var == "DEVICE_IP"){
+    return getIpAddress();
+  }
+  else if(var == "DHT_T"){
+    return String(airTemp());
+  }
+  else if(var == "DHT_H"){
+    return String(airHumidity());
+  }
+  else if(var == "SOIL_H"){
+    return String(soilHumidity());
+  }
+  return String();
+}
+
+String config_processor(const String& var){
+  if(var == "MODE"){
+    return getMode();
+  }
+  else if(var == "SSID"){
+    return getSSID();
+  }
+    else if(var == "HOSTNAME"){
+    return getHostName();
+  }
+  else if(var == "DEVICE_IP"){
+    return getIpAddress();
+  }
+  else if (var == "MAC")
+  {
+    return getMacAddress();
+  }
+  else if (var == "AIR_VAL")
+  {
+    return String(Device_config.air_value);
+  }
+  else if (var == "WAT_VAL")
+  {
+    return String(Device_config.wat_value);
+  }  
+  return String();
+}
 
 /*
 *     REQUEST HANDLERS
@@ -134,71 +183,16 @@ void addServerHandlers()
 }
 
 
-/*
-*     HTML PRE-PROCESSORS
-*/
-String index_processor(const String& var){
-  if(var == "HOST_NAME"){
-    return getHostName();
-  }
-  else if(var == "DEVICE_IP"){
-    return getIpAddress();
-  }
-  else if(var == "DHT_T"){
-    return String(airTemp());
-  }
-  else if(var == "DHT_H"){
-    return String(airHumidity());
-  }
-  else if(var == "SOIL_H"){
-    return String(soilHumidity());
-  }
-  return String();
-}
-
-
-String config_processor(const String& var){
-  if(var == "MODE"){
-    return getMode();
-  }
-  else if(var == "SSID"){
-    return getSSID();
-  }
-    else if(var == "HOSTNAME"){
-    return getHostName();
-  }
-  else if(var == "DEVICE_IP"){
-    return getIpAddress();
-  }
-  else if (var == "MAC")
-  {
-    return getMacAddress();
-  }
-  else if (var == "AIR_VAL")
-  {
-    return String(Device_config.air_value);
-  }
-  else if (var == "WAT_VAL")
-  {
-    return String(Device_config.wat_value);
-  }  
-  return String();
-}
-
-
 void setupWebServer()
 {
   server.serveStatic("/", LittleFS, "/");
 
   addServerHandlers();
-
   events.onConnect(serverEventHandler);
-
   server.addHandler(&events);  
 
-  server.begin();
-  
   Serial.print(F("\n[INFO]: Initializing WebServer..."));
+  server.begin();
 }
 
 

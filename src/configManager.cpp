@@ -11,9 +11,8 @@ const char* device_config_file = "/device.cfg";
 ///     LITTLEFS Management functions
 ///
 
-
 /*!
- *  @brief  Initialize LitteFS.
+ *  @brief  Initialize LittleFS.
  *  @return Returns true if initialized successfully.
  */
 bool initFS() {
@@ -27,18 +26,14 @@ bool initFS() {
   }
 }
 
-int calcChecksum(uint8_t* address, uint16_t sizeToCalc)
-{
-  uint16_t checkSum = 0;
-
-  for (uint16_t index = 0; index < sizeToCalc; index++)
-  {
-    checkSum += * ( ( (byte*) address ) + index);
-  }
-  return checkSum;
-}
-
-bool loadConfigData(void *str_Config, size_t size, char* filename)
+/*!
+ *  @brief  Load data from LittleFS.
+ *  @param str_Config Struct pointer destination.
+ *  @param size Destination struct size.
+ *  @param filename Filename to load.
+ *  @return Returns true if successful.
+ */
+bool loadFSData(void *str_Config, size_t size, char* filename)
 {
   File file = LittleFS.open(filename, "r");
   memset(str_Config, 0, size);
@@ -55,7 +50,14 @@ bool loadConfigData(void *str_Config, size_t size, char* filename)
   }
 }
 
-bool saveConfigData(void *str_Config, size_t size, char* filename)
+/*!
+ *  @brief  Save data to LittleFS.
+ *  @param str_Config Struct pointer to save.
+ *  @param size Struct size.
+ *  @param filename Filename to save.
+ *  @return Returns true if successful.
+ */
+bool saveFSData(void *str_Config, size_t size, char* filename)
 {
   File file = LittleFS.open(filename, "w");
 
@@ -71,7 +73,12 @@ bool saveConfigData(void *str_Config, size_t size, char* filename)
   }
 }
 
-bool removeConfigData(char* filename)
+/*!
+ *  @brief  Remove data from LittleFS.
+ *  @param filename Filename to remove.
+ *  @return Returns true if successful.
+ */
+bool removeFSData(char* filename)
 {
   if (LittleFS.exists(filename))
   {
@@ -88,6 +95,23 @@ bool removeConfigData(char* filename)
 }
 
 /*!
+ *  @brief  Calculate configuration struct checksum.
+ *  @param address Struct pointer to calculate.
+ *  @param sizeToCalc Struct size.
+ *  @return Returns checksum data.
+ */
+uint16_t calcChecksum(uint8_t* address, uint16_t sizeToCalc)
+{
+  uint16_t checkSum = 0;
+
+  for (uint16_t index = 0; index < sizeToCalc; index++)
+  {
+    checkSum += * ( ( (byte*) address ) + index);
+  }
+  return checkSum;
+}
+
+/*!
  *  @brief  Copy the content of a string to a allocated char array.
  *  @param  string Input string.
  *  @param  char_loc Destination char pointer.
@@ -100,7 +124,6 @@ void storeString(String string, char* char_loc)
     strncpy(char_loc, string.c_str(), sizeof(char_loc) - 1);
 }
 
-
 ///
 ///     WIFI CONFIGURATION FILE
 ///
@@ -111,7 +134,7 @@ void storeString(String string, char* char_loc)
  */
 bool loadWifiConfig()
 {
-  if(loadConfigData(&Wifi_config, sizeof(Wifi_config), (char*) wifi_config_file))
+  if(loadFSData(&Wifi_config, sizeof(Wifi_config), (char*) wifi_config_file))
   {
     if ( Wifi_config.checksum != calcChecksum( (uint8_t*) &Wifi_config, sizeof(Wifi_config) - sizeof(Wifi_config.checksum) ) )
     {
@@ -120,7 +143,7 @@ bool loadWifiConfig()
     }
 
     // Don't permit NULL SSID and password len < MIN_AP_PASSWORD_SIZE (8)
-    if ( (String(Wifi_config.WiFi_cred.wifi_ssid) == "") || (String(Wifi_config.WiFi_cred.wifi_pw) == "") )
+    if ((String(Wifi_config.WiFi_cred.wifi_ssid) == "") || (String(Wifi_config.WiFi_cred.wifi_pw) == ""))
     {
       Serial.print(F("\n[ERROR]: Wifi SSID or Password is empty!"));
       return false;
@@ -143,8 +166,6 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
 {
   memset(&Wifi_config, 0, sizeof(Wifi_config));
 
-  //storeString(SSID, Wifi_config.WiFi_cred.wifi_ssid);
-  
   //SAVE SSID
   if (strlen(SSID.c_str()) < sizeof(Wifi_config.WiFi_cred.wifi_ssid) - 1)
     strcpy(Wifi_config.WiFi_cred.wifi_ssid, SSID.c_str());
@@ -170,7 +191,7 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
   
   //Calculate checksum and save credentials
   Wifi_config.checksum = calcChecksum((uint8_t*) &Wifi_config, sizeof(Wifi_config) - sizeof(Wifi_config.checksum));
-  if (saveConfigData(&Wifi_config, sizeof(Wifi_config), (char*) wifi_config_file))
+  if (saveFSData(&Wifi_config, sizeof(Wifi_config), (char*) wifi_config_file))
   {
     Serial.print(F("\n[INFO]: Wifi Credentials file saved!"));
     return true;
@@ -186,7 +207,7 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
  */
 bool removeWifiConfig()
 {
-  if(removeConfigData((char*) wifi_config_file))
+  if(removeFSData((char*) wifi_config_file))
     return true;
 
   return false;
@@ -202,7 +223,7 @@ bool removeWifiConfig()
  */
 bool loadDeviceConfig()
 {
-  if(loadConfigData(&Device_config, sizeof(Device_config), (char*) device_config_file))
+  if(loadFSData(&Device_config, sizeof(Device_config), (char*) device_config_file))
   {
     if ( Device_config.checksum != calcChecksum( (uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum) ) )
     {
@@ -214,7 +235,10 @@ bool loadDeviceConfig()
     if ( (String(Device_config.host_name) == "") )
     {
       Serial.print(F("\n[ERROR]: Hostname is empty, using default!"));
-      storeString(String(DEFAULT_HOSTNAME), Wifi_config.WiFi_cred.wifi_ssid); 
+      if (strlen(String(DEFAULT_HOSTNAME).c_str()) < sizeof(Device_config.host_name) - 1)
+        strcpy(Device_config.host_name, String(DEFAULT_HOSTNAME).c_str());
+      else
+        strncpy(Device_config.host_name, String(DEFAULT_HOSTNAME).c_str(), sizeof(Device_config.host_name) - 1);
     }
     Serial.print(F("\n[INFO]: Device Config File Read. Checksum ok."));
     return true; 
@@ -245,7 +269,7 @@ bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode
 
   //Calculate checksum and save credentials
   Device_config.checksum = calcChecksum((uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum));
-  if (saveConfigData(&Device_config, sizeof(Device_config), (char*) device_config_file))
+  if (saveFSData(&Device_config, sizeof(Device_config), (char*) device_config_file))
   {
     Serial.print(F("\n[INFO]: Device config file saved!"));
     return true;
@@ -261,12 +285,16 @@ bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode
  */
 bool removeDeviceConfig()
 {
-  if(removeConfigData((char*) device_config_file))
+  if(removeFSData((char*) device_config_file))
     return true;
 
   return false;
 }
 
+
+/*!
+ *  @brief  Set parameters to factory default (see definitions.h).
+ */
 void defaultDeviceConfig()
 {
   Serial.print(F("\n[WARNING]: USING DEFAULT VALUES!"));

@@ -28,7 +28,7 @@
 #define SCREEN_W                128
 #define SCREEN_H                64
 #define D_I2C_ADDR              0x3C    //0x7A //0x78
-#define SLEEP_INTERVAL          60000   // 1 minute to sleep
+#define SLEEP_INTERVAL          30000   // 1 minute to sleep
 #define WAKE_BTN_PIN            14      //GPIO14 - D
 
 
@@ -38,7 +38,7 @@
 #define WIFI_RETRY_COUNT        3
 #define WIFI_RETRY_TIMEOUT      5000
 #define SCAN_PERIOD             3500
-#define DEFAULT_HOSTNAME        F("ESPMANAGER0012")
+#define DEFAULT_HOSTNAME        F("GREENHOUSEIOT")
 #define HTTP_PORT               80
 #define DEFAULT_TO_AP           true
 

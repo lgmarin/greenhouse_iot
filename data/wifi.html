@@ -62,7 +62,7 @@
             <div class="mdl-card__supporting-text mdl-color-text--grey-600">
               <div>
                 <iframe name="dummyframe" id="dummyframe" style="display: none"></iframe>
-                <form action="/connect-wifi" target="dummyframe" method="POST">
+                <form action="/connect-wifi" target="dummyframe">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="wifi_ssid" name="wifi_ssid" required>
                       <label class="mdl-textfield__label" for="wifi_ssid">Wifi SSID</label>
@@ -107,6 +107,12 @@
                       {"SSID":"Wifi 3", "Quality":"100"},
                       {"SSID":"Wifi 4", "Quality":"20"}
                       ]};
+                      {"networks": 
+                      [{"ssid":BrasilNET_CLEVERSON,"quality":"-60"},
+                      {"ssid":Tiago,"quality":"-86"},
+                      {"ssid":Descubra,"quality":"-92"},
+                      {"ssid":OpenWrt,"quality":"-43"}
+                      ]}
 
       var auto_ip = document.querySelector("#set-auto-ip");
       window.onload = function() {

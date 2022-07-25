@@ -174,7 +174,7 @@ void addServerHandlers()
 
   server.on("/delete-wifi", HTTP_GET, deleteWifiConfigHandler);
 
-  server.on("/update-config", HTTP_POST, updateConfigHandler);
+  server.on("/update-config", HTTP_GET, updateConfigHandler);
 
   //  *******    WIFI PAGE HANDLERS
   
@@ -190,7 +190,7 @@ void addServerHandlers()
     request->send(200, "application/json", "{\"status\": \"" + String(WiFi.status()) + "\", \"network\": \""+ WiFi.SSID() + "\"}");
   });
 
-  server.on("/connect", HTTP_POST, connectHandler);
+  server.on("/connect", HTTP_GET, connectHandler);
 
   server.onNotFound(notFoundHandler);
 }

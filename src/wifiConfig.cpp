@@ -164,8 +164,8 @@ String scanNetworks()
         {
             if(i) json += ",";
             json += "{";
-            json += "\"ssid\":"+WiFi.SSID(i);
-            json += ",\"quality\":\""+String(WiFi.RSSI(i))+"\"";     
+            json += "\"SSID\":"+WiFi.SSID(i);
+            json += ",\"Quality\":\""+String(WiFi.RSSI(i))+"\"";     
             json += "}";
         }
 

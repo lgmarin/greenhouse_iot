@@ -23,6 +23,7 @@ bool initFS() {
   else
   {
     Serial.print(F("\n[INFO]: LittleFS mounted successfully"));
+    Serial.print(F("\n[INFO]: Listing files...\n"));
     listFSFiles("/");
     return true;
   }
@@ -115,7 +116,6 @@ uint16_t calcChecksum(uint8_t* address, uint16_t sizeToCalc)
 
 void listFSFiles(String dir_path)
 {
-  Serial.print(F("\n[INFO]: Listing files..."));
 	Dir dir = LittleFS.openDir(dir_path);
 	while(dir.next()) {
 		if (dir.isFile()) {

@@ -4,6 +4,7 @@
 #include <definitions.h>
 #include <soilSensor.h>
 #include <dhtSensor.h>
+#include <configManager.h>
 
 void initSensors();
 void sensorsLoop();

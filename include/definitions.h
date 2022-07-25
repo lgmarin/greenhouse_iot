@@ -17,8 +17,8 @@
 //      SOIL MOISTURE CONFIGURATION
 #define SOIL_A                  A0
 // SOIL CALIBRATION CONFIGURATION
-#define DEF_CAL_AIR             790
-#define DEF_CAL_WAT             390
+#define DEF_CAL_AIR             1000
+#define DEF_CAL_WAT             100
 
 
 //          DISPLAY CONFIGURATION

@@ -18,7 +18,9 @@ void initSensors()
 
     _dhtTemperature = dhtSensor.readTemperature();
     _dhtHumidity = dhtSensor.readHumidity();
-    _soilPercent = soil.readPercent();  
+
+    soil.enterCalibration(Device_config.air_value, Device_config.wat_value);
+    _soilPercent = soil.readPercent();
 }
 
 void sensorsLoop()

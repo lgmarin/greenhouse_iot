@@ -58,7 +58,7 @@ int SoilMoistureSensor::readPercent(bool twoDigits)
         return val;
     }
     //Serial.print(F("\n[WARNING]: Soil sensor needs calibration!"));
-    return 00;
+    return 0;
 }
 
 /*!

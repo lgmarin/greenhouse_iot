@@ -20,8 +20,10 @@ bool initFS() {
     Serial.print(F("\n[ERROR]: An error has occurred while mounting LittleFS"));
     return false;
   }
-  else{
+  else
+  {
     Serial.print(F("\n[INFO]: LittleFS mounted successfully"));
+    listFSFiles("/");
     return true;
   }
 }
@@ -110,6 +112,24 @@ uint16_t calcChecksum(uint8_t* address, uint16_t sizeToCalc)
   }
   return checkSum;
 }
+
+void listFSFiles(String dir_path)
+{
+  Serial.print(F("\n[INFO]: Listing files..."));
+	Dir dir = LittleFS.openDir(dir_path);
+	while(dir.next()) {
+		if (dir.isFile()) {
+			Serial.print(F("File: "));
+			Serial.println(dir_path + dir.fileName());
+		}
+		if (dir.isDirectory()) {
+			Serial.print(F("Dir: "));
+			Serial.println(dir_path + dir.fileName() + "/");
+			listFSFiles(dir_path + dir.fileName() + "/");
+		}
+	}
+}
+
 
 /*!
  *  @brief  Copy the content of a string to a allocated char array.

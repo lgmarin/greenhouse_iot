@@ -44,6 +44,7 @@ extern Device_Config      Device_config;
 
 // EXTERNAL FUNCTIONS
 bool initFS();
+void listFSFiles(String dir_path);
 
 bool loadWifiConfig();
 bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IPAddress gw, IPAddress mask);

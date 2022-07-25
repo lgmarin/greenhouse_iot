@@ -6,7 +6,7 @@ AsyncEventSource  events("/events");
 /*
 *     HTML PRE-PROCESSORS
 */
-String index_processor(const String& var){
+String indexProcessor(const String& var){
   if(var == "HOST_NAME"){
     return getHostName();
   }
@@ -25,7 +25,7 @@ String index_processor(const String& var){
   return String();
 }
 
-String config_processor(const String& var){
+String configProcessor(const String& var){
   if(var == "MODE"){
     return getMode();
   }
@@ -50,6 +50,16 @@ String config_processor(const String& var){
   {
     return String(Device_config.wat_value);
   }  
+  return String();
+}
+
+String wifiProcessor(const String& var){
+  if(var == "HOST_NAME"){
+    return getHostName();
+  }
+  else if(var == "DEVICE_IP"){
+    return getIpAddress();
+  }
   return String();
 }
 
@@ -141,16 +151,9 @@ void serverEventHandler(AsyncEventSourceClient *client)
 void addServerHandlers()
 {
   //  *******    INDEX PAGE HANDLERS
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    //request->send(LittleFS, "/index.html", "text/html", false);
-    AsyncWebServerResponse *response = request->beginResponse(200, "text/html");
-    response->addHeader("Content-Encoding", "text/html");
-    request->send(LittleFS, "/index.html.gz", "text/html", false);    
-  });
 
-  server.on("/teste", HTTP_GET, [](AsyncWebServerRequest *request){
-    String message = "WORKING!@";
-    request->send(200, "text/plain", message);
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(LittleFS, "/index.html", "text/html", false, indexProcessor);
   });
 
   server.on("/generate_204", HTTP_GET, [](AsyncWebServerRequest * request) {
@@ -162,8 +165,9 @@ void addServerHandlers()
   }).setFilter(ON_AP_FILTER);
 
   //  *******    CONFIG PAGE HANDLERS
+
   server.on("/config", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(LittleFS, "/config.html", "text/html", false, config_processor);
+    request->send(LittleFS, "/config.html", "text/html", false, configProcessor);
   });
 
   server.on("/delete-config", HTTP_GET, deleteConfigHandler);
@@ -173,9 +177,10 @@ void addServerHandlers()
   server.on("/update-config", HTTP_POST, updateConfigHandler);
 
   //  *******    WIFI PAGE HANDLERS
+  
   server.on("/wifi", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(LittleFS, "/wifi.html", "text/html", false);
-  }).setFilter(ON_AP_FILTER);
+    request->send(LittleFS, "/wifi.html", "text/html", false, wifiProcessor);
+  });
 
   server.on("/scan-wifi", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(200, "application/json", scanNetworks());

@@ -27,8 +27,8 @@ void sensorsLoop()
 {
     _dhtTemperature = dhtSensor.readTemperature();
     _dhtHumidity = dhtSensor.readHumidity();
-    _soilPercent = soil.readPercent();
     _soilValue = soil.readValue();
+    _soilPercent = soil.readPercent();
 }
 
 unsigned long dhtDelay()

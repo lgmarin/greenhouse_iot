@@ -37,7 +37,7 @@ int SoilMoistureSensor::readPercent(bool twoDigits)
 {  
     if (_calibrated)
     {
-        int val = map(analogRead(_analogPin), _airMoist, _waterMoist, 0, 100);
+        int val = map(readValue(), _airMoist, _waterMoist, 0, 100);
 
         if (twoDigits)
         {

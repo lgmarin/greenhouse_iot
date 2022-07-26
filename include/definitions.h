@@ -6,7 +6,7 @@
 /*
 *            SENSORS DEFINITIONS
 */
-#define DEFAULT_DELAY           2000    //2secs delay loop
+#define DEFAULT_DELAY           3000    //3secs delay loop
 
 
 //             DHT CONFIGURATION

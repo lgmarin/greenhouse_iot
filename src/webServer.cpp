@@ -1,7 +1,7 @@
 #include <webServer.h>
 
 AsyncWebServer    server(HTTP_PORT);
-AsyncEventSource  events("/events");
+//AsyncEventSource  events("/events");
 
 /*
 *     HTML PRE-PROCESSORS
@@ -122,14 +122,14 @@ void connectHandler(AsyncWebServerRequest *request)
 {
   bool result = false;
 
-  if (request->hasParam("auto-ip") && request->hasParam("ssid") && request->hasParam("password")) 
+  if (request->hasParam("auto-ip") && request->hasParam("wifi_ssid") && request->hasParam("wifi_password")) 
   {
-    result = connectToWifi(request->getParam("ssid")->value(), request->getParam("password")->value());
+    result = connectToWifi(request->getParam("wifi_ssid")->value(), request->getParam("wifi_password")->value());
   } 
-  else if (request->hasParam("ip") && request->hasParam("gateway") && request->hasParam("mask") && request->hasParam("ssid") && request->hasParam("password"))
+  else if (request->hasParam("ip") && request->hasParam("gateway") && request->hasParam("mask") && request->hasParam("wifi_ssid") && request->hasParam("wifi_password"))
   {
     setStaticIp(request->getParam("ip")->value(), request->getParam("gateway")->value(), request->getParam("mask")->value());
-    result = connectToWifi(request->getParam("ssid")->value(), request->getParam("password")->value());
+    result = connectToWifi(request->getParam("wifi_ssid")->value(), request->getParam("wifi_password")->value());
   }
 
   if (result)
@@ -138,15 +138,15 @@ void connectHandler(AsyncWebServerRequest *request)
   request->send(200, "application/json", "{\"status\": \"error\" }");
 }
 
-void serverEventHandler(AsyncEventSourceClient *client)
-{
-  if(client->lastId())
-  {
-    Serial.print(F("\n[INFO]: Event Listener client reconnected."));
-  }
+// void serverEventHandler(AsyncEventSourceClient *client)
+// {
+//   if(client->lastId())
+//   {
+//     Serial.print(F("\n[INFO]: Event Listener client reconnected."));
+//   }
 
-  client->send("[ESP_EVENT]", NULL, millis(), 10000);
-}
+//   client->send("[ESP_EVENT]", NULL, millis(), 10000);
+// }
 
 void addServerHandlers()
 {
@@ -204,8 +204,8 @@ void addServerHandlers()
 void setupWebServer()
 {
   addServerHandlers();
-  events.onConnect(serverEventHandler);
-  server.addHandler(&events);  
+  // events.onConnect(serverEventHandler);
+  // server.addHandler(&events);  
 
   Serial.print(F("\n[INFO]: Initializing WebServer..."));
   server.begin();
@@ -214,7 +214,7 @@ void setupWebServer()
 }
 
 
-void eventsLoop()
-{
-  events.send(readSensorsJSON().c_str(),"sensor_readings",millis());
-}
+// void eventsLoop()
+// {
+//   events.send(readSensorsJSON().c_str(),"sensor_readings",millis());
+// }

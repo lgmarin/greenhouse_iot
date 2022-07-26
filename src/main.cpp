@@ -47,7 +47,7 @@ void loop() {
     sensorsLoop();
 
     // EventListenner Loop
-    eventsLoop();
+    // eventsLoop();
 
     //Update Screen
     display.UpdateScreen(airTemp(), airHumidity(), soilHumidity(), "TESTE");

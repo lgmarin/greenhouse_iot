@@ -55,12 +55,12 @@ String readSensorsJSON()
 {
     String json;
 
-    json += "{";
-    json +=  "\"dht_t\":" + _dhtTemperature;
-    json +=  ", \"dht_h\":" + _dhtHumidity;
-    json +=  ", \"soil_p\":" + _soilPercent;
-    json +=  ", \"soil_v\":" + _soilValue;
-    json += "}";
+    json += "{\"sensors\":{";
+    json +=  "\"dht_t\":\""+ String(_dhtTemperature);
+    json +=  "\", \"dht_h\":\""+ String(_dhtHumidity);
+    json +=  "\", \"soil_p\":\""+ String(_soilPercent);
+    json +=  "\", \"soil_v\":\""+ String(_soilValue);
+    json += "}}";
 
     return json;
 }

@@ -251,8 +251,7 @@ bool loadDeviceConfig()
       return false;
     }
 
-    // Don't permit NULL SSID and password len < MIN_AP_PASSWORD_SIZE (8)
-    if ( (String(Device_config.host_name) == "") )
+    if ((String(Device_config.host_name) == ""))
     {
       Serial.print(F("\n[ERROR]: Hostname is empty, using default!"));
       if (strlen(String(DEFAULT_HOSTNAME).c_str()) < sizeof(Device_config.host_name) - 1)
@@ -284,8 +283,17 @@ bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode
   else
     strncpy(Device_config.host_name, host_name.c_str(), sizeof(Device_config.host_name) - 1);
 
-  if ((String(Device_config.host_name) = ""))
+  if ((String(Device_config.host_name) == ""))
     Serial.println(F("[WARNING]: Null hostname!"));
+
+  //SAVE WAT_V
+  Device_config.wat_value = wat_v.toInt();
+
+  //SAVE AIR_V
+  Device_config.wat_value = air_v.toInt();
+
+  //SAVE AP_MODE
+  Device_config.ap_mode = apmode;
 
   //Calculate checksum and save credentials
   Device_config.checksum = calcChecksum((uint8_t*) &Device_config, sizeof(Device_config) - sizeof(Device_config.checksum));

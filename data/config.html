@@ -208,8 +208,8 @@
           }, false);
       }
       function updateValues(jsonObj) {
-          document.getElementById("soil_p").innerHTML = jsonObj.sensors.soil_p;
-          document.getElementById("soil_v").innerHTML = jsonObj.sensors.soil_v;
+          document.getElementById("soil_p").innerHTML = jsonObj.soil_p;
+          document.getElementById("soil_v").innerHTML = jsonObj.soil_v;
       }            
       function goHome() {
         location.replace("http://%DEVICE_IP%/");

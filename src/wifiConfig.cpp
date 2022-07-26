@@ -164,7 +164,7 @@ String scanNetworks()
         {
             if(i) json += ",";
             json += "{";
-            json += "\"SSID\":"+WiFi.SSID(i);
+            json += "\"SSID\":\""+WiFi.SSID(i)+"\"";
             json += ",\"Quality\":\""+String(WiFi.RSSI(i))+"\"";     
             json += "}";
         }
@@ -207,7 +207,7 @@ void initWifi(bool ap_mode)
 
 String getIpAddress()
 {
-    if (WiFi.getMode() == 2)
+    if (WiFi.getMode() == 2 || WiFi.getMode() == 2)
     {
         return String(WiFi.softAPIP().toString());
     } 
@@ -219,7 +219,7 @@ String getMacAddress()
     if (WiFi.getMode() == 2)
     {
         return WiFi.softAPmacAddress();
-    } 
+    }
     return WiFi.macAddress();
 }
 

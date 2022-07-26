@@ -164,6 +164,11 @@ void addServerHandlers()
     request->redirect("/index.html");
   }).setFilter(ON_AP_FILTER);
 
+  server.on("/read-sensors", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(200, "application/json", readSensorsJSON());
+  });
+
+
   //  *******    CONFIG PAGE HANDLERS
 
   server.on("/config", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -190,7 +195,7 @@ void addServerHandlers()
     request->send(200, "application/json", "{\"status\": \"" + String(WiFi.status()) + "\", \"network\": \""+ WiFi.SSID() + "\"}");
   });
 
-  server.on("/connect", HTTP_GET, connectHandler);
+  server.on("/connect-wifi", HTTP_GET, connectHandler);
 
   server.onNotFound(notFoundHandler);
 }

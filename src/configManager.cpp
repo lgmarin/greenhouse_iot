@@ -198,8 +198,8 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
   else
     strncpy(Wifi_config.WiFi_cred.wifi_pw, password.c_str(), sizeof(Wifi_config.WiFi_cred.wifi_pw) - 1);  
 
-  if ((String(Wifi_config.WiFi_cred.wifi_ssid) = "") && (String(Wifi_config.WiFi_cred.wifi_pw) = ""))
-    Serial.println(F("[WARNING]: Null SID or Password!"));
+  if ((String(Wifi_config.WiFi_cred.wifi_ssid) == "") && (String(Wifi_config.WiFi_cred.wifi_pw) == ""))
+    Serial.println(F("[WARNING]: Null SSID or Password!"));
 
   //SAVE IP
   Wifi_config.IP_config.ip_addr = ip;

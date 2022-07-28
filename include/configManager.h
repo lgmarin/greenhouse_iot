@@ -34,8 +34,8 @@ typedef struct
 {
   char      host_name[24];
   bool      ap_mode = false;
-  int       air_value;
-  int       wat_value;
+  uint8_t   air_value;
+  uint8_t   wat_value;
   uint16_t  checksum;
 } Device_Config;
 

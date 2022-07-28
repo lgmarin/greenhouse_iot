@@ -202,12 +202,11 @@ bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IP
     Serial.println(F("[WARNING]: Null SID or Password!"));
 
   //SAVE IP
-  if (dyn_ip)
-  {
-    Wifi_config.IP_config.ip_addr = ip;
-    Wifi_config.IP_config.gw_addr = gw;
-    Wifi_config.IP_config.mask = mask;
-  }
+  Wifi_config.IP_config.ip_addr = ip;
+  Wifi_config.IP_config.gw_addr = gw;
+  Wifi_config.IP_config.mask = mask;
+
+  Wifi_config.dyn_ip = dyn_ip;
   
   //Calculate checksum and save credentials
   Wifi_config.checksum = calcChecksum((uint8_t*) &Wifi_config, sizeof(Wifi_config) - sizeof(Wifi_config.checksum));

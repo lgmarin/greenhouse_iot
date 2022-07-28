@@ -6,17 +6,11 @@
 #include <DNSServer.h>
 #include <ESP8266mDNS.h>
 
-// extern String             host_name;
-// extern long               lastScanMillis;
-// extern long               currentMillis;
-// extern bool               ap_mode = true;
-
 
 bool connectToWifi(String ssid, String pwd);
 bool setStaticIp(String ip_addr, String gw_addr, String mask);
-// bool setStaticIp();
+bool saveWifiCredentials(String ssid, String pwd, bool dyn_ip = true, String ip_addr = "0.0.0.0", String gw_addr = "0.0.0.0", String mask = "0.0.0.0");
 
-//EXTERNAL FUNCTIONS
 String scanNetworks();
 String getHostName();
 String getMacAddress();

@@ -135,18 +135,28 @@ void connectHandler(AsyncWebServerRequest *request)
   if (result)
     request->send(200, "application/json", "{\"status\": \"connected\" }");
 
-  request->send(200, "application/json", "{\"status\": \"error\" }");
+  request->send(400, "application/json", "{\"status\": \"error\" }");
 }
 
-// void serverEventHandler(AsyncEventSourceClient *client)
-// {
-//   if(client->lastId())
-//   {
-//     Serial.print(F("\n[INFO]: Event Listener client reconnected."));
-//   }
+void saveWifiHandler(AsyncWebServerRequest *request)
+{
+  bool result = false;
 
-//   client->send("[ESP_EVENT]", NULL, millis(), 10000);
-// }
+  if (request->hasParam("auto-ip") && request->hasParam("wifi_ssid") && request->hasParam("wifi_password")) 
+  {
+    result = saveWifiCredentials(request->getParam("wifi_ssid")->value(), request->getParam("wifi_password")->value());
+  } 
+  else if (request->hasParam("ip") && request->hasParam("gateway") && request->hasParam("mask") && request->hasParam("wifi_ssid") && request->hasParam("wifi_password"))
+  {
+    result = saveWifiCredentials(request->getParam("wifi_ssid")->value(), request->getParam("wifi_password")->value(), false, \
+                                 request->getParam("ip")->value(), request->getParam("gateway")->value(), request->getParam("mask")->value());
+  }
+
+  if (result)
+    request->send(200, "application/json", "{\"status\": \"saved\" }");
+
+  request->send(400, "application/json", "{\"status\": \"error\" }");  
+}
 
 void addServerHandlers()
 {
@@ -196,6 +206,8 @@ void addServerHandlers()
   });
 
   server.on("/connect-wifi", HTTP_GET, connectHandler);
+
+  server.on("/save-wifi", HTTP_GET, saveWifiHandler);
 
   server.onNotFound(notFoundHandler);
 }

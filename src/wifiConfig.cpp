@@ -99,6 +99,38 @@ bool setStaticIp()
     return true;
 }
 
+bool saveWifiCredentials(String ssid, String pwd, bool dyn_ip, String ip_addr, String gw_addr, String mask)
+{
+    IPAddress          st_ip, st_gw, st_mask;
+
+    if (ssid != "" && pwd != "")
+    {
+        if (st_ip.fromString(ip_addr) && st_gw.fromString(gw_addr) && st_mask.fromString(mask) && !dyn_ip)
+        {
+            if(storeWifiConfig(ssid, pwd, dyn_ip, st_ip.fromString(ip_addr), st_gw.fromString(gw_addr), st_mask.fromString(mask)))
+            {
+                return true;
+            }
+
+            return false;
+        } 
+        else
+        {
+            IPAddress st_ip(0,0,0,0);
+            IPAddress st_gw(0,0,0,0);
+            IPAddress st_mask(0,0,0,0);
+
+            if(storeWifiConfig(ssid, pwd, dyn_ip, st_ip, st_gw, st_mask))
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    Serial.print(F("\n[ERROR]: Empty SSID or Password not valid!"));
+    return false;
+}
 
 bool connectToWifi(String ssid, String pwd) 
 {

@@ -13,7 +13,7 @@ bool configuremDNS()
         return false;
     }
     // Add Web Server service to mDNS
-    MDNS.addService("http", "tcp", 80);
+    //MDNS.addService("http", "tcp", 80);
     Serial.print(F("\n[INFO]: mDNS service started. Host: ")); Serial.print(String(Device_config.host_name));
     return true;
 }
@@ -145,7 +145,7 @@ bool connectToWifi(String ssid, String pwd)
     WiFi.disconnect();
     delay(500);
 
-    WiFi.mode(WIFI_STA);
+    //WiFi.mode(WIFI_STA);
 
     Serial.print(F("\n[INFO]: Connecting to WiFi..."));
     WiFi.begin(ssid, pwd);
@@ -287,4 +287,17 @@ String getMode()
       return "Desconhecido";
       break;
     }
+}
+
+String wifiInfo()
+{
+    String infoText;
+    if (WiFi.getMode() == 2 || WiFi.getMode() == 3)
+    {
+        infoText = "AP: " + WiFi.softAPIP().toString();
+        return infoText;
+    }
+
+    infoText = "STA: " + WiFi.localIP().toString();
+    return infoText;
 }

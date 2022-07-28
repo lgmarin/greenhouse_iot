@@ -17,6 +17,7 @@ String getMacAddress();
 String getIpAddress();
 String getSSID();
 String getMode();
+String wifiInfo();
 
 void dnsProcessNext();
 void initWifi(bool ap_mode);

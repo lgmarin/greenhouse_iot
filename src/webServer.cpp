@@ -32,7 +32,7 @@ String configProcessor(const String& var){
   else if(var == "SSID"){
     return getSSID();
   }
-    else if(var == "HOSTNAME"){
+    else if(var == "HOST_NAME"){
     return getHostName();
   }
   else if(var == "DEVICE_IP"){

@@ -36,7 +36,7 @@
 *            WEB DEFINITIONS
 */
 #define WIFI_RETRY_COUNT        3
-#define WIFI_RETRY_TIMEOUT      5000
+#define WIFI_RETRY_TIMEOUT      30000
 #define SCAN_PERIOD             3500
 #define DEFAULT_HOSTNAME        F("greenhouseiot")
 #define HTTP_PORT               80

@@ -2,20 +2,19 @@
 
 DNSServer dnsServer;
 
-String             host_name;
 long               lastScanMillis;
 long               currentMillis;
 bool               dns_started = false;
 
 bool configuremDNS()
 {
-    if (!MDNS.begin(host_name)) {
+    if (!MDNS.begin(String(Device_config.host_name))) {
         Serial.print(F("\n[ERROR]: mDNS service error."));
         return false;
     }
     // Add Web Server service to mDNS
     MDNS.addService("http", "tcp", 80);
-    Serial.print(F("\n[INFO]: mDNS service started. Host: ")); Serial.print(host_name);
+    Serial.print(F("\n[INFO]: mDNS service started. Host: ")); Serial.print(String(Device_config.host_name));
     return true;
 }
 
@@ -38,13 +37,13 @@ bool openCaptivePortal()
 {
     WiFi.persistent(false);
     WiFi.disconnect();
-    WiFi.hostname(host_name);
+    WiFi.hostname(String(Device_config.host_name));
     WiFi.mode(WIFI_AP);
     WiFi.persistent(true);
     delay(500);
 
     Serial.print(F("\n[INFO]: Starting Captive Portal..."));
-    bool result = WiFi.softAP(host_name);
+    bool result = WiFi.softAP(String(Device_config.host_name));
 
     if(result)
     {
@@ -60,7 +59,7 @@ bool connectToAp()
 {
     Serial.print(F("\n[INFO]: Starting soft-AP..."));
 
-    if(WiFi.softAP(host_name))
+    if(WiFi.softAP(String(Device_config.host_name)))
     {
         Serial.print(F("\n[SUCCESS]: AP started at IP: ")); Serial.print(WiFi.softAPIP());
         configuremDNS();
@@ -98,6 +97,7 @@ bool setStaticIp()
     Serial.print(F("\n[INFO]: Using static IP..."));
     return true;
 }
+
 
 bool saveWifiCredentials(String ssid, String pwd, bool dyn_ip, String ip_addr, String gw_addr, String mask)
 {
@@ -216,8 +216,6 @@ String scanNetworks()
 
 void initWifi(bool ap_mode)
 {
-    host_name = String(Device_config.host_name);
-
     if (loadWifiConfig() && ap_mode == false)
     {           
         if (Wifi_config.dyn_ip)
@@ -259,14 +257,14 @@ String getSSID()
 {
     if (WiFi.getMode() == 2)
     {
-        return host_name;
+        return String(Device_config.host_name);
     } 
     return WiFi.SSID(); 
 }
 
 String getHostName()
 {
-    return host_name;
+    return String(Device_config.host_name);
 }
 
 String getMode()

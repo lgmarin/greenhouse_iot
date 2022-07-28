@@ -286,10 +286,10 @@ bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode
     Serial.println(F("[WARNING]: Null hostname!"));
 
   //SAVE WAT_V
-  Device_config.wat_value = wat_v.toInt();
+  Device_config.wat_value = air_v.toInt();
 
   //SAVE AIR_V
-  Device_config.wat_value = air_v.toInt();
+  Device_config.wat_value = wat_v.toInt();
 
   //SAVE AP_MODE
   Device_config.ap_mode = apmode;

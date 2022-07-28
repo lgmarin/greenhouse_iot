@@ -42,6 +42,15 @@ String configProcessor(const String& var){
   {
     return getMacAddress();
   }
+  else if (var == "AP_MODE")
+    if(Device_config.ap_mode)
+    {
+      return "checked";
+    } 
+    else
+    {
+      return "";
+    }
   else if (var == "AIR_VAL")
   {
     return String(Device_config.air_value);
@@ -86,7 +95,6 @@ void notFoundHandler(AsyncWebServerRequest *request) {
 void updateConfigHandler(AsyncWebServerRequest *request)
 {
   bool ap_mode = false;
-  http://192.168.4.1/update-config?hostname=greenhouseiot&air_v=0&wat_v=1024
 
   if (request->hasParam("hostname") && request->hasParam("air_v") && request->hasParam("wat_v")) 
   {

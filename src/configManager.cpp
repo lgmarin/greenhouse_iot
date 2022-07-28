@@ -306,6 +306,7 @@ bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode
   return false;
 }
 
+
 /*!
  *  @brief  Remove Device Configuration from LitteFS.
  *  @return Returns true if configuration removed successfully.

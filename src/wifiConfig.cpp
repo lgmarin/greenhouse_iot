@@ -237,7 +237,7 @@ void initWifi(bool ap_mode)
 
 String getIpAddress()
 {
-    if (WiFi.getMode() == 2 || WiFi.getMode() == 2)
+    if (WiFi.getMode() == 2 || WiFi.getMode() == 3)
     {
         return String(WiFi.softAPIP().toString());
     } 

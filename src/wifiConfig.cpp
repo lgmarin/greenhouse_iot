@@ -13,9 +13,14 @@ bool configuremDNS()
         return false;
     }
     // Add Web Server service to mDNS
-    //MDNS.addService("http", "tcp", 80);
+    MDNS.addService("http", "tcp", 80);
     Serial.print(F("\n[INFO]: mDNS service started. Host: ")); Serial.print(String(Device_config.host_name));
     return true;
+}
+
+void updatemDNS()
+{
+    MDNS.update();
 }
 
 bool startDNSServer(IPAddress soft_ip)

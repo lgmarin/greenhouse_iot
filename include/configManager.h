@@ -43,7 +43,7 @@ extern Device_Config      Device_config;
 
 
 // EXTERNAL FUNCTIONS
-bool initFS();
+bool initFS(bool listFiles = false);
 void listFSFiles(String dir_path);
 
 bool loadWifiConfig();

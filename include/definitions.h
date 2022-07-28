@@ -28,7 +28,7 @@
 #define SCREEN_W                128
 #define SCREEN_H                64
 #define D_I2C_ADDR              0x3C    //0x7A //0x78
-#define SLEEP_INTERVAL          30000   // 1/2 minute to sleep
+#define SLEEP_INTERVAL          60000   // 1/2 minute to sleep
 #define WAKE_BTN_PIN            14      //GPIO14 - D
 
 

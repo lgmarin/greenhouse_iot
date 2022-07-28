@@ -1,7 +1,6 @@
 #include <webServer.h>
 
 AsyncWebServer    server(HTTP_PORT);
-//AsyncEventSource  events("/events");
 
 /*
 *     HTML PRE-PROCESSORS
@@ -232,17 +231,9 @@ void addServerHandlers()
 void setupWebServer()
 {
   addServerHandlers();
-  // events.onConnect(serverEventHandler);
-  // server.addHandler(&events);  
 
   Serial.print(F("\n[INFO]: Initializing WebServer..."));
   server.begin();
 
   server.serveStatic("/", LittleFS, "/");
 }
-
-
-// void eventsLoop()
-// {
-//   events.send(readSensorsJSON().c_str(),"sensor_readings",millis());
-// }

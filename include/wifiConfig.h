@@ -20,6 +20,7 @@ String getMode();
 String wifiInfo();
 
 void dnsProcessNext();
+void updatemDNS();
 void initWifi(bool ap_mode);
 
 #endif

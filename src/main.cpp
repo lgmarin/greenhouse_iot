@@ -61,4 +61,5 @@ void loop() {
   display.Sleep(current_millis);
 
   dnsProcessNext();
+  updatemDNS();
 }

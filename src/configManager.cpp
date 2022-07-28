@@ -15,7 +15,7 @@ const char* device_config_file = "/device.cfg";
  *  @brief  Initialize LittleFS.
  *  @return Returns true if initialized successfully.
  */
-bool initFS() {
+bool initFS(bool listFiles) {
   if (!LittleFS.begin()) {
     Serial.print(F("\n[ERROR]: An error has occurred while mounting LittleFS"));
     return false;
@@ -23,8 +23,13 @@ bool initFS() {
   else
   {
     Serial.print(F("\n[INFO]: LittleFS mounted successfully"));
-    Serial.print(F("\n[INFO]: Listing files...\n"));
-    listFSFiles("/");
+    
+    if (listFiles)
+    {
+      Serial.print(F("\n[INFO]: Listing files...\n"));
+      listFSFiles("/");
+    }
+
     return true;
   }
 }
@@ -114,6 +119,11 @@ uint16_t calcChecksum(uint8_t* address, uint16_t sizeToCalc)
   return checkSum;
 }
 
+
+/*!
+ *  @brief  Return the content of dir in the FS on the Serial Console.
+ *  @param  string Directory path.
+ */
 void listFSFiles(String dir_path)
 {
 	Dir dir = LittleFS.openDir(dir_path);

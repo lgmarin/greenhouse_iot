@@ -62,7 +62,7 @@
             <div class="mdl-card__supporting-text mdl-color-text--grey-600">
               <div>
                 <iframe name="dummyframe" id="dummyframe" style="display: none"></iframe>
-                <form action="/connect-wifi" target="dummyframe">
+                <form action="/save-wifi" target="dummyframe">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="wifi_ssid" name="wifi_ssid" required>
                       <label class="mdl-textfield__label" for="wifi_ssid">Wifi SSID</label>
@@ -91,8 +91,8 @@
                       <input class="mdl-textfield__input" type="text" pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" id="mask" name="mask" placeholder="255.255.255.0">
                       <label class="mdl-textfield__label" for="mask">Máscara de Subrede</label>
                       <span class="mdl-textfield__error">Valor não é um endereço IP válido!</span>
-                    </div>    
-                      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit" value="Conectar">              
+                    </div>
+                      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit" value="Salvar Rede">              
                 </form>
               </div>
             </div>
@@ -101,13 +101,6 @@
       </main>
     </div>
     <script>
-      var res_test = {"networks": 
-                      [{"SSID":"Wifi 1", "Quality":"20"},
-                      {"SSID":"Wifi 2", "Quality":"50"},
-                      {"SSID":"Wifi 3", "Quality":"100"},
-                      {"SSID":"Wifi 4", "Quality":"20"}
-                      ]};
-
       var auto_ip = document.querySelector("#set-auto-ip");
       window.onload = function() {
           document.querySelector("#ip").closest('.mdl-textfield').style.display = "none";
@@ -155,7 +148,6 @@
           xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() { 
               if (this.readyState == 4 && this.status == 200) {//when a good response is given do this
-
                   var data = JSON.parse(this.responseText);
                   appendJsonTable(data);
               }
@@ -177,7 +169,7 @@
           addRowHandlers();
       }
       function goHome() {
-          location.replace("https://%DEVICE_IP%/");
+          location.replace("http://%DEVICE_IP%/");
       }    
     </script>
     <script src="vendor/material.js"></script>    

@@ -22,6 +22,13 @@ String indexProcessor(const String& var){
   else if(var == "SOIL_H"){
     return String(soilHumidity());
   }
+  else if(var == "CONN_STATUS"){
+    if (getMode() == "Conectado")
+    {
+      return "fc1505";
+    }
+    return "000000";
+  }
   return String();
 }
 

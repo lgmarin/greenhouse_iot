@@ -59,7 +59,7 @@
                     <span class="mdl-list__item-primary-content">Status:</span><span id="wifi_mode">%MODE%</span>
                   </li>
                   <li class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content">Host:</span><span id="wifi_hname">%HOSTNAME%.local</span>
+                    <span class="mdl-list__item-primary-content">Host:</span><span id="wifi_hname">%HOST_NAME%.local</span>
                   </li>                  
                   <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">Rede WiFi:</span><span id="wifi_ssid">%SSID%</span>
@@ -88,7 +88,7 @@
                       </div>
                       <label for="ap_mode" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
                         <span class="mdl-switch__label">Sempre iniciar em modo AP</span>
-                        <input type="checkbox" id="ap_mode" name="ap_mode" class="mdl-switch__input">
+                        <input type="checkbox" id="ap_mode" name="ap_mode" class="mdl-switch__input" %AP_MODE%>
                       </label>                      
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="number"  id="air_v" name="air_v" value="%AIR_VAL%" required>
@@ -169,7 +169,7 @@
           });
           wifi_dialog.querySelector('#wifi-confirm').addEventListener('click', function() {
               var xhr = new XMLHttpRequest();
-              location.replace("https://%DEVICE_IP%/delete-wifi");
+              location.replace("http://%DEVICE_IP%/delete-wifi");
               wifi_dialog.close();
           });
       var cfg_dialog = document.querySelector('#delete-cfg');
@@ -184,35 +184,26 @@
               cfg_dialog.close();
           });
           cfg_dialog.querySelector('#cfg-confirm').addEventListener('click', function() {
-            location.replace("https://%DEVICE_IP%/delete-config");
+            location.replace("http://%DEVICE_IP%/delete-config");
               cfg_dialog.close();
           });
-      if (!!window.EventSource) {
-          var source = new EventSource('/events');
-          source.addEventListener('open', function(e) {
-            console.log("Events Connected");
-          }, false);
-          source.addEventListener('error', function(e) {
-            if (e.target.readyState != EventSource.OPEN) {
-              console.log("Events Disconnected");
-            }
-          }, false);
-          source.addEventListener('message', function(e) {
-            console.log("message", e.data);
-          }, false);
-          source.addEventListener('sensor_readings', function(e) {
-            console.log("sensor_readings", e.data);
-            var myObj = JSON.parse(e.data);
-            console.log(myObj);
-            updateValues(myObj);
-          }, false);
-      }
+      setInterval(function (){
+          xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() { 
+              if (this.readyState == 4 && this.status == 200) {
+                  var data = JSON.parse(this.responseText);
+                  updateValues(data);
+              }
+          }
+          xmlhttp.open("GET", "/read-sensors", true);
+          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xmlhttp.send();
+      }, 3000);
       function updateValues(jsonObj) {
-          document.getElementById("soil_p").innerHTML = jsonObj.sensors.soil_p;
-          document.getElementById("soil_v").innerHTML = jsonObj.sensors.soil_v;
+          document.getElementById("soil_v").textContent = jsonObj.sensors.soil_v;
       }            
       function goHome() {
-        location.replace("https://%DEVICE_IP%/");
+        location.replace("http://%DEVICE_IP%/");
       }
     </script>
     <script src="vendor/material.js"></script>

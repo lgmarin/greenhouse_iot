@@ -60,7 +60,7 @@ String readSensorsJSON()
     json +=  "\", \"dht_h\":\""+ String(_dhtHumidity);
     json +=  "\", \"soil_p\":\""+ String(_soilPercent);
     json +=  "\", \"soil_v\":\""+ String(_soilValue);
-    json += "}}";
+    json += "\"}}";
 
     return json;
 }

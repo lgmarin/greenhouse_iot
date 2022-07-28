@@ -57,7 +57,7 @@
       </header>
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
-          <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
+          <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
             <div class="mdl-card__title mdl-color--green-500">
                 <h2 class="mdl-card__title-text mdl-color-text--white">Sensores</h2>
             </div>
@@ -68,68 +68,37 @@
                   <span id="dht_h">%DHT_H%</span><span> %</span></h4>
                 <h4><i><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><path d="M12,2c-5.33,4.55-8,8.48-8,11.8c0,4.98,3.8,8.2,8,8.2s8-3.22,8-8.2C20,10.48,17.33,6.55,12,2z M7.83,14 c0.37,0,0.67,0.26,0.74,0.62c0.41,2.22,2.28,2.98,3.64,2.87c0.43-0.02,0.79,0.32,0.79,0.75c0,0.4-0.32,0.73-0.72,0.75 c-2.13,0.13-4.62-1.09-5.19-4.12C7.01,14.42,7.37,14,7.83,14z"/></svg></i>
                   <span id="soil_h">%SOIL_H%</span><span> %</span></h4>
-            </div>
-          </div>
-          <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col mdl-cell--2-col-tablet mdl-cell--6-col-desktop">
-            <div class="mdl-card__title mdl-color--green-500">
-              <h2 class="mdl-card__title-text mdl-color-text--white">Informações</h2>
-            </div>
-            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-              <ul class="demo-list-item mdl-list">
-                <li class="mdl-list__item">
-                  <span class="mdl-list__item-primary-content"><strong>%HOSTNAME%</strong></span>
-                </li>
-                <li class="mdl-list__item">
-                  <span class="mdl-list__item-primary-content">Status:</span><span id="wifi_mode">%MODE%</span>
-                </li>
-                <li class="mdl-list__item">
-                  <span class="mdl-list__item-primary-content">SSID:</span><span id="wifi_ssid">%SSID%</span>
-                </li>
-                <li class="mdl-list__item">
-                  <span class="mdl-list__item-primary-content">IP:</span><span id="wifi_ip">%DEVICE_IP%</span>
-                </li>
-              </ul>
+
+                <button onclick="change()" class="mdl-button mdl-js-button mdl-js-ripple-effect">CLIQUE</button>
             </div>
           </div>
         </div>
       </main>
     </div>
     <script>
-      if (!!window.EventSource) {
-          var source = new EventSource('/events');
-        
-          source.addEventListener('open', function(e) {
-            console.log("Events Connected");
-          }, false);
-        
-          source.addEventListener('error', function(e) {
-            if (e.target.readyState != EventSource.OPEN) {
-              console.log("Events Disconnected");
-            }
-          }, false);
-        
-          source.addEventListener('message', function(e) {
-            console.log("message", e.data);
-          }, false);
-        
-          source.addEventListener('sensor_readings', function(e) {
-            console.log("sensor_readings", e.data);
-            var myObj = JSON.parse(e.data);
-            console.log(myObj);
-            updateValues(myObj);
-          }, false);
-      }
+      setInterval(function (){
+          xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() { 
+              if (this.readyState == 4 && this.status == 200) {
+                  var data = JSON.parse(this.responseText);
+                  updateValues(data);
+              }
+          }
+          xmlhttp.open("GET", "/read-sensors", true);
+          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xmlhttp.send();
+      }, 3000);
       function updateValues(jsonObj) {
-          document.getElementById("dht_t").innerHTML = jsonObj.sensors.dht_t;
-          document.getElementById("dht_h").innerHTML = jsonObj.sensors.dht_h;
-          document.getElementById("soil_h").innerHTML = jsonObj.sensors.soil_p;
+          document.getElementById("dht_t").textContent = jsonObj.sensors.dht_t;
+          document.getElementById("dht_h").textContent = jsonObj.sensors.dht_h;
+          document.getElementById("soil_h").textContent = jsonObj.sensors.soil_p;
       }
       function goConfig() {
-          location.replace("https://%DEVICE_IP%/config");
+          location.replace("http://%DEVICE_IP%/config");
       }
       function goWifi() {
-          location.replace("https://%DEVICE_IP%/wifi");
-      }      
+          location.replace("http://%DEVICE_IP%/wifi");
+      }
     </script>
     <script src="vendor/material.js"></script>    
   </body>

@@ -62,7 +62,7 @@
             <div class="mdl-card__supporting-text mdl-color-text--grey-600">
               <div>
                 <iframe name="dummyframe" id="dummyframe" style="display: none"></iframe>
-                <form action="/connect-wifi" target="dummyframe">
+                <form action="/save-wifi" target="dummyframe">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="wifi_ssid" name="wifi_ssid" required>
                       <label class="mdl-textfield__label" for="wifi_ssid">Wifi SSID</label>
@@ -91,8 +91,8 @@
                       <input class="mdl-textfield__input" type="text" pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" id="mask" name="mask" placeholder="255.255.255.0">
                       <label class="mdl-textfield__label" for="mask">Máscara de Subrede</label>
                       <span class="mdl-textfield__error">Valor não é um endereço IP válido!</span>
-                    </div>    
-                      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit" value="Conectar">              
+                    </div>
+                      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit" value="Salvar Rede">              
                 </form>
               </div>
             </div>

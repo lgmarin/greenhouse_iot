@@ -22,6 +22,24 @@ Development of a greenhouse monitoring system:
 * Develop clean and modular code (OOP)
   * Will be merged later for the [esp_manager][esp_manager] boiler plate project
 
+## Web FrontEnd
+
+* Made with Material Design Lite
+  * Using HTML and pure JavaScript
+  * Obsolete but with a very small size and easy to use across different devices
+  * Focus on simple usage
+    * Data visualization
+    * Wifi Configuration
+    * Device Configuration
+
+<p align="center">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_index.png" alt="Home Screen">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_cfg1.png" alt="Config Screen - Part 1">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_cfg2.png" alt="Config Screen - Part 2">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_wifi1.png" alt="Wifi Config Screen - Part 1">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_wifi2.png" alt="Wifi Config Screen - Part 2">    
+</p>
+
 ## Schematics and List of Materials
 
 <p align="center">
@@ -42,7 +60,7 @@ Development of a greenhouse monitoring system:
 
 * [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP) - Base library for ESPAsyncWebServer.
 * [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) - An Async Web Server implementation for the ESP8266.
-* DHT Sensor
+* Adafruit DHT11 Air Temperature and Humidity Sensor
 * Adafruit SSD1306 Display
 
 

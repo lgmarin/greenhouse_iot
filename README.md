@@ -13,7 +13,7 @@ Development of a greenhouse monitoring system:
   * Display
   * AP mode dashboard
   * STA mode dashboard
-  * Maybe: MQTT data provider
+  * [Latter]: MQTT data provider
 * Simple dashboard, configure wifi, board name, reading interval
 * Sensors
   * Air temperature and humidity - DHT11
@@ -43,7 +43,7 @@ Development of a greenhouse monitoring system:
 ## Schematics and List of Materials
 
 <p align="center">
-  <img width="300" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/schematics.png" alt="Schematics">
+  <img width="550" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/schematics.png" alt="Schematics">
 </p>
 
 | Label | Part Type | Properties |

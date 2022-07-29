@@ -35,7 +35,7 @@ Development of a greenhouse monitoring system:
 <p align="center">
   <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_index.png" alt="Home Screen">
   <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_cfg1.png" alt="Config Screen - Part 1">
-  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_cfg2.png" alt="Config Screen - Part 2">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_cf2.png" alt="Config Screen - Part 2">
   <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_wifi1.png" alt="Wifi Config Screen - Part 1">
   <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_wifi2.png" alt="Wifi Config Screen - Part 2">    
 </p>
@@ -51,10 +51,14 @@ Development of a greenhouse monitoring system:
 |C1|Capacitor Polarized|Electrolytic 10uf 25v|
 |J1|Piezo Speaker|-|
 |R1-R4|10kΩ Resistor|Tolerance ±5%, Resistance 10kΩ|
+|R5|470Ω Resistor|Tolerance ±5%, Resistance 470Ω|
+|R6|100kΩ Resistor|Tolerance ±5%, Resistance 100kΩ|
+|R5|220kΩ Resistor|Tolerance ±5%, Resistance 220kΩ|
 |U1|ESP8266 WiFi Module|ESP12F|
 |U2|DHT11|Temperature and humidity sensor|
 |U3|SSD1306|0.96 in OLED I2C Display 128x64|
 |U4|HW-103|Soil Moisture Sensor|
+|S1|Momentary Switch|Tactile Switch|
 
 ## Libraries
 

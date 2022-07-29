@@ -109,7 +109,8 @@ void updateConfigHandler(AsyncWebServerRequest *request)
 
     if (storeDeviceConfig(request->getParam("hostname")->value(), request->getParam("air_v")->value(), \
                           request->getParam("wat_v")->value(), ap_mode))
-      request->send_P(200, "text/plain", "success");
+      //request->send_P(200, "text/plain", "success");
+      request->redirect("/config");
 
     request->send_P(400, "text/plain", "error");
   }
@@ -120,7 +121,8 @@ void updateConfigHandler(AsyncWebServerRequest *request)
 void deleteWifiConfigHandler(AsyncWebServerRequest *request)
 {
   if(removeWifiConfig())
-    request->send_P(200, "text/plain", "success");
+    //request->send_P(200, "text/plain", "success");
+    request->redirect("/config");
 
   request->send_P(400, "text/plain", "error");
 }
@@ -128,7 +130,8 @@ void deleteWifiConfigHandler(AsyncWebServerRequest *request)
 void deleteConfigHandler(AsyncWebServerRequest *request)
 {
   if(removeDeviceConfig())
-    request->send_P(200, "text/plain", "success");
+    //request->send_P(200, "text/plain", "success");
+    request->redirect("/config");
 
   request->send_P(400, "text/plain", "error");
 }
@@ -168,7 +171,8 @@ void saveWifiHandler(AsyncWebServerRequest *request)
   }
 
   if (result)
-    request->send(200, "application/json", "{\"status\": \"saved\" }");
+    //request->send(200, "application/json", "{\"status\": \"saved\" }");
+    request->redirect("/");
 
   request->send(400, "application/json", "{\"status\": \"error\" }");  
 }

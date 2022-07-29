@@ -33,11 +33,11 @@ Development of a greenhouse monitoring system:
     * Device Configuration
 
 <p align="center">
-  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_index.png" alt="Home Screen">
-  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_cfg1.png" alt="Config Screen - Part 1">
-  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_cfg2.png" alt="Config Screen - Part 2">
-  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_wifi1.png" alt="Wifi Config Screen - Part 1">
-  <img width="250" src="https://raw.githubusercontent.com/lgmarin/defuma_iot/main/img/scr_wifi2.png" alt="Wifi Config Screen - Part 2">    
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_index.png" alt="Home Screen">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_cfg1.png" alt="Config Screen - Part 1">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_cfg2.png" alt="Config Screen - Part 2">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_wifi1.png" alt="Wifi Config Screen - Part 1">
+  <img width="250" src="https://raw.githubusercontent.com/lgmarin/greenhouse_iot/main/img/scr_wifi2.png" alt="Wifi Config Screen - Part 2">    
 </p>
 
 ## Schematics and List of Materials

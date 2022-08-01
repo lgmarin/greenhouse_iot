@@ -23,12 +23,11 @@ def gzip_webfiles(source, target, env):
     print(f'[PRE-BUILDING]: Compressing Web files in {data_src_dir_path}...')
 
     # Check if dir exists
-    if(os.path.exists(data_dir_path) and not os.path.exists(data_src_dir_path) ):
+    if(not os.path.exists(data_src_dir_path) ):
         print(f'[PRE-BUILDING - ERROR]: Source data dir {data_src_dir_path} not found!')
         return
 
-    # Clear data dir before compressing
-    if(os.path.exists(data_dir_path)):
+    if(not os.path.exists(data_dir_path)):
         print(f'[PRE-BUILDING]: Creating data dir: {data_dir_path}')
         os.mkdir(data_dir_path)
 
@@ -41,6 +40,10 @@ def gzip_webfiles(source, target, env):
     files_to_copy = list(set(all_files) - set(files_to_gzip) - set(exclude_files))
 
     for file in files_to_copy:
+        # if os.path.exists(file):
+        #     print(f'[PRE-BUILDING]: Removing previous version {file}')
+        #     os.remove(file)
+
         print(f'[PRE-BUILDING]: Copying {file} to {data_dir_path}')
         shutil.copy(file, data_dir_path)
 

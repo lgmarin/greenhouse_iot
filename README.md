@@ -49,7 +49,6 @@ Development of a greenhouse monitoring system:
 | Label | Part Type | Properties |
 |-----|-----|---|
 |C1|Capacitor Polarized|Electrolytic 10uf 25v|
-|J1|Piezo Speaker|-|
 |R1-R4|10kΩ Resistor|Tolerance ±5%, Resistance 10kΩ|
 |R5|470Ω Resistor|Tolerance ±5%, Resistance 470Ω|
 |R6|100kΩ Resistor|Tolerance ±5%, Resistance 100kΩ|

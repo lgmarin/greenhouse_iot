@@ -1,17 +1,17 @@
 # SCRIPT TO GZIP CRITICAL FILES FOR ACCELERATED WEBSERVING
 # see also https://community.platformio.org/t/question-esp32-compress-files-in-data-to-gzip-before-upload-possible-to-spiffs/6274/10
 
-Import( 'env', 'projenv' )
+Import('env', 'projenv')
 import os
 import gzip
 import shutil
 import glob
 
 # HANDLE GZIP FILE
-def gzip_file( src_path, dest_path ):
-    with open( src_path, 'rb' ) as src, gzip.open( dest_path, 'wb' ) as destination:
-        for chunk in iter( lambda: src.read(4096), b"" ):
-            destination.write( chunk )
+def gzip_file(src_path, dest_path):
+    with open(src_path, 'rb') as src, gzip.open( dest_path, 'wb') as destination:
+        for chunk in iter(lambda: src.read(4096), b""):
+            destination.write(chunk)
 
 def gzip_webfiles(source, target, env):
     filetypes_to_gzip = ['html', 'css', 'js']
@@ -40,10 +40,6 @@ def gzip_webfiles(source, target, env):
     files_to_copy = list(set(all_files) - set(files_to_gzip) - set(exclude_files))
 
     for file in files_to_copy:
-        # if os.path.exists(file):
-        #     print(f'[PRE-BUILDING]: Removing previous version {file}')
-        #     os.remove(file)
-
         print(f'[PRE-BUILDING]: Copying {file} to {data_dir_path}')
         shutil.copy(file, data_dir_path)
 

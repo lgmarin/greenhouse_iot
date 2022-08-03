@@ -217,6 +217,23 @@ void dnsProcessNext()
 }
 
 /**
+ * @brief Returns Wifi Signal Strength in percents
+ * 
+ * @param RSSI 
+ * @return String 
+ */
+String wifiSignalStrength(int32_t RSSI)
+{
+    if (RSSI <= -100)
+        return String(0);
+    
+    if (RSSI >= -50)
+        return String(100);
+
+    return String(2 * (RSSI + 100));
+}
+
+/**
  * @brief Scan for networks nearby and return a JSON list
  * 
  * @return String JSON list of networks
@@ -248,7 +265,7 @@ String scanNetworks()
             if(i) json += ",";
             json += "{";
             json += "\"SSID\":\""+WiFi.SSID(i)+"\"";
-            json += ",\"Quality\":\""+String(WiFi.RSSI(i))+"\"";     
+            json += ",\"Quality\":\""+wifiSignalStrength(WiFi.RSSI(i))+"%\"";     
             json += "}";
         }
 

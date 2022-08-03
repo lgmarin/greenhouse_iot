@@ -10,6 +10,10 @@ int                     _soilValue;
 SoilMoistureSensor      soil(SOIL_A);
 Dht                     dhtSensor;
 
+/**
+ * @brief Initialize all the sensors functions
+ * 
+ */
 void initSensors()
 {
     _dhtDelay = dhtSensor.dhtInit();
@@ -23,6 +27,10 @@ void initSensors()
     _soilPercent = soil.readPercent();
 }
 
+/**
+ * @brief Sensors main loop, read all the sensors values periodically
+ * 
+ */
 void sensorsLoop()
 {
     _dhtTemperature = dhtSensor.readTemperature();
@@ -51,6 +59,11 @@ int soilHumidity()
     return _soilPercent;
 }
 
+/**
+ * @brief Read Sensors values in JSON format
+ * 
+ * @return String JSON sensors readings
+ */
 String readSensorsJSON()
 {
     String json;

@@ -12,6 +12,26 @@ const char* device_config_file = "/device.cfg";
 ///
 
 /*!
+ *  @brief  Return the content of dir in the FS on the Serial Console.
+ *  @param  string Directory path.
+ */
+void listFSFiles(String dir_path)
+{
+	Dir dir = LittleFS.openDir(dir_path);
+	while(dir.next()) {
+		if (dir.isFile()) {
+			Serial.print(F("File: "));
+			Serial.println(dir_path + dir.fileName());
+		}
+		if (dir.isDirectory()) {
+			Serial.print(F("Dir: "));
+			Serial.println(dir_path + dir.fileName() + "/");
+			listFSFiles(dir_path + dir.fileName() + "/");
+		}
+	}
+}
+
+/*!
  *  @brief  Initialize LittleFS.
  *  @return Returns true if initialized successfully.
  */
@@ -118,28 +138,6 @@ uint16_t calcChecksum(uint8_t* address, uint16_t sizeToCalc)
   }
   return checkSum;
 }
-
-
-/*!
- *  @brief  Return the content of dir in the FS on the Serial Console.
- *  @param  string Directory path.
- */
-void listFSFiles(String dir_path)
-{
-	Dir dir = LittleFS.openDir(dir_path);
-	while(dir.next()) {
-		if (dir.isFile()) {
-			Serial.print(F("File: "));
-			Serial.println(dir_path + dir.fileName());
-		}
-		if (dir.isDirectory()) {
-			Serial.print(F("Dir: "));
-			Serial.println(dir_path + dir.fileName() + "/");
-			listFSFiles(dir_path + dir.fileName() + "/");
-		}
-	}
-}
-
 
 /*!
  *  @brief  Copy the content of a string to a allocated char array.

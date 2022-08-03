@@ -1,5 +1,9 @@
 #include <soilSensor.h>
 
+/*!
+ *  @brief  Initialize the SoilMoisture Sensor
+ *  @param  pin SoilMoisture Sensor Analog pin
+ */
 SoilMoistureSensor::SoilMoistureSensor(int pin)
 {
     _analogPin = pin;
@@ -8,6 +12,12 @@ SoilMoistureSensor::SoilMoistureSensor(int pin)
     _calibrated = false;
 }
 
+/*!
+ *  @brief  Initialize the SoilMoisture Sensor
+ *  @param  pin SoilMoisture Sensor Analog pin
+ *  @param  airM Calibration value - Air raw measure
+ *  @param  watM Calibration value - Water raw measure
+ */
 SoilMoistureSensor::SoilMoistureSensor(int pin, int airM, int watM)
 {
     _analogPin = pin;
@@ -57,7 +67,6 @@ int SoilMoistureSensor::readPercent(bool twoDigits)
 
         return val;
     }
-    //Serial.print(F("\n[WARNING]: Soil sensor needs calibration!"));
     return 0;
 }
 

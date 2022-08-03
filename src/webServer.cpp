@@ -5,7 +5,8 @@ AsyncWebServer    server(HTTP_PORT);
 /*
 *     HTML PRE-PROCESSORS
 */
-String indexProcessor(const String& var){
+
+String indexPageProcessor(const String& var){
   if(var == "HOST_NAME"){
     return getHostName();
   }
@@ -31,7 +32,7 @@ String indexProcessor(const String& var){
   return String();
 }
 
-String configProcessor(const String& var){
+String configPageProcessor(const String& var){
   if(var == "MODE"){
     return getMode();
   }
@@ -68,7 +69,7 @@ String configProcessor(const String& var){
   return String();
 }
 
-String wifiProcessor(const String& var){
+String wifiPageProcessor(const String& var){
   if(var == "HOST_NAME"){
     return getHostName();
   }
@@ -182,10 +183,10 @@ void addServerHandlers()
   //  *******    INDEX PAGE HANDLERS
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/index.html.gz", "text/html", false, indexProcessor);
+    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/index.html.gz", "text/html", false, indexPageProcessor);
     response->addHeader("Content-Encoding", "gzip");
     request->send(response);
-    //request->send(LittleFS, "/index.html", "text/html", false, indexProcessor);
+    //request->send(LittleFS, "/index.html", "text/html", false, indexPageProcessor);
   });
 
   server.on("/generate_204", HTTP_GET, [](AsyncWebServerRequest * request) {
@@ -204,10 +205,10 @@ void addServerHandlers()
   //  *******    CONFIG PAGE HANDLERS
 
   server.on("/config", HTTP_GET, [](AsyncWebServerRequest *request){
-    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/config.html.gz", "text/html", false, configProcessor);
+    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/config.html.gz", "text/html", false, configPageProcessor);
     response->addHeader("Content-Encoding", "gzip");
     request->send(response);    
-    //request->send(LittleFS, "/config.html", "text/html", false, configProcessor);
+    //request->send(LittleFS, "/config.html", "text/html", false, configPageProcessor);
   });
 
   server.on("/delete-config", HTTP_GET, deleteConfigHandler);
@@ -219,10 +220,10 @@ void addServerHandlers()
   //  *******    WIFI PAGE HANDLERS
   
   server.on("/wifi", HTTP_GET, [](AsyncWebServerRequest *request){
-    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/wifi.html.gz", "text/html", false, wifiProcessor);
+    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/wifi.html.gz", "text/html", false, wifiPageProcessor);
     response->addHeader("Content-Encoding", "gzip");
     request->send(response);    
-    //request->send(LittleFS, "/wifi.html", "text/html", false, wifiProcessor);
+    //request->send(LittleFS, "/wifi.html", "text/html", false, wifiPageProcessor);
   });
 
   server.on("/scan-wifi", HTTP_GET, [](AsyncWebServerRequest *request){

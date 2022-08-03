@@ -23,6 +23,13 @@ void updatemDNS()
     MDNS.update();
 }
 
+/**
+ * @brief Start DNS server (Captive Portal Mode)
+ * 
+ * @param soft_ip Soft Access Point IP Address
+ * @return true If DNS service started successfully
+ * @return false If DNS service failed to start
+ */
 bool startDNSServer(IPAddress soft_ip)
 {
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
@@ -36,7 +43,6 @@ bool startDNSServer(IPAddress soft_ip)
     dns_started = true;
     return true;
 }
-
 
 bool openCaptivePortal()
 {
@@ -74,7 +80,15 @@ bool connectToAp()
     return false;    
 }
 
-
+/**
+ * @brief Set the Static IP in WiFi Config
+ * 
+ * @param ip_addr Static IP Address
+ * @param gw_addr Static Gateway IP Address
+ * @param mask Subnet Mask
+ * @return true If configured correctly
+ * @return false If not configured correctly
+ */
 bool setStaticIp(String ip_addr, String gw_addr, String mask)
 {
     IPAddress          st_ip, st_gw, st_mask;
@@ -92,7 +106,12 @@ bool setStaticIp(String ip_addr, String gw_addr, String mask)
     return false;         
 }
 
-
+/**
+ * @brief Set the Static in WiFi Config from internal configuration
+ * 
+ * @return true If configured correctly
+ * @return false If not configured correctly
+ */
 bool setStaticIp()
 {
     if(!WiFi.config(Wifi_config.IP_config.ip_addr, Wifi_config.IP_config.gw_addr, Wifi_config.IP_config.mask)){
@@ -103,7 +122,18 @@ bool setStaticIp()
     return true;
 }
 
-
+/**
+ * @brief Save Wifi Credentials to local storage
+ * 
+ * @param ssid Station SSID
+ * @param pwd Station password
+ * @param dyn_ip Use dynamic IP
+ * @param ip_addr Static IP Address
+ * @param gw_addr Static Gateway IP Address
+ * @param mask Subnet Mask
+ * @return true If correctly saved in flash
+ * @return false If failed to saved in flash
+ */
 bool saveWifiCredentials(String ssid, String pwd, bool dyn_ip, String ip_addr, String gw_addr, String mask)
 {
     IPAddress          st_ip, st_gw, st_mask;
@@ -137,6 +167,14 @@ bool saveWifiCredentials(String ssid, String pwd, bool dyn_ip, String ip_addr, S
     return false;
 }
 
+/**
+ * @brief Connect to a Wifi Station
+ * 
+ * @param ssid Station SSID
+ * @param pwd Station Password
+ * @return true If WiFi returns a successful connection
+ * @return false If WiFi fails to connect
+ */
 bool connectToWifi(String ssid, String pwd) 
 {
     if (ssid == "" || pwd == "")
@@ -166,6 +204,10 @@ bool connectToWifi(String ssid, String pwd)
     return true;
 }
 
+/**
+ * @brief Execute the next request for DNS loop
+ * 
+ */
 void dnsProcessNext()
 {
     if (dns_started)
@@ -174,7 +216,11 @@ void dnsProcessNext()
     }    
 }
 
-
+/**
+ * @brief Scan for networks nearby and return a JSON list
+ * 
+ * @return String JSON list of networks
+ */
 String scanNetworks()
 {
     String json;
@@ -219,6 +265,11 @@ String scanNetworks()
     return json;
 }
 
+/**
+ * @brief Initialize the WiFi manager
+ * 
+ * @param ap_mode bool Set the AP mode ON or OFF
+ */
 void initWifi(bool ap_mode)
 {
     if (loadWifiConfig() && ap_mode == false)

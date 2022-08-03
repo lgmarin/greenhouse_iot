@@ -14,28 +14,28 @@ typedef struct
 
 typedef struct
 {
-  IPAddress ip_addr;
-  IPAddress gw_addr;
-  IPAddress mask;
+  IPAddress ip_addr{};
+  IPAddress gw_addr{};
+  IPAddress mask{};
 } IP_Config;
 
 typedef struct
 {
-  WiFi_Credential   WiFi_cred;
-  IP_Config         IP_config;
+  WiFi_Credential   WiFi_cred{};
+  IP_Config         IP_config{};
   bool              dyn_ip = false;
-  uint16_t          checksum;
+  uint16_t          checksum{};
 } Wifi_Config;
 
 extern Wifi_Config        Wifi_config;
 
 typedef struct
 {
-  char      host_name[24];
-  bool      ap_mode = false;
-  uint16_t   air_value;
-  uint16_t   wat_value;
-  uint16_t  checksum;
+  char       host_name[24]{};
+  bool       ap_mode = false;
+  uint16_t   air_value{};
+  uint16_t   wat_value{};
+  uint16_t   checksum{};
 } Device_Config;
 
 extern Device_Config      Device_config;

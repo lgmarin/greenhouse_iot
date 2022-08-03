@@ -192,7 +192,7 @@ bool loadWifiConfig()
  */
 bool storeWifiConfig(String SSID, String password, bool dyn_ip, IPAddress ip, IPAddress gw, IPAddress mask)
 {
-  memset(&Wifi_config, 0, sizeof(Wifi_config));
+  //memset(&Wifi_config, 0, sizeof(Wifi_config));
 
   //SAVE SSID
   if (strlen(SSID.c_str()) < sizeof(Wifi_config.WiFi_cred.wifi_ssid) - 1)
@@ -282,7 +282,7 @@ bool loadDeviceConfig()
  */
 bool storeDeviceConfig(String host_name, String air_v, String wat_v, bool apmode)
 {
-  memset(&Device_config, 0, sizeof(Device_config));
+  //memset(&Device_config, 0, sizeof(Device_config));
 
   //SAVE HOSTNAME
   if (strlen(host_name.c_str()) < sizeof(Device_config.host_name) - 1)

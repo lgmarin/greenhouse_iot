@@ -18,7 +18,9 @@
 #define SOIL_A                  A0
 // SOIL CALIBRATION CONFIGURATION
 #define DEF_CAL_AIR             1024
-#define DEF_CAL_WAT             500
+#define DEF_CAL_WAT             620
+// SOIL SENSOR READ INTERVAL (5 minutes)
+#define SOIL_READ_INTERVAL      300000
 
 
 //          DISPLAY CONFIGURATION
@@ -28,7 +30,7 @@
 #define SCREEN_W                128
 #define SCREEN_H                64
 #define D_I2C_ADDR              0x3C    //0x7A //0x78
-#define SLEEP_INTERVAL          60000   // 1/2 minute to sleep
+#define SLEEP_INTERVAL          60000   //1 minute to sleep
 #define WAKE_BTN_PIN            14      //GPIO14 - D
 
 

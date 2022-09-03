@@ -183,8 +183,8 @@ void addServerHandlers()
   //  *******    INDEX PAGE HANDLERS
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/index.html.gz", "text/html", false, indexPageProcessor);
-    response->addHeader("Content-Encoding", "gzip");
+    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/index.html", "text/html", false, indexPageProcessor);
+    //response->addHeader("Content-Encoding", "gzip");
     request->send(response);
     //request->send(LittleFS, "/index.html", "text/html", false, indexPageProcessor);
   });
@@ -205,8 +205,8 @@ void addServerHandlers()
   //  *******    CONFIG PAGE HANDLERS
 
   server.on("/config", HTTP_GET, [](AsyncWebServerRequest *request){
-    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/config.html.gz", "text/html", false, configPageProcessor);
-    response->addHeader("Content-Encoding", "gzip");
+    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/config.html", "text/html", false, configPageProcessor);
+    //response->addHeader("Content-Encoding", "gzip");
     request->send(response);    
     //request->send(LittleFS, "/config.html", "text/html", false, configPageProcessor);
   });
@@ -220,8 +220,8 @@ void addServerHandlers()
   //  *******    WIFI PAGE HANDLERS
   
   server.on("/wifi", HTTP_GET, [](AsyncWebServerRequest *request){
-    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/wifi.html.gz", "text/html", false, wifiPageProcessor);
-    response->addHeader("Content-Encoding", "gzip");
+    AsyncWebServerResponse* response = request->beginResponse(LittleFS, "/wifi.html", "text/html", false, wifiPageProcessor);
+    //response->addHeader("Content-Encoding", "gzip");
     request->send(response);    
     //request->send(LittleFS, "/wifi.html", "text/html", false, wifiPageProcessor);
   });

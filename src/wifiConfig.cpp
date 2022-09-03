@@ -68,12 +68,18 @@ bool openCaptivePortal()
 
 bool connectToAp()
 {
-    Serial.print(F("\n[INFO]: Starting soft-AP..."));
+    WiFi.disconnect(true);
+    
+    Serial.print(F("\n[INFO]: Starting soft-AP: "));
+    Serial.print(String(Device_config.host_name));
+
+    //WiFi.enableSTA(false);
+    WiFi.mode(WIFI_STA);
 
     if(WiFi.softAP(String(Device_config.host_name)))
     {
         Serial.print(F("\n[SUCCESS]: AP started at IP: ")); Serial.print(WiFi.softAPIP());
-        configuremDNS();
+        //configuremDNS();
         return true;
     }
     

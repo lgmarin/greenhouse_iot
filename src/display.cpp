@@ -1,4 +1,6 @@
 #include <display.h>
+#include <readSensors.h>
+#include <wifiConfig.h>
 
 Display::Display(): display(SCREEN_W, SCREEN_H, &Wire, -1)
 {
@@ -27,13 +29,36 @@ void Display::Init()
 }
 
 /*!
- *  @brief  Update the display screen.
- *  @param  temp Air temperature.
- *  @param  humidity Air humidity.
- *  @param  soilP Soil humidity in percent.
- *  @param  info Info string to display at the top. 
+ *  @brief  Update the display screen for loop().
  */
-void Display::UpdateScreen(int temp, int hum, int soilP, String info)
+void Display::UpdateScreen()
+{
+    switch (_activeScreen)
+    {
+    case 0:
+        mainScreen();
+        break;
+    case 1:
+        wifiScreen();
+        break;
+    case 2:
+        calibrationScreen();
+        break;
+    default:
+        mainScreen();
+        break;
+    }
+}
+
+void Display::wifiScreen()
+{
+}
+
+void Display::calibrationScreen()
+{
+}
+
+void Display::mainScreen()
 {
     // DISPLAY HANDLING
     display.clearDisplay();
@@ -42,13 +67,13 @@ void Display::UpdateScreen(int temp, int hum, int soilP, String info)
     display.setTextColor(WHITE);
     // Information
     display.setCursor(0, 0);
-    display.print(info);
+    display.print(wifiInfo());
     // Temperature
     display.setCursor(0, 16);
     display.setTextSize(1);
     display.print("Ta ");
     display.setTextSize(2);
-    display.print(temp);
+    display.print(airTemp());
     display.setTextSize(1);
     display.print("o");
     display.setTextSize(2);
@@ -57,14 +82,14 @@ void Display::UpdateScreen(int temp, int hum, int soilP, String info)
     display.setTextSize(1);
     display.print("Ua ");
     display.setTextSize(2);
-    display.print(hum);
+    display.print(airHumidity());
     display.print("%");
     // Soil Humidity
     display.setCursor(0, 36);
     display.setTextSize(1);
     display.print("Us ");
     display.setTextSize(2);
-    display.print(soilP);
+    display.print(soilHumidity());
     display.print("%");
     display.display();
 }

@@ -11,14 +11,21 @@ private:
     Adafruit_SSD1306    display;
     unsigned long       _previous_millis = 0;
     bool                _sleeping = false;
+    unsigned long       _activeScreen = 0;
     
 public:
     Display();
     ~Display();
     void Init();
-    void UpdateScreen(int temp, int hum, int soilP, String info);
+    void UpdateScreen();
     void Sleep(unsigned long current_millis);
     bool Wake(unsigned long current_millis);
+
+private:
+    void mainScreen();
+    void wifiScreen();
+    void calibrationScreen();
+
 };
 
 #endif

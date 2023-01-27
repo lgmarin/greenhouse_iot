@@ -50,7 +50,7 @@ void loop() {
     // eventsLoop();
 
     //Update Screen
-    display.UpdateScreen(airTemp(), airHumidity(), soilHumidity(), wifiInfo());
+    display.UpdateScreen();
 
   }
 

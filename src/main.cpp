@@ -50,7 +50,7 @@ void loop() {
     // eventsLoop();
 
     //Update Screen
-    display.UpdateScreen();
+    display.UpdateDisplay();
 
   }
 

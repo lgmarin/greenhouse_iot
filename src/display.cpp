@@ -2,11 +2,10 @@
 #include <readSensors.h>
 #include <wifiConfig.h>
 
-
 /*!
  *  @brief  Initialize SSD1306 Display.
  */
-void Display::Init()
+void Display::init()
 {
     if(!_display.begin(SSD1306_SWITCHCAPVCC, D_I2C_ADDR)) {
         Serial.print(F("\n[ERROR]: SSD1306 allocation failed!"));
@@ -24,10 +23,12 @@ void Display::Init()
 /*!
  *  @brief  Update the display screen for loop().
  */
-void Display::UpdateDisplay()
+void Display::updateDisplay()
 {
     if(_sleeping)
         return;
+    
+    sleep();
 
     switch (_activeScreen)
     {
@@ -35,10 +36,10 @@ void Display::UpdateDisplay()
         _mainScreen();
         break;
     case 1:
-        _wifiScreen();
+        _calibrationScreen();
         break;
     case 2:
-        _calibrationScreen();
+        _wifiScreen();
         break;
     default:
         _mainScreen();
@@ -46,7 +47,7 @@ void Display::UpdateDisplay()
     }
 }
 
-void Display::ChangeScreen(uint8_t screen)
+void Display::changeScreen(uint8_t screen)
 {
     _activeScreen = screen;
 }
@@ -60,15 +61,70 @@ void Display::nextScreen()
         _activeScreen += 1;
 }
 
-void Display::_wifiScreen()
+void Display::sleep()
 {
+    unsigned long current_millis = millis();
+
+    if (current_millis - _previous_millis >= SLEEP_INTERVAL) 
+    {
+        _previous_millis = current_millis;
+        _display.ssd1306_command(SSD1306_DISPLAYOFF);
+        _sleeping = true;
+        changeScreen(0);
+    }    
 }
 
-void Display::_calibrationScreen()
+bool Display::wake()
 {
+    if (_sleeping) 
+    {
+        _previous_millis = millis();
+        _display.ssd1306_command(SSD1306_DISPLAYON);
+        _sleeping = false;
+        return false;
+    }
+
+    return true;
 }
 
-void Display::_mainScreen()
+
+void Display::btnHandleClick()
+{
+    if(_sleeping)
+        wake();
+
+    else
+    {
+        nextScreen();
+        _previous_millis = millis();
+    }
+}
+
+void Display::btnHandleLongPress()
+{
+    if(_sleeping)
+       return;
+
+    switch (_activeScreen)
+    {
+    case 0:
+        break;
+    case 1:
+        //Do calibration stuff
+        break;
+    case 2:
+        //Do Wifi stuff
+        break;
+    default:
+        break;
+    }    
+}
+
+
+/*
+    SCREENS DRAWING FUNCTIONS
+*/
+void Display::_drawHeader()
 {
     // DISPLAY HANDLING
     _display.clearDisplay();
@@ -77,6 +133,11 @@ void Display::_mainScreen()
     _display.setTextColor(WHITE);
     // Information
     _display.setCursor(0, 0);
+}
+
+void Display::_mainScreen()
+{
+    _drawHeader();
     _display.print(wifiInfo());
     // Temperature
     _display.setCursor(0, 16);
@@ -104,26 +165,62 @@ void Display::_mainScreen()
     _display.display();
 }
 
-void Display::Sleep(unsigned long current_millis)
+void Display::_wifiScreen()
 {
-    if (current_millis - _previous_millis >= SLEEP_INTERVAL) 
-    {
-        _previous_millis = current_millis;
-        _display.ssd1306_command(SSD1306_DISPLAYOFF);
-        _sleeping = true;
-        ChangeScreen(0);
-    }    
+    _drawHeader();
+    _display.print("WIFI Config");
+    // Temperature
+    _display.setCursor(0, 16);
+    _display.setTextSize(1);
+    _display.print("Ta ");
+    _display.setTextSize(2);
+    _display.print(airTemp());
+    _display.setTextSize(1);
+    _display.print("o");
+    _display.setTextSize(2);
+    _display.print("C ");
+    // Humidity
+    _display.setTextSize(1);
+    _display.print("Ua ");
+    _display.setTextSize(2);
+    _display.print(airHumidity());
+    _display.print("%");
+    // Soil Humidity
+    _display.setCursor(0, 36);
+    _display.setTextSize(1);
+    _display.print("Us ");
+    _display.setTextSize(2);
+    _display.print(soilHumidity());
+    _display.print("%");
+    _display.display();
 }
 
-bool Display::Wake(unsigned long current_millis)
+void Display::_calibrationScreen()
 {
-    _previous_millis = current_millis;
-    if (_sleeping) 
-    {
-        _display.ssd1306_command(SSD1306_DISPLAYON);
-        _sleeping = false;
-        return false;
-    }
-
-    return true;
+    _drawHeader();
+    _display.print("WIFI Config");
+    // Temperature
+    _display.setCursor(0, 16);
+    _display.setTextSize(1);
+    _display.print("Ta ");
+    _display.setTextSize(2);
+    _display.print(airTemp());
+    _display.setTextSize(1);
+    _display.print("o");
+    _display.setTextSize(2);
+    _display.print("C ");
+    // Humidity
+    _display.setTextSize(1);
+    _display.print("Ua ");
+    _display.setTextSize(2);
+    _display.print(airHumidity());
+    _display.print("%");
+    // Soil Humidity
+    _display.setCursor(0, 36);
+    _display.setTextSize(1);
+    _display.print("Us ");
+    _display.setTextSize(2);
+    _display.print(soilHumidity());
+    _display.print("%");
+    _display.display();
 }

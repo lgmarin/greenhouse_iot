@@ -15,6 +15,10 @@ unsigned long sleep_interval;
 Display                 display;
 Button                  menuButton(MENU_BTN_PIN);
 
+// MENU BUTTON CALLBACKS
+void menuBtnClick(){display.btnHandleClick();}
+void menuBtnLongPress(){display.btnHandleLongPress();}
+
 void setup() {
   Serial.begin(9600);
   delay(500);
@@ -26,7 +30,8 @@ void setup() {
   initSensors();
 
   // Initialize DISPLAY
-  display.Init();
+  display.init();
+  menuButton.attachSingleClickFunc(menuBtnClick);
 
   // Initialize WIFI
   initWifi(Device_config.ap_mode);
@@ -41,25 +46,17 @@ void loop() {
   unsigned long current_millis = millis();
   sensors_interval = dhtDelay() || DEFAULT_DELAY;
   
-  if (current_millis - previous_millis >= sensors_interval) 
+  if (current_millis - previous_millis >= sensors_interval)
   {
     previous_millis = current_millis;
-
     // RUN SENSORS UPDATE LOOP
     sensorsLoop();
-
-    // EventListenner Loop
-    // eventsLoop();
-
-    //Update Screen
-    display.UpdateDisplay();
   }
+  //ButtonManager Loop
+  menuButton.loop();
 
-  if (digitalRead(MENU_BTN_PIN))
-    display.Wake(current_millis);
-
-  
-  display.Sleep(current_millis);
+  //Update Screen
+  display.updateDisplay();
 
   dnsProcessNext();
   updatemDNS();

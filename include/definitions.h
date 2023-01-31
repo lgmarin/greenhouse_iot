@@ -32,6 +32,7 @@
 #define D_I2C_ADDR              0x3C    //0x7A //0x78
 #define SLEEP_INTERVAL          60000   //1 minute to sleep
 #define MENU_BTN_PIN            14      //GPIO14 - D
+#define BUTTON_PRESSED          LOW     //Defines active LOW
 
 
 /*

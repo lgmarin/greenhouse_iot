@@ -1,11 +1,27 @@
 #include <buttonManager.h>
 
-void Button::ButtonLoop()
+void Button::loop()
 {
-    // Manage screen Wake
-
+    if (_pin >= 0)
+        _checkState(digitalRead(_pin) == BUTTON_PRESSED);
 
 }
+
+void Button::attachSingleClickFunc(buttonCallback function)
+{
+    _singleClickFunc = function;
+}
+
+void Button::attachDoubleClickFuncc(buttonCallback function)
+{
+    _doubleClickFunc = function;
+}
+
+void Button::attachLongPressFunc(buttonCallback function)
+{
+    _longPressFunc = function;
+}
+
 
 void Button::_newState(buttonState_t nextState)
 {
@@ -22,7 +38,7 @@ void Button::_reset()
 }
 
 
-void Button::_checkState(bool isActive)
+void Button::_checkState(bool isPressed)
 {
     unsigned long timeNow = millis();
     unsigned long timeInterval = timeNow - _startTime;
@@ -30,7 +46,7 @@ void Button::_checkState(bool isActive)
     switch (_state)
     {
     case BTN_STATE_INIT:
-        if(isActive)
+        if(isPressed)
         {
             _newState(BTN_STATE_DOWN);
             _startTime = timeNow;
@@ -40,25 +56,25 @@ void Button::_checkState(bool isActive)
 
     case BTN_STATE_DOWN:
         // Button became inactive too fast
-        if(!isActive && (timeInterval < _debounceDelay))
+        if(!isPressed && (timeInterval < _debounceDelay))
             _newState(_lastState);
 
         // Button became inactive
-        else if (!isActive)
+        else if (!isPressed)
         {
             _newState(BTN_STATE_UP);
             _startTime = timeNow;
         }
         
         // Button was pressed for some time
-        else if (isActive && (timeInterval > _pressDelay))
+        else if (isPressed && (timeInterval > _pressDelay))
             _newState(BTN_STATE_PRESS);
 
         break;
         
     case BTN_STATE_UP:
         // Button became inactive too fast
-        if (isActive && (timeInterval < _debounceDelay))
+        if (isPressed && (timeInterval < _debounceDelay))
             _newState(_lastState);
 
         // Button pressed, start counting
@@ -70,7 +86,7 @@ void Button::_checkState(bool isActive)
         break;
     
     case BTN_STATE_COUNT:
-        if(isActive)
+        if(isPressed)
         {
             _newState(BTN_STATE_DOWN);
             _startTime = timeNow;
@@ -78,17 +94,21 @@ void Button::_checkState(bool isActive)
         else if ((timeInterval > _clickDelay)) 
         {
             if (_nClicks == 1)
+            {
                 if (_singleClickFunc) _singleClickFunc();
+            }
 
             else if (_nClicks == 2)
+            {
                 if (_doubleClickFunc) _doubleClickFunc();
+            }
 
             _reset();
         }
         break;
 
     case BTN_STATE_PRESS:
-        if(!isActive)
+        if(!isPressed)
         {
             _newState(BTN_STATE_PRESSEND);
             _startTime = timeNow;
@@ -96,7 +116,7 @@ void Button::_checkState(bool isActive)
         break;
 
     case BTN_STATE_PRESSEND:
-        if (isActive && (timeInterval < _debounceDelay))
+        if (isPressed && (timeInterval < _debounceDelay))
             _newState(_lastState);
         
 

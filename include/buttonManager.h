@@ -17,7 +17,7 @@ private:
     unsigned long       _startTime = 0;
     int                 _nClicks = 0;
 
-    enum buttonState_t : int {
+    enum buttonState_t : uint8_t {
         BTN_STATE_INIT      = 0,
         BTN_STATE_DOWN      = 1,
         BTN_STATE_UP        = 2,
@@ -36,7 +36,12 @@ public:
         digitalWrite(_pin, HIGH);
     }
     ~Button() {}
-    void ButtonLoop();
+    void loop();
+
+//Callback Attachers
+    void attachSingleClickFunc(buttonCallback function);
+    void attachDoubleClickFuncc(buttonCallback function);
+    void attachLongPressFunc(buttonCallback function);
 
 private:
     void _newState(buttonState_t nextState);
@@ -47,6 +52,7 @@ private:
     buttonCallback _singleClickFunc = NULL;
     buttonCallback _doubleClickFunc = NULL;
     buttonCallback _longPressFunc = NULL;
+
 };
 
 #endif

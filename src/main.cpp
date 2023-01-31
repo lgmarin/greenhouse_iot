@@ -12,6 +12,7 @@ unsigned long sleep_interval;
 
 // CREATE INSTANCES
 Display                 display;
+Button                  menuButton(MENU_BTN_PIN);
 
 void setup() {
   Serial.begin(9600);
@@ -51,10 +52,9 @@ void loop() {
 
     //Update Screen
     display.UpdateDisplay();
-
   }
 
-  if (digitalRead(WAKE_BTN_PIN))
+  if (digitalRead(MENU_BTN_PIN))
     display.Wake(current_millis);
 
   

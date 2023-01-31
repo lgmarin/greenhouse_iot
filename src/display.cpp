@@ -54,14 +54,14 @@ void Display::UpdateDisplay()
     }
 }
 
-void Display::ChangeScreen(uint8 screen)
+void Display::ChangeScreen(uint8_t screen)
 {
     _activeScreen = screen;
 }
 
 void Display::nextScreen()
 {
-    uint8 currentScreen = _activeScreen;
+    int currentScreen = _activeScreen;
     if (currentScreen += 1 > _totalScreens - 1)
         _activeScreen = 0;
     else 
@@ -134,4 +134,18 @@ bool Display::Wake(unsigned long current_millis)
     }
 
     return true;
+}
+
+void Button::ButtonLoop(Display display)
+{
+    // Manage screen Wake
+
+
+}
+
+void Button::_readButtonPress()
+{
+    //Manage Debounce
+
+    //Manage single press and long press
 }

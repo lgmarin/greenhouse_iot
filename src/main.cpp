@@ -2,6 +2,7 @@
 #include <configManager.h>
 #include <readSensors.h>
 #include <display.h>
+#include <buttonManager.h>
 #include <wifiConfig.h>
 #include <webServer.h>
 

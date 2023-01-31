@@ -3,14 +3,6 @@
 #include <wifiConfig.h>
 
 
-Display::Display() : _display(SCREEN_W, SCREEN_H, &Wire, -1)
-{
-}
-
-Display::~Display()
-{
-}
-
 /*!
  *  @brief  Initialize SSD1306 Display.
  */
@@ -134,18 +126,4 @@ bool Display::Wake(unsigned long current_millis)
     }
 
     return true;
-}
-
-void Button::ButtonLoop(Display display)
-{
-    // Manage screen Wake
-
-
-}
-
-void Button::_readButtonPress()
-{
-    //Manage Debounce
-
-    //Manage single press and long press
 }

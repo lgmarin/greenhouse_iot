@@ -5,7 +5,6 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <buttonManager.h>
 
 class Display{
 private:
@@ -27,6 +26,7 @@ public:
     void nextScreen();
 
     void sleep();
+    bool toggleSleepMode();
     bool wake();
 
 public: // MENU BUTTON CALLBACKS
@@ -34,10 +34,12 @@ public: // MENU BUTTON CALLBACKS
     void btnHandleLongPress();
 
 private: // DRAW SCREENS
-    void _drawHeader();
+    void _beginScreenDraw();
     void _mainScreen();
     void _wifiScreen();
     void _calibrationScreen();
+
+    void _drawCenterText(const char *buf, uint8_t x, uint8_t y);
 };
 
 #endif

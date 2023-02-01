@@ -67,11 +67,11 @@ void Display::sleep()
 
     if (current_millis - _previous_millis >= SLEEP_INTERVAL) 
     {
+        changeScreen(MAIN_SCREEN);
         _previous_millis = current_millis;
         _display.ssd1306_command(SSD1306_DISPLAYOFF);
         _sleeping = true;
-        changeScreen(0);
-    }    
+    }
 }
 
 bool Display::toggleSleepMode()
@@ -98,10 +98,16 @@ void Display::btnHandleClick()
     if(_sleeping)
         wake();
 
-    else
+    else if (!_isCallibrationRunning)
     {
         nextScreen();
         _previous_millis = millis();
+    }
+    else
+    {
+        if(_activeScreen == SUCC_CALIB_SCREEN)
+            changeScreen(MAIN_SCREEN);
+
     }
 }
 
@@ -112,13 +118,17 @@ void Display::btnHandleLongPress()
 
     switch (_activeScreen)
     {
-    case 0:
+    case MAIN_SCREEN:
         break;
-    case 1:
+    case WIFI_SCREEN:
         //Do calibration stuff
         break;
-    case 2:
+    case CALIB_SCREEN:
         //Do Wifi stuff
+        break;
+    case RUN_CALIB_SCREEN:
+        //Return to CALIB_SCREEN
+        _activeScreen = CALIB_SCREEN;
         break;
     default:
         break;
@@ -191,40 +201,51 @@ void Display::_wifiScreen()
     _display.print("IP:");
     _display.setCursor(32, 33);
     _display.print("%IP_ADDR%"); //IP ADDRESS
-    _display.setCursor(1, 50);
-    _display.println(">> Resetar Config. <<"); //Remover se AP
+    _display.setCursor(0, 50);
+    _drawCenterText(">> Resetar Config. <<", 0, 54); //Remover se AP
     _display.display();
-
-    _display.printf
 }
 
 void Display::_calibrationScreen()
 {
     _beginScreenDraw();
-    _display.print("WIFI Config");
-    // Temperature
-    _display.setCursor(0, 16);
-    _display.setTextSize(1);
-    _display.print("Ta ");
-    _display.setTextSize(2);
-    _display.print(airTemp());
-    _display.setTextSize(1);
-    _display.print("o");
-    _display.setTextSize(2);
-    _display.print("C ");
-    // Humidity
-    _display.setTextSize(1);
-    _display.print("Ua ");
-    _display.setTextSize(2);
-    _display.print(airHumidity());
-    _display.print("%");
-    // Soil Humidity
-    _display.setCursor(0, 36);
-    _display.setTextSize(1);
-    _display.print("Us ");
-    _display.setTextSize(2);
-    _display.print(soilHumidity());
-    _display.print("%");
+    _drawCenterText("UMIDADE DO SOLO", 0, 0);
+    _display.setCursor(0, 10);
+    _display.drawLine(1, 10, 127, 10, 1);
+    _display.setCursor(1, 13);
+    _display.println("Umidade:");
+    _display.setCursor(50, 13);
+    _display.print("100%");
+    _drawCenterText(">> Calibrar Sensor <<", 0, 54);
+    _display.display();
+}
+
+void Display::_runningCalibrationScreen()
+{
+    _beginScreenDraw();
+    _drawCenterText("CALIBRANDO SENSOR", 0, 0);
+    _display.setCursor(0, 10);
+    _display.drawLine(1, 10, 127, 10, 1);
+    _display.setCursor(1, 13);
+    _display.println("MEIO: AR");
+    _drawCenterText("Mantenha o Sensor", 1, 26);
+    _drawCenterText("SECO", 1, 35);
+    _drawCenterText("> Iniciar <", 0, 54);
+    _display.display();
+}
+
+void Display::_calibrationSuccessScreen()
+{
+    _beginScreenDraw();
+    _drawCenterText("CALIBRANDO SENSOR", 0, 0);
+    _display.setCursor(0, 10);
+    _display.drawLine(1, 10, 127, 10, 1);
+    _display.setCursor(1, 13);
+    _display.println("Umidade:");
+    _display.setCursor(50, 13);
+    _display.print("100%");
+    _drawCenterText("SUCESSO!", 1, 35);
+    _drawCenterText("> Voltar <", 0, 54);
     _display.display();
 }
 
@@ -236,4 +257,3 @@ void Display::_drawCenterText(const char *buf, uint8_t x, uint8_t y)
     _display.setCursor(x - w / 2, y);
     _display.print(buf);
 }
-

@@ -13,6 +13,16 @@ private:
     bool                _sleeping = false;
     uint8_t             _activeScreen = 0;
     uint8_t             _totalScreens = 3;
+    bool                _isCallibrationRunning = false;
+
+    enum screens: uint8_t
+    {
+        MAIN_SCREEN         = 0,
+        WIFI_SCREEN         = 1,
+        CALIB_SCREEN        = 2,
+        RUN_CALIB_SCREEN    = 21,
+        SUCC_CALIB_SCREEN   = 22
+    };
     
 public:
     Display() 
@@ -38,6 +48,8 @@ private: // DRAW SCREENS
     void _mainScreen();
     void _wifiScreen();
     void _calibrationScreen();
+    void _runningCalibrationScreen();
+    void _calibrationSuccessScreen();
 
     void _drawCenterText(const char *buf, uint8_t x, uint8_t y);
 };

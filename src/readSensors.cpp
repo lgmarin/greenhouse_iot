@@ -6,14 +6,12 @@ int                     _dhtTemperature;
 int                     _dhtHumidity;
 int                     _soilPercent;
 int                     _soilValue;
+bool                    _soilCalibration = false;
+unsigned long           _soil_millis = 0;
 
 SoilMoistureSensor      soil(SOIL_A);
 Dht                     dhtSensor;
 
-/**
- * @brief Initialize all the sensors functions
- * 
- */
 void initSensors()
 {
     _dhtDelay = dhtSensor.dhtInit();
@@ -23,20 +21,25 @@ void initSensors()
     _dhtTemperature = dhtSensor.readTemperature();
     _dhtHumidity = dhtSensor.readHumidity();
 
-    soil.enterCalibration(Device_config.air_value, Device_config.wat_value);
-    _soilPercent = soil.readPercent();
+    if(soil.enterCalibration(Device_config.air_value, Device_config.wat_value))
+        _soilPercent = soil.readPercent();
 }
 
-/**
- * @brief Sensors main loop, read all the sensors values periodically
- * 
- */
 void sensorsLoop()
 {
     _dhtTemperature = dhtSensor.readTemperature();
     _dhtHumidity = dhtSensor.readHumidity();
-    _soilValue = soil.readValue();
-    _soilPercent = soil.readPercent();
+
+    if(!_soilCalibration)
+    {
+        unsigned long current_millis = millis();
+        if (current_millis - _soil_millis >= SOIL_NORMAL_INTERVAL) 
+        {
+            _soil_millis = current_millis;
+            _soilValue = soil.readValue();
+            _soilPercent = soil.readPercent();
+        }
+    }
 }
 
 unsigned long dhtDelay()
@@ -59,11 +62,6 @@ int soilHumidity()
     return _soilPercent;
 }
 
-/**
- * @brief Read Sensors values in JSON format
- * 
- * @return String JSON sensors readings
- */
 String readSensorsJSON()
 {
     String json;
@@ -76,4 +74,24 @@ String readSensorsJSON()
     json += "\"}}";
 
     return json;
+}
+
+int readCallibrationValue()
+{
+    _soilCalibration = true;
+    unsigned long current_millis = millis();
+    int read = 0;
+
+    for (size_t i = 0; i < 10; i++)
+    {
+        if (current_millis - _soil_millis >= SOIL_CALLIB_INTERVAL + 10) 
+        {
+            _soil_millis = current_millis;
+            read += soil.readValue();
+        }
+    }
+
+    _soilCalibration = false;
+
+    return read/10;
 }

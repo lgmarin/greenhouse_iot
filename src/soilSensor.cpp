@@ -71,22 +71,6 @@ int SoilMoistureSensor::readPercent(bool twoDigits)
 }
 
 /*!
- *  @brief  Calibrate from Serial Monitor.
-*           Put in the loop function and read the values.   
- */
-void SoilMoistureSensor::calibrateSerial()
-{
-    Serial.print(F("\n<<< SOIL MOISTURE CALIBRATION >>>"));
-    Serial.print(F("\n1. Leave the probe in the air (probe dry)."));
-    Serial.print(F("\n--> Take note of this measurement! "));
-    Serial.print(F("\n2. Insert the probe in a glass of water."));
-    Serial.print(F("\n--> Take note of this measurement!"));
-    Serial.print(F("\nREAD THE INSTRUCTIONS AND PRESS ENTER!"));
-    Serial.read();
-    Serial.print(F("\nCURRENT READING: ")); Serial.print(readValue());
-}
-
-/*!
  *  @brief  Enter calibration values after creating class.
 *   @param airM Moisture value in Air
 *   @param watM Moisture value in Water
@@ -102,4 +86,46 @@ bool SoilMoistureSensor::enterCalibration(int airM, int watM)
         return true;
     }
     return false;
+}
+
+void SoilMoistureSensor::calibrateSensor(calibrationStatus* status)
+{
+    if(_calibStatus.currentState == NOT_STARTED)
+    {
+        _calibStatus.currentState = START_AIR;
+        _calibStatus.nextState = WAIT;
+        *status = _calibStatus;
+    }
+        
+    switch (_calibStatus.currentState)
+    {
+    case START_AIR:
+        _calibStatus.nextState = AIR_CALIB;
+        break;
+    
+    case AIR_CALIB:
+        _calibStatus.nextState = START_WAT;
+        break;
+
+    case START_WAT:
+        _calibStatus.nextState = WAT_CALIB;
+        break;
+    
+    case WAT_CALIB:
+        _calibStatus.nextState = CALIB_SUCCESS;
+        break;
+
+    case CALIB_SUCCESS:
+        _calibStatus.nextState = NOT_STARTED;
+        break;
+
+    case CALIB_FAIL:
+        _calibStatus.nextState = NOT_STARTED;
+        break;        
+
+    default:
+        break;
+    }
+
+    *status = _calibStatus;
 }

@@ -1,6 +1,4 @@
 #include <display.h>
-#include <readSensors.h>
-#include <wifiConfig.h>
 
 /*!
  *  @brief  Initialize SSD1306 Display.
@@ -32,15 +30,21 @@ void Display::updateDisplay()
 
     switch (_activeScreen)
     {
-    case 0:
+    case MAIN_SCREEN:
         _mainScreen();
         break;
-    case 1:
+    case CALIB_SCREEN:
         _calibrationScreen();
         break;
-    case 2:
+    case WIFI_SCREEN:
         _wifiScreen();
         break;
+    case RUN_CALIB_SCREEN:
+        _runningCalibrationScreen();
+        break;
+    case FINISH_SCREEN:
+        _calibrationFinishScreen();
+        break;        
     default:
         _mainScreen();
         break;
@@ -63,6 +67,9 @@ void Display::nextScreen()
 
 void Display::sleep()
 {
+    if(_sleepBlocked)
+        return;
+
     unsigned long current_millis = millis();
 
     if (current_millis - _previous_millis >= SLEEP_INTERVAL) 
@@ -74,9 +81,14 @@ void Display::sleep()
     }
 }
 
-bool Display::toggleSleepMode()
+void Display::lockSleepMode()
 {
-    return false;
+    _sleepBlocked = true;
+}
+
+void Display::unlockSleepMode()
+{
+    _sleepBlocked = false;
 }
 
 bool Display::wake()
@@ -105,9 +117,22 @@ void Display::btnHandleClick()
     }
     else
     {
-        if(_activeScreen == SUCC_CALIB_SCREEN)
-            changeScreen(MAIN_SCREEN);
+        switch (_activeScreen)
+        {
+        case RUN_CALIB_SCREEN:
+            if(_currentCalibState == AIR_CALIB || _currentCalibState == WAT_CALIB)
+                break;
 
+            _callibrationHelper();
+            _currentCalibState = _nextCalibState;
+            break;
+
+        case FINISH_SCREEN:
+            changeScreen(MAIN_SCREEN);
+        
+        default:
+            break;
+        }
     }
 }
 
@@ -121,10 +146,17 @@ void Display::btnHandleLongPress()
     case MAIN_SCREEN:
         break;
     case WIFI_SCREEN:
-        //Do calibration stuff
+        //Do Wifi stuff
+        
         break;
     case CALIB_SCREEN:
-        //Do Wifi stuff
+        //Do calibration stuff
+        if(_currentCalibState == NOT_STARTED && !_isCallibrationRunning)
+        {
+            _currentCalibState = _nextCalibState;
+            _callibrationHelper();
+        }
+            
         break;
     case RUN_CALIB_SCREEN:
         //Return to CALIB_SCREEN
@@ -227,14 +259,29 @@ void Display::_runningCalibrationScreen()
     _display.setCursor(0, 10);
     _display.drawLine(1, 10, 127, 10, 1);
     _display.setCursor(1, 13);
-    _display.println("MEIO: AR");
-    _drawCenterText("Mantenha o Sensor", 1, 26);
-    _drawCenterText("SECO", 1, 35);
-    _drawCenterText("> Iniciar <", 0, 54);
+
+    if(_currentCalibState == AIR_CALIB || _currentCalibState == START_AIR)
+    {
+        _display.println("MEIO: AR");
+        _drawCenterText("Mantenha o Sensor", 1, 26);
+        _drawCenterText("SECO", 1, 35);
+    } 
+    else if(_currentCalibState == WAT_CALIB || _currentCalibState == START_WAT)
+    {
+        _display.println("MEIO: AGUA");
+        _drawCenterText("Mantenha o Submerso", 1, 26);
+        _drawCenterText("SECO", 1, 35);
+    }
+
+    if(_currentCalibState == AIR_CALIB || _currentCalibState == WAT_CALIB)
+        _drawCenterText("AGUARDE", 0, 54);
+    else
+        _drawCenterText("> Iniciar <", 0, 54);
+
     _display.display();
 }
 
-void Display::_calibrationSuccessScreen()
+void Display::_calibrationFinishScreen()
 {
     _beginScreenDraw();
     _drawCenterText("CALIBRANDO SENSOR", 0, 0);
@@ -244,7 +291,12 @@ void Display::_calibrationSuccessScreen()
     _display.println("Umidade:");
     _display.setCursor(50, 13);
     _display.print("100%");
-    _drawCenterText("SUCESSO!", 1, 35);
+
+    if(_currentCalibState == CALIB_SUCCESS)
+        _drawCenterText("SUCESSO!", 1, 35);
+    else
+        _drawCenterText("FALHOU!", 1, 35);
+
     _drawCenterText("> Voltar <", 0, 54);
     _display.display();
 }
@@ -256,4 +308,45 @@ void Display::_drawCenterText(const char *buf, uint8_t x, uint8_t y)
     _display.getTextBounds(buf, x, y, &x1, &y1, &w, &h);
     _display.setCursor(x - w / 2, y);
     _display.print(buf);
+}
+
+void Display::_callibrationHelper()
+{
+    if(_currentCalibState == NOT_STARTED)
+        return;
+        
+    switch (_currentCalibState)
+    {
+    case START_AIR:
+        _nextCalibState = AIR_CALIB;
+        lockSleepMode();
+        changeScreen(RUN_CALIB_SCREEN);
+        break;
+    
+    case AIR_CALIB:
+        _nextCalibState = START_WAT;
+        break;
+
+    case START_WAT:
+        _nextCalibState = WAT_CALIB;
+        break;
+    
+    case WAT_CALIB:
+        _nextCalibState = CALIB_SUCCESS;
+        changeScreen(FINISH_SCREEN);
+        break;
+
+    case CALIB_SUCCESS:
+        _nextCalibState = NOT_STARTED;
+        changeScreen(MAIN_SCREEN);
+        break;
+
+    case CALIB_FAIL:
+        _nextCalibState = NOT_STARTED;
+        changeScreen(MAIN_SCREEN);
+        break;        
+
+    default:
+        break;
+    }
 }

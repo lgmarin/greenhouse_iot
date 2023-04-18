@@ -109,7 +109,7 @@ void Display::btnHandleClick()
 {
     if(_sleeping)
         wake();
-
+ 
     else if (!_isCallibrationRunning)
     {
         nextScreen();
@@ -184,7 +184,8 @@ void Display::_mainScreen()
 {
     _beginScreenDraw();
     // Information    
-    _drawCenterText("WIFI", 0, 0);
+    _display.setCursor(0, 0);
+    _display.print("WIFI-");
     _display.print(wifiInfo());
     // Temperature
     _display.setCursor(0, 16);
@@ -215,47 +216,62 @@ void Display::_mainScreen()
 void Display::_wifiScreen()
 {
     _beginScreenDraw();
-    _drawCenterText("WIFI", 0, 0);
+    _drawCenterText("WIFI", 0);
     _display.setCursor(0, 10);
     _display.drawLine(1, 10, 127, 10, 1);
     _display.setCursor(1, 13);
     _display.print("Modo: ");
     _display.setCursor(32, 13);
-    _display.print("STA"); //MDOE
-    _display.setCursor(92, 13);
-    _display.print("S: 100%"); //WIFI Strength
-    _display.setCursor(1, 23);
-    _display.print("Rede:");
-    _display.setCursor(32, 23);
-    _display.print("%LAN_NAME%"); //WIFINAME
-    _display.setCursor(0, 10);
-    _display.setCursor(1, 33);
-    _display.print("IP:");
-    _display.setCursor(32, 33);
-    _display.print("%IP_ADDR%"); //IP ADDRESS
-    _display.setCursor(0, 50);
-    _drawCenterText(">> Resetar Config. <<", 0, 54); //Remover se AP
+    if (wifiMode() == 2)
+    {
+        _display.print("STA"); //MDOE
+        _display.setCursor(1, 23);
+        _display.print("Rede:");
+        _display.setCursor(32, 23);
+        _display.print(getHostName()); //WIFINAME
+        _display.setCursor(0, 10);
+        _display.setCursor(1, 33);
+        _display.print("IP:");
+        _display.setCursor(32, 33);
+        _display.print(getIpAddress()); //IP ADDRESS
+    } else if(wifiMode() == 1 || wifiMode() == 3)
+    {
+        _display.print("AP"); //MDOE
+        _display.setCursor(80, 13);
+        _display.print("S: 100%"); //WIFI Strength
+        _display.setCursor(1, 23);
+        _display.print("Rede:");
+        _display.setCursor(32, 23);
+        _display.print(getHostName()); //WIFINAME
+        _display.setCursor(0, 10);
+        _display.setCursor(1, 33);
+        _display.print("IP:");
+        _display.setCursor(32, 33);
+        _display.print(getIpAddress()); //IP ADDRESS
+        _display.setCursor(0, 50);
+        _drawCenterText(">> Resetar Config. <<", 54); //Remover se AP
+    }
     _display.display();
 }
 
 void Display::_calibrationScreen()
 {
     _beginScreenDraw();
-    _drawCenterText("UMIDADE DO SOLO", 0, 0);
+    _drawCenterText("UMIDADE DO SOLO", 0);
     _display.setCursor(0, 10);
     _display.drawLine(1, 10, 127, 10, 1);
     _display.setCursor(1, 13);
     _display.println("Umidade:");
     _display.setCursor(50, 13);
     _display.print("100%");
-    _drawCenterText(">> Calibrar Sensor <<", 0, 54);
+    _drawCenterText(">> Calibrar Sensor <<", 54);
     _display.display();
 }
 
 void Display::_runningCalibrationScreen()
 {
     _beginScreenDraw();
-    _drawCenterText("CALIBRANDO SENSOR", 0, 0);
+    _drawCenterText("CALIBRANDO SENSOR", 0);
     _display.setCursor(0, 10);
     _display.drawLine(1, 10, 127, 10, 1);
     _display.setCursor(1, 13);
@@ -263,20 +279,20 @@ void Display::_runningCalibrationScreen()
     if(_currentCalibState == AIR_CALIB || _currentCalibState == START_AIR)
     {
         _display.println("MEIO: AR");
-        _drawCenterText("Mantenha o Sensor", 1, 26);
-        _drawCenterText("SECO", 1, 35);
+        _drawCenterText("Mantenha o Sensor", 26);
+        _drawCenterText("SECO", 35);
     } 
     else if(_currentCalibState == WAT_CALIB || _currentCalibState == START_WAT)
     {
         _display.println("MEIO: AGUA");
-        _drawCenterText("Mantenha o Submerso", 1, 26);
-        _drawCenterText("SECO", 1, 35);
+        _drawCenterText("Mantenha o Submerso", 26);
+        _drawCenterText("SECO", 35);
     }
 
     if(_currentCalibState == AIR_CALIB || _currentCalibState == WAT_CALIB)
-        _drawCenterText("AGUARDE", 0, 54);
+        _drawCenterText("AGUARDE", 54);
     else
-        _drawCenterText("> Iniciar <", 0, 54);
+        _drawCenterText("> Iniciar <", 54);
 
     _display.display();
 }
@@ -284,7 +300,7 @@ void Display::_runningCalibrationScreen()
 void Display::_calibrationFinishScreen()
 {
     _beginScreenDraw();
-    _drawCenterText("CALIBRANDO SENSOR", 0, 0);
+    _drawCenterText("CALIBRANDO SENSOR", 0);
     _display.setCursor(0, 10);
     _display.drawLine(1, 10, 127, 10, 1);
     _display.setCursor(1, 13);
@@ -293,20 +309,20 @@ void Display::_calibrationFinishScreen()
     _display.print("100%");
 
     if(_currentCalibState == CALIB_SUCCESS)
-        _drawCenterText("SUCESSO!", 1, 35);
+        _drawCenterText("SUCESSO!", 35);
     else
-        _drawCenterText("FALHOU!", 1, 35);
+        _drawCenterText("FALHOU!", 35);
 
-    _drawCenterText("> Voltar <", 0, 54);
+    _drawCenterText("> Voltar <", 54);
     _display.display();
 }
 
-void Display::_drawCenterText(const char *buf, uint8_t x, uint8_t y)
+void Display::_drawCenterText(const char *buf, uint8_t y)
 {
     int16_t x1, y1;
     uint16_t w, h;
-    _display.getTextBounds(buf, x, y, &x1, &y1, &w, &h);
-    _display.setCursor(x - w / 2, y);
+    _display.getTextBounds(buf, 0, y, &x1, &y1, &w, &h);
+    _display.setCursor((SCREEN_W - w) / 2, y);
     _display.print(buf);
 }
 

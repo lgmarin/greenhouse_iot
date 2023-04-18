@@ -20,7 +20,7 @@
 #define DEF_CAL_AIR             1024
 #define DEF_CAL_WAT             620
 // SOIL SENSOR READ INTERVAL (5 min minimal, 30 min usual)
-#define SOIL_CALLIB_INTERVAL     500
+#define SOIL_CALLIB_INTERVAL     300000
 #define SOIL_NORMAL_INTERVAL     1800000
 
 
@@ -28,12 +28,12 @@
 // PINOUT I2C               
 // SDA                          GPIO4 - D2
 // SCK                          GPIO5 - D1
-#define SCREEN_W                128
-#define SCREEN_H                64
+#define SCREEN_W                128     //Screen Width
+#define SCREEN_H                64      //Screen Heigth
 #define D_I2C_ADDR              0x3C    //0x7A //0x78
 #define SLEEP_INTERVAL          60000   //1 minute to sleep
 #define MENU_BTN_PIN            14      //GPIO14 - D
-#define BUTTON_PRESSED          LOW     //Defines active LOW
+#define BUTTON_PRESSED          HIGH    //Defines active HIGH
 
 
 /*

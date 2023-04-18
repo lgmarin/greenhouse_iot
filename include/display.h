@@ -70,7 +70,7 @@ private: // DRAW SCREENS
     void _runningCalibrationScreen();
     void _calibrationFinishScreen();
 
-    void _drawCenterText(const char *buf, uint8_t x, uint8_t y);
+    void _drawCenterText(const char *buf, uint8_t y);
 
     void _callibrationHelper();
 };

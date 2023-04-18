@@ -18,6 +18,7 @@ String getIpAddress();
 String getSSID();
 String getMode();
 String wifiInfo();
+WiFiMode wifiMode();
 
 void dnsProcessNext();
 void updatemDNS();

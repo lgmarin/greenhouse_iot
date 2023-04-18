@@ -346,6 +346,11 @@ String getHostName()
     return String(Device_config.host_name);
 }
 
+WiFiMode wifiMode()
+{
+    return WiFi.getMode();
+}
+
 String getMode()
 {
     switch (WiFi.getMode())
